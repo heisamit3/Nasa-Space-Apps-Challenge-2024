@@ -1,0 +1,47 @@
+.sidebar {
+    width: 200px; /* Reduced width for a more compact look */
+    color: white;
+    padding: 10px; /* Increased padding for better spacing */
+    display: flex;
+    flex-direction: column;
+    background-color: black;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5); /* Optional: Add a shadow for depth */
+}
+
+.logo {
+    margin-bottom: 20px; /* Increased margin for better separation */
+    text-align: center;
+}
+
+.logo-image {
+    width: 100%; /* Adjusts to the width of the sidebar */
+    height: auto; /* Maintain aspect ratio */
+    max-width: 100%; /* Limit max width to the sidebar */
+}
+
+.sidebar-menu {
+    list-style-type: none;
+    padding: 0;
+}
+
+.sidebar-menu li {
+    margin: 15px 0; /* Increased margin for better spacing */
+    cursor: pointer;
+    display: flex; /* Align icon and text */
+    align-items: center; /* Center items vertically */
+}
+
+.sidebar-menu li:hover {
+    color: #1abc9c; /* Change color on hover */
+}
+
+/* Styling for the icons */
+.sidebar-icon {
+    margin-right: 10px; /* Space between icon and text */
+    font-size: 20px; /* Icon size */
+    transition: color 0.3s; /* Smooth transition for color change */
+}
+
+.sidebar-menu li:hover .sidebar-icon {
+    color: #1abc9c; /* Change icon color on hover */
+}

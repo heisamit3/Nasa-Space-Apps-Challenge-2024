@@ -1,36 +1,27 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
+import React from "react";
 import "./App.css";
-import Button from ".././components/Button";
+import backgroundImage from "../images/space_sky_black_and_white.png"; // Import the image
+import Sidebar from "../components/Sidebar";
+import Topbar from "../components/Topbar";
+import "bootstrap/dist/css/bootstrap.min.css";
 
-function App() {
-  const [count, setCount] = useState(0);
-
+const App: React.FC = () => {
   return (
-    <div>
-      <header className="App-header">
-        <img src={reactLogo} className="App-logo" alt="react logo" />
-        <img src={viteLogo} className="App-logo" alt="vite logo" />
-        <p>
-          Edit <code>App.tsx</code> and save to test HMR updates.
-        </p>
-        <p>
-          <Button
-            label="Increment"
-            onClick={() => setCount((count) => count + 1)}
-          />
-          <Button
-            label="Decrement"
-            onClick={() => setCount((count) => count - 1)}
-          />
-        </p>
-        <p>
-          <code>count: {count}</code>
-        </p>
-      </header>
+    <div
+      className="app-container"
+      style={{ backgroundImage: `url(${backgroundImage})` }}
+    >
+      <Sidebar />
+      <div className="main-content">
+        <Topbar />
+        <div className="content-area">
+          <h1>Welcome to SunClimate Chronicles</h1>
+          <p>An all in one app to understand climate change</p>
+          <h2>See what you can do..</h2>
+        </div>
+      </div>
     </div>
   );
-}
+};
 
 export default App;
