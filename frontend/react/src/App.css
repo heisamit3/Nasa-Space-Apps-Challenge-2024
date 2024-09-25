@@ -1,3 +1,4 @@
+/* The overall container with a full-screen background */
 .app-container {
   display: flex;
   height: 100vh;
@@ -12,7 +13,7 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  padding: 20px; /* Optional: Add padding to the main content area */
+  /* Background image will show through without a color overlay */
 }
 
 /* Content below the topbar */

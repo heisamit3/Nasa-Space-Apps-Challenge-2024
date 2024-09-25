@@ -1,9 +1,8 @@
 import React from "react";
 import "./App.css";
-import backgroundImage from "../images/space_sky_black_and_white.png"; // Import the image
+import backgroundImage from "../images/frontimage.jpg"; // Import the image
 import Sidebar from "../components/Sidebar";
 import Topbar from "../components/Topbar";
-import "bootstrap/dist/css/bootstrap.min.css";
 
 const App: React.FC = () => {
   return (
@@ -16,7 +15,7 @@ const App: React.FC = () => {
         <Topbar />
         <div className="content-area">
           <h1>Welcome to SunClimate Chronicles</h1>
-          <p>An all in one app to understand climate change</p>
+          <p>An all-in-one app to understand climate change</p>
           <h2>See what you can do..</h2>
         </div>
       </div>
