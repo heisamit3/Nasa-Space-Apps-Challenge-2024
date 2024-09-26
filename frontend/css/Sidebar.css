@@ -1,17 +1,21 @@
+/* In Sidebar.css */
 .sidebar {
-    width: 200px; /* Reduced width for a more compact look */
-    color: white;
-    padding: 10px; /* Increased padding for better spacing */
-    display: flex;
-    flex-direction: column;
-    background-color: black;
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5); /* Optional: Add a shadow for depth */
+    width: 200px; /* Set the width of the sidebar */
+    height: 100vh; /* Full-height sidebar */
+    color: white; /* Text color */
+    padding: 20px; /* Padding inside the sidebar */
+    box-sizing: border-box; /* Include padding in the width */
+    position: absolute; /* Position it absolutely within the parent */
+    z-index: 10; /* Ensure it appears above the background image */
+    overflow-y: auto; /* Add vertical scrollbar for sidebar contents only */
 }
+  
 
 .logo {
     margin-bottom: 20px; /* Increased margin for better separation */
     text-align: center;
 }
+
 
 .logo-image {
     width: 100%; /* Adjusts to the width of the sidebar */
@@ -19,10 +23,12 @@
     max-width: 100%; /* Limit max width to the sidebar */
 }
 
+
 .sidebar-menu {
     list-style-type: none;
     padding: 0;
 }
+
 
 .sidebar-menu li {
     margin: 15px 0; /* Increased margin for better spacing */
@@ -31,9 +37,11 @@
     align-items: center; /* Center items vertically */
 }
 
+
 .sidebar-menu li:hover {
     color: #1abc9c; /* Change color on hover */
 }
+
 
 /* Styling for the icons */
 .sidebar-icon {
@@ -42,6 +50,9 @@
     transition: color 0.3s; /* Smooth transition for color change */
 }
 
+
 .sidebar-menu li:hover .sidebar-icon {
     color: #1abc9c; /* Change icon color on hover */
 }
+
+

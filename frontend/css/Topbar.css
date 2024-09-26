@@ -24,16 +24,16 @@
     color: #1abc9c; /* Change color on hover */
 }
 
-/* Optional: If you want to add gaps between items */
+
 .topbar-menu li:not(:first-child) {
-    margin-left: 30px; /* Increase margin for more spacing, adjust as needed */
+    margin-left: 30px; 
 }
 
-/* Styling for the icons */
+
 .icon {
-    margin-right: 5px; /* Space between icon and text */
-    font-size: 20px; /* Icon size */
-    transition: color 0.3s; /* Smooth transition for color change */
+    margin-right: 5px;
+    font-size: 20px;
+    transition: color 0.3s; 
 }
 
 .topbar-menu li:hover .icon {

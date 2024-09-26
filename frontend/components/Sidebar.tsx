@@ -3,6 +3,7 @@ import "../css/Sidebar.css";
 import logo from "../images/Untitled.png"; // Adjust the path to your logo image
 import { FaChartLine, FaClock, FaMapMarkerAlt, FaBook } from "react-icons/fa"; // Importing icons
 
+
 const Sidebar: React.FC = () => {
   return (
     <div className="sidebar">
@@ -26,5 +27,6 @@ const Sidebar: React.FC = () => {
     </div>
   );
 };
+
 
 export default Sidebar;

@@ -1,13 +1,13 @@
 import React from "react";
 import "./App.css";
-import backgroundImage from "../images/frontimage.jpg"; // Import the image
+import backgroundImage from "../images/frontimage.jpg";
 import Sidebar from "../components/Sidebar";
 import Topbar from "../components/Topbar";
 
 const App: React.FC = () => {
   return (
     <div
-      className="app-container"
+      className="background"
       style={{ backgroundImage: `url(${backgroundImage})` }}
     >
       <Sidebar />
