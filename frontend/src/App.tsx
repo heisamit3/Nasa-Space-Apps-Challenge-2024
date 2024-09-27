@@ -4,6 +4,8 @@ import backgroundImage from "../images/frontimage.jpg";
 import Sidebar from "../components/Sidebar";
 import Topbar from "../components/Topbar";
 import SlideShow from "../components/SlideShow";
+import MessageForm from "../components/MessageForm"; // Import MessageForm
+
 const App: React.FC = () => {
   return (
     <div
@@ -16,9 +18,12 @@ const App: React.FC = () => {
         <div className="content-area">
           <h2>Welcome to SunClimate Chronicles</h2>
           <p>An all-in-one app to understand climate change</p>
-          {/* <h2>See what you can do..</h2> */}
+
+          {/* Integrating the MessageForm component here */}
+          <MessageForm />
+
+          <SlideShow />
         </div>
-        <SlideShow />
       </div>
     </div>
   );

@@ -1,0 +1,406 @@
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+
+// https://vitejs.dev/config/
+export default defineConfig({
+  plugins: [react()],
+})
+vite.config.ts
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vite + React + TS</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+import { StrictMode } from 'react'
+import { createRoot } from 'react-dom/client'
+import App from './App.tsx'
+import './index.css'
+
+createRoot(document.getElementById('root')!).render(
+  <StrictMode>
+    <App />
+  </StrictMode>,
+)
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  font-weight: 500;
+  color: #646cff;
+  text-decoration: inherit;
+}
+a:hover {
+  color: #535bf2;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  place-items: center;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+}
+
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #1a1a1a;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+button:hover {
+  border-color: #646cff;
+}
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+  a:hover {
+    color: #747bff;
+  }
+  button {
+    background-color: #f9f9f9;
+  }
+}
+import React from "react";
+import "./App.css";
+import backgroundImage from "../images/frontimage.jpg";
+import Sidebar from "../components/Sidebar";
+import Topbar from "../components/Topbar";
+import SlideShow from "../components/SlideShow";
+const App: React.FC = () => {
+  return (
+    <div
+      className="background"
+      style={{ backgroundImage: `url(${backgroundImage})` }}
+    >
+      <Sidebar />
+      <div className="main-content">
+        <Topbar />
+        <div className="content-area">
+          <h2>Welcome to SunClimate Chronicles</h2>
+          <p>An all-in-one app to understand climate change</p>
+          {/* <h2>See what you can do..</h2> */}
+        </div>
+        <SlideShow />
+      </div>
+    </div>
+  );
+};
+
+export default App;
+#root {
+  max-width: 100%; /* Changed from 1280px to allow full width */
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+
+.background {
+  background-size: cover;
+  background-position: center;
+  min-height: 100vh; /* Use min-height instead of height */
+  min-width: 100vw; /* Use min-width instead of width */
+  display: flex; /* Use flexbox for layout */
+}
+
+.main-content {
+  flex-grow: 1; /* Allow main content to grow and fill available space */
+  margin-left: 200px; /* Match the width of the sidebar */
+  display: flex;
+  flex-direction: column;
+}
+
+.content-area {
+  color: white ;
+  padding: 2rem;
+  flex-grow: 1; /* Allow content area to grow within main-content */
+}
+
+/* Existing styles */
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+}
+import React, { useState } from 'react';
+import { FaUser, FaTimes } from 'react-icons/fa'; // Import close icon
+import '../css/LoginSignup.css'; // Optional: Add your CSS here
+
+interface LoginSignupPageProps {
+  onClose: () => void; // Prop to handle closing the page
+}
+
+const LoginSignupPage: React.FC<LoginSignupPageProps> = ({ onClose }) => {
+  const [isLogin, setIsLogin] = useState(true);
+
+  const toggleMode = () => {
+    setIsLogin(!isLogin);
+  };
+
+  return (
+    <div className="container">
+      <FaTimes className="close-icon" onClick={onClose} /> {/* Move close button here */}
+      <div className="header">
+        <FaUser className="icon" />
+        <h2>{isLogin ? 'Sign In' : 'Sign Up'}</h2>
+      </div>
+
+      <form className="form">
+        {!isLogin && (
+          <div className="form-group">
+            <label htmlFor="name">Name</label>
+            <input type="text" id="name" placeholder="Enter your name" />
+          </div>
+        )}
+        
+        <div className="form-group">
+          <label htmlFor="email">Email</label>
+          <input type="email" id="email" placeholder="Enter your email" />
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="password">Password</label>
+          <input type="password" id="password" placeholder="Enter your password" />
+        </div>
+
+        <button type="submit" className="btn">
+          {isLogin ? 'Login' : 'Sign Up'}
+        </button>
+      </form>
+
+      <div className="footer">
+        <p>
+          {isLogin ? 'Don\'t have an account?' : 'Already have an account?'}{' '}
+          <span onClick={toggleMode} className="toggle-link">
+            {isLogin ? 'Sign Up' : 'Login'}
+          </span>
+        </p>
+      </div>
+    </div>
+  );
+};
+
+export default LoginSignupPage;
+import React from "react";
+import "../css/Sidebar.css";
+import logo from "../images/Untitled.png"; // Adjust the path to your logo image
+import { FaChartLine, FaClock, FaMapMarkerAlt, FaBook } from "react-icons/fa"; // Importing icons
+
+
+const Sidebar: React.FC = () => {
+  return (
+    <div className="sidebar">
+      <div className="logo">
+        <img src={logo} alt="Logo" className="logo-image" />
+      </div>
+      <ul className="sidebar-menu">
+        <li>
+          <FaChartLine className="sidebar-icon" /> Interactive Data
+        </li>
+        <li>
+          <FaClock className="sidebar-icon" /> Time Lapse
+        </li>
+        <li>
+          <FaMapMarkerAlt className="sidebar-icon" /> Localized Stories
+        </li>
+        <li>
+          <FaBook className="sidebar-icon" /> Educational Resources
+        </li>
+      </ul>
+    </div>
+  );
+};
+
+
+export default Sidebar;
+import React, { useState, useEffect } from 'react';
+import '../css/SlideShow.css';
+import image1 from "../images/Slider1.jpg";
+import image2 from "../images/Slider2.jpg";
+import image3 from "../images/Slider3.jpg";
+import image4 from "../images/Slider4.jpg";
+import image5 from "../images/Slider5.jpg";
+import image6 from "../images/Slider6.jpg";
+import image7 from "../images/Slider7.jpg";
+
+const slides = [
+    {
+        image: image1,
+        text: "Our Planet is Crying for Help.",
+    },
+    {
+        image: image2,
+        text: "We Can’t Afford to Ignore Climate Change.",
+    },
+    {
+        image: image3,
+        text: "The Earth is Warming, and So Are Our Consequences.",
+    },
+    {
+        image: image4,
+        text: "Natural Disasters Are on the Rise.",
+    },
+    {
+        image: image5,
+        text: "Together, We Can Make a Difference.",
+    },
+    {
+        image: image6,
+        text: "Protect Our Planet for Future Generations.",
+    },
+    {
+        image: image7,
+        text: "Act Now for a Greener Tomorrow!",
+    },
+];
+
+const SlideShow = () => {
+    const [currentSlide, setCurrentSlide] = useState(0);
+  
+    useEffect(() => {
+      const interval = setInterval(() => {
+        nextSlide();
+      }, 3000); // Automatically change slide every 3 seconds
+      return () => clearInterval(interval); // Clear interval on component unmount
+    }, [currentSlide]);
+  
+    const nextSlide = () => {
+      setCurrentSlide((prev) => (prev + 1) % slides.length);
+    };
+  
+    const prevSlide = () => {
+      setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
+    };
+  
+    return (
+      <div className="slideshow-container">
+        <div className="slide">
+          <img
+            src={slides[currentSlide].image}
+            alt={slides[currentSlide].text}
+            style={{ width: "80%", height: "auto" }}
+          />
+          <div className="text">{slides[currentSlide].text}</div>
+        </div>
+        <div className="navigation">
+          <span className="prev" onClick={prevSlide}>
+            &lt;
+          </span>
+          <span className="next" onClick={nextSlide}>
+            &gt;
+          </span>
+        </div>
+      </div>
+    );
+  };
+  
+  export default SlideShow;
+import React, { useState } from "react";
+import { FaInfoCircle, FaEnvelope, FaUser } from "react-icons/fa";
+import "../css/Topbar.css"; // Ensure this path is correct
+import LoginSignupPage from "./LoginSignupPage"; // Import the LoginSignup page
+
+const Topbar: React.FC = () => {
+  const [showLoginPage, setShowLoginPage] = useState(false);
+
+  const toggleLoginPage = () => {
+    setShowLoginPage(!showLoginPage); // Toggle visibility of the login/signup page
+  };
+
+  return (
+    <div>
+      {/* Topbar */}
+      <div className="topbar">
+        <ul className="topbar-menu">
+          <li>
+            <FaInfoCircle className="icon" /> About Us
+          </li>
+          <li>
+            <FaEnvelope className="icon" /> Contact Us
+          </li>
+          <li onClick={toggleLoginPage}>
+            <FaUser className="icon" /> Sign In/Sign Up
+          </li>
+        </ul>
+      </div>
+
+      {/* Render the LoginSignupPage directly below the topbar when clicked */}
+      {showLoginPage && (
+        <div className="login-signup-wrapper">
+          <LoginSignupPage onClose={toggleLoginPage} /> {/* Pass onClose to LoginSignupPage */}
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default Topbar;
+explain
