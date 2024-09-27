@@ -39,3 +39,17 @@
 .topbar-menu li:hover .icon {
     color: #1abc9c; /* Change icon color on hover */
 }
+/* Styles for login/signup wrapper */
+.login-signup-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.886); /* Dark overlay */
+    width: 100%; /* Full width */
+    height: 100vh; /* Full height of the viewport */
+    position: fixed; /* Fix to cover the entire viewport */
+    top: 0; /* Position at the top */
+    left: 0; /* Position at the left */
+    z-index: 1000; /* Ensure it appears above other content */
+}
+

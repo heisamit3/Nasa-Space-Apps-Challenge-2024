@@ -1,0 +1,86 @@
+/* General Styles for Container */
+.container {
+    position: relative;
+    width: 300px; /* Keep the container small */
+    margin: 50px auto; /* Center the container */
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    text-align: center;
+    background-color: rgba(249, 249, 249, 0.792); /* Slightly transparent background */
+}
+
+/* Header Styles */
+.header {
+    margin-bottom: 20px;
+}
+
+.header .icon {
+    font-size: 2rem;
+}
+
+/* Form Styles */
+.form {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+}
+
+.btn {
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background-color: #0056b3;
+}
+
+/* Footer Styles */
+.footer {
+    margin-top: 15px;
+}
+
+.toggle-link {
+    color: #007bff;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.toggle-link:hover {
+    text-decoration: underline;
+}
+
+/* LoginSignupPage.css */
+/* Close button styling */
+.close-icon {
+    position: absolute; /* Place the icon at the absolute top-right of the container */
+    top: 10px; /* Adjust to position closer to the top */
+    right: 10px; /* Adjust to position closer to the right */
+    cursor: pointer;
+    font-size: 1.5rem;
+    color: #2b0505af; /* Change color for visibility */
+  }
+  
+  .close-icon:hover {
+    color: red; /* Change color on hover */
+  }
+/* Other styles remain unchanged */

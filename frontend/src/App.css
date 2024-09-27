@@ -21,6 +21,7 @@
 }
 
 .content-area {
+  color: white ;
   padding: 2rem;
   flex-grow: 1; /* Allow content area to grow within main-content */
 }
