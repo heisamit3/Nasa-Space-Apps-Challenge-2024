@@ -1,9 +1,10 @@
 /* General Styles for Container */
 .container {
     position: relative;
-    width: 300px; /* Keep the container small */
-    margin: 50px auto; /* Center the container */
-    padding: 20px;
+    width: 300px; /* Keep the container small */    
+    height: auto;
+    /* margin: 50px auto; Center the container */
+    /* padding: 20px; */
     border: 1px solid #ccc;
     border-radius: 10px;
     text-align: center;
