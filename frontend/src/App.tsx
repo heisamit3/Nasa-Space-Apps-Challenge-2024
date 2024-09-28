@@ -1,28 +1,23 @@
 import React from "react";
-import "./App.css";
-import backgroundImage from "../images/frontimage.jpg";
-import Sidebar from "../components/Sidebar";
-import Topbar from "../components/Topbar";
-import SlideShow from "../components/SlideShow";
-import MessageForm from "../components/MessageForm"; // Import MessageForm
-
+import "./App.css"; // Import the CSS file
+// import backgroundImage from "../images/frontimage.jpg"; // Background image import
+import Sidebar from "../components/Sidebar"; // Sidebar component
+import Topbar from "../components/Topbar"; // Topbar component
+import MessageForm from "../components/MessageForm";
 const App: React.FC = () => {
   return (
     <div
-      className="background"
-      style={{ backgroundImage: `url(${backgroundImage})` }}
+      className="app-container"
+      // style={{ backgroundImage: `url(${backgroundImage})` }}
     >
-      <Sidebar />
+      <Sidebar /> {/* Sidebar remains the same */}
       <div className="main-content">
-        <Topbar />
+        <Topbar /> {/* Topbar component */}
         <div className="content-area">
-          <h2>Welcome to SunClimate Chronicles</h2>
+          <h1>Welcome to SunClimate Chronicles</h1>
           <p>An all-in-one app to understand climate change</p>
-
-          {/* Integrating the MessageForm component here */}
+          <h2>See what you can do..</h2>
           <MessageForm />
-
-          <SlideShow />
         </div>
       </div>
     </div>

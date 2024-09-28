@@ -1,55 +1,126 @@
+/* Topbar styling */
 .topbar {
-    background-color: rgb(0, 0, 0); /* Dark background for the topbar */
+    /* background-color: rgba(51, 51, 51, 0.8); Transparent topbar background */
     color: white;
-    padding: 10px 20px; /* Padding around the topbar */
-    display: flex; /* Use flexbox for layout */
-    justify-content: flex-end; /* Align items to the right */
+    padding: 10px 20px;
+    display: flex;
+    justify-content: flex-end;
+    background: black;
+  }
+  
+  .topbar-menu {
+    list-style-type: none;
+    padding: 0;
+    display: flex;
+  }
+  
+  .topbar-menu li {
+    margin-left: 20px;
+    cursor: pointer;
+  }
+  
+  .topbar-menu li:hover {
+    color: #1abc9c;
+  }
+  .sidebar {
+    width: 250px; /* Reduced width for a more compact look */
+    color: white;
+    padding: 10px; /* Increased padding for better spacing */
+    display: flex;
+    flex-direction: column;
+    background-color: black;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5); /* Optional: Add a shadow for depth */
 }
 
-.topbar-menu {
-    list-style-type: none; /* Remove default list styling */
-    padding: 0; /* Remove default padding */
-    display: flex; /* Use flexbox for menu items */
+.logo {
+    margin-bottom: 20px; /* Increased margin for better separation */
+    text-align: center;
 }
 
-.topbar-menu li {
-    margin-left: 20px; /* Add space between menu items */
-    cursor: pointer; /* Change cursor to pointer on hover */
-    transition: color 0.3s; /* Smooth transition for color change */
-    display: flex; /* Align icon and text */
-    align-items: center; /* Center items vertically */
+.logo-image {
+    width: 100%; /* Adjusts to the width of the sidebar */
+    height: auto; /* Maintain aspect ratio */
+    max-width: 100%; /* Limit max width to the sidebar */
 }
-
-.topbar-menu li:hover {
-    color: #1abc9c; /* Change color on hover */
-}
-
-
-.topbar-menu li:not(:first-child) {
-    margin-left: 30px; 
-}
-
-
 .icon {
-    margin-right: 5px;
-    font-size: 20px;
-    transition: color 0.3s; 
+    margin-right: 5px; /* Space between icon and text */
+    font-size: 1.2rem; /* Increase icon size for emphasis */
 }
 
-.topbar-menu li:hover .icon {
-    color: #1abc9c; /* Change icon color on hover */
-}
-/* Styles for login/signup wrapper */
-.login-signup-wrapper {
+/* Modal styling */
+.login-modal {
+    position: fixed; /* Cover the entire screen */
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5); /* Dimmed background to focus on modal */
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: rgba(0, 0, 0, 0.886); /* Dark overlay */
-    width: 100%; /* Full width */
-    height: 100vh; /* Full height of the viewport */
-    position: fixed; /* Fix to cover the entire viewport */
-    top: 0; /* Position at the top */
-    left: 0; /* Position at the left */
-    z-index: 1000; /* Ensure it appears above other content */
+    z-index: 1000; /* Above other elements */
 }
 
+/* Modal content box */
+.modal-content {
+    background-color: #fff; /* White background for modal */
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 400px;
+    width: 100%;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2); /* Add shadow for depth */
+    text-align: center; /* Center the text inside modal */
+}
+
+/* Modal heading */
+.modal-content h2 {
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+    color: #333;
+}
+
+/* Modal close button */
+.modal-close {
+    cursor: pointer;
+    color: #333;
+    font-size: 1.5rem;
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-weight: bold;
+    transition: color 0.3s ease; /* Smooth transition for hover */
+}
+
+.modal-close:hover {
+    color: #1abc9c; /* Hover color for close button */
+}
+
+/* Modal form styling */
+.modal-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Spacing between form elements */
+}
+
+.modal-form input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+    width: 100%;
+}
+
+.modal-form button {
+    padding: 10px;
+    background-color: #1abc9c; /* Primary button color */
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.modal-form button:hover {
+    background-color: #16a085; /* Slightly darker on hover */
+}

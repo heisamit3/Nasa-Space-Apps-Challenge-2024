@@ -1,14 +1,12 @@
 /* General Styles for Container */
 .container {
     position: relative;
-    width: 300px; /* Keep the container small */    
-    height: auto;
-    /* margin: 50px auto; Center the container */
-    /* padding: 20px; */
-    border: 1px solid #ccc;
-    border-radius: 10px;
+    width: 350px; /* Increased width for a richer layout */
+    padding: 20px; /* Added padding for spacing */
+    border-radius: 15px; /* Rounded corners */
     text-align: center;
-    background-color: rgba(249, 249, 249, 0.792); /* Slightly transparent background */
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(220, 220, 220, 0.7)); /* Gradient background */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* Shadow effect */
 }
 
 /* Header Styles */
@@ -17,7 +15,8 @@
 }
 
 .header .icon {
-    font-size: 2rem;
+    font-size: 2.5rem; /* Increased icon size */
+    color: #007bff; /* Color for the icon */
 }
 
 /* Form Styles */
@@ -38,17 +37,25 @@
 
 .form-group input {
     width: 100%;
-    padding: 8px;
-    box-sizing: border-box;
+    padding: 10px; /* Increased padding for inputs */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    transition: border-color 0.3s; /* Transition for input focus */
+}
+
+.form-group input:focus {
+    border-color: #007bff; /* Border color on focus */
+    outline: none; /* Remove outline */
 }
 
 .btn {
-    padding: 10px;
+    padding: 12px; /* Increased button padding */
     background-color: #007bff;
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    transition: background-color 0.3s; /* Transition for button hover */
 }
 
 .btn:hover {
@@ -70,18 +77,16 @@
     text-decoration: underline;
 }
 
-/* LoginSignupPage.css */
 /* Close button styling */
 .close-icon {
     position: absolute; /* Place the icon at the absolute top-right of the container */
-    top: 10px; /* Adjust to position closer to the top */
-    right: 10px; /* Adjust to position closer to the right */
+    top: 15px; /* Adjust to position closer to the top */
+    right: 15px; /* Adjust to position closer to the right */
     cursor: pointer;
     font-size: 1.5rem;
     color: #2b0505af; /* Change color for visibility */
-  }
-  
-  .close-icon:hover {
+}
+
+.close-icon:hover {
     color: red; /* Change color on hover */
-  }
-/* Other styles remain unchanged */
+}
