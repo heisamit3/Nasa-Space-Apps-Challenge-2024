@@ -6,5 +6,6 @@ from rest_framework import status
 def message_view(request):
     if request.method == 'POST':
         message = request.data.get('message', '')
+        print(message)
         return Response({"message": f"Received: {message}"}, status=status.HTTP_201_CREATED)
     return Response({"message": "Welcome to the API!"}, status=status.HTTP_200_OK)
