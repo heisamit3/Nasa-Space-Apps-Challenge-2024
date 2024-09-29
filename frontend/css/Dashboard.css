@@ -6,4 +6,32 @@
     width: 700px;      /* Set the width to 700 pixels */
     margin: 0 auto;    /* Center the graph horizontally */
   }
+
+  .button-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    margin: 20px 0;
+  }
+  
+  .button {
+    background-color: rgba(0, 0, 0, 0.7); /* Background color */
+    color: #f6b93c; /* Text color */
+    border-radius: 10px; /* Rounded corners */
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.2s;
+  }
+  
+  .button:hover {
+    transform: scale(1.05); /* Scale effect on hover */
+  }
+  
+  .button h3 {
+    margin: 0; /* Remove default margin */
+    font-size: 18px; /* Font size for button text */
+    line-height: 1.5; /* Spacing between lines */
+  }
+  
   

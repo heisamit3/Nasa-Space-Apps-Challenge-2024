@@ -29,6 +29,9 @@ const LoginSignupPage: React.FC<LoginSignupPageProps> = ({ onClose, setIsLoggedI
 
       // Set isLoggedIn to true
       setIsLoggedIn(true);
+
+      localStorage.setItem("isLoggedIn", "true");
+      
       onClose();
       navigate("/dashboard");
     } else {

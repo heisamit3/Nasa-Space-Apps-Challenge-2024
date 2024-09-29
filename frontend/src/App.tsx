@@ -10,6 +10,10 @@ import Home from "../components/Home";
 import Dashboard from "../components/Dashboard";
 import Footer from "../components/Footer";
 import Character from "../components/Character";
+import EducationalResources from "../components/EducationalResources";
+import GlobalData from "../components/GlobalData";
+import SectorsResponsible from "../components/SectorsResponsible";
+import MyArea from "../components/MyArea";
 
 
 const App: React.FC = () => {
@@ -35,6 +39,10 @@ const App: React.FC = () => {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+            <Route path="/global-data" element={<GlobalData />} />
+            <Route path="/educational-resources" element={<EducationalResources />} />
+            <Route path="/sectors-responsible" element={<SectorsResponsible />} />
+            <Route path="/my-area" element={<ProtectedRoute><MyArea/></ProtectedRoute>} />
           </Routes>
 
           <Character currentPath={window.location.pathname} /> 

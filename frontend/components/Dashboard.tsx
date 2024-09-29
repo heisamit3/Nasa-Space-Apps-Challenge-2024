@@ -3,10 +3,20 @@ import { Line } from 'react-chartjs-2';
 import { Chart, registerables } from 'chart.js';
 import 'leaflet/dist/leaflet.css'; 
 import '../css/Dashboard.css'; 
+import { useNavigate } from 'react-router-dom'; // Import useNavigate for navigation
 
 Chart.register(...registerables);
+//make dashboard props of isLoggedIn
+
+// Dashboard component
+
+
+
+
 
 const Dashboard: React.FC = () => {
+  const navigate = useNavigate(); // Initialize useNavigate for navigation
+
   // CO2 data from 2000 to 2023
   const co2Data = {
     labels: [
@@ -34,7 +44,7 @@ const Dashboard: React.FC = () => {
           14.5, 14.6, 14.7, 14.8, 14.9, 15.0, 15.1, 15.2,
           15.3, 15.4, 15.5, 15.6, 15.7, 15.8, 15.9, 16.0,
           16.1, 16.2, 16.3, 16.4, 16.5, 16.6, 16.7
-        ], // Sample data for heat rise from 2000 to 2023
+        ],
         borderColor: 'rgba(255, 99, 132, 1)',
         backgroundColor: 'rgba(255, 99, 132, 0.2)',
         fill: true,
@@ -43,14 +53,37 @@ const Dashboard: React.FC = () => {
     ],
   };
 
+  // Function to handle button clicks
+  const handleButtonClick = (path: string) => {
+    navigate(path); // Redirect to the specified path
+  };
+
   return (
+
     <div className="dashboard">
       <h1>Climate Change Dashboard</h1>
-      
+
       <div className="graph-container">
         <h2>CO2 Levels and Heat Rise (2000 - 2023)</h2>
         <Line data={co2Data} options={{ responsive: true }} />
       </div>
+      
+      <div className="button-container">
+        <div className="button" onClick={() => handleButtonClick('/my-area')}>
+          <h3>My Area</h3>
+        </div>
+        <div className="button" onClick={() => handleButtonClick('/global-data')}>
+          <h3>Global Data</h3>
+        </div>
+        <div className="button" onClick={() => handleButtonClick('/educational-resources')}>
+          <h3>Educational Resources</h3>
+        </div>
+        <div className="button" onClick={() => handleButtonClick('/sectors-responsible')}>
+          <h3>Sectors Responsible</h3>
+        </div>
+      </div>
+
+      
     </div>
   );
 };
