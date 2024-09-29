@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { FaInfoCircle, FaEnvelope, FaUser } from "react-icons/fa"; // Importing icons
 import "../css/Topbar.css"; // Topbar CSS
 import LoginSignupPage from "./LoginSignupPage"; // Importing LoginSignupPage component
-import logo from "../images/Untitled.png"; // Adjust the path to your logo image
+import logo from "../images/logo1.png"; // Adjust the path to your logo image
 import { useNavigate } from "react-router-dom"; // Import useNavigate
 
 interface TopbarProps {
@@ -13,7 +13,6 @@ interface TopbarProps {
 const Topbar: React.FC<TopbarProps> = ({ isLoggedIn, setIsLoggedIn }) => {
   const [showLoginModal, setShowLoginModal] = useState(false);
   const navigate = useNavigate(); // Hook for navigation
-  
 
   const handleLoginClick = () => {
     setShowLoginModal(true);
@@ -51,20 +50,23 @@ const Topbar: React.FC<TopbarProps> = ({ isLoggedIn, setIsLoggedIn }) => {
           <li>
             <FaEnvelope className="icon" /> Contact Us
           </li>
-            {isLoggedIn ? (
+          {isLoggedIn ? (
             <li onClick={handleUserClick}>
               <FaUser className="icon" /> My Account
             </li>
-            ) : (
+          ) : (
             <li onClick={handleLoginClick}>
               <FaUser className="icon" /> Sign In/Sign Up
             </li>
-            )}
+          )}
         </ul>
       </div>
       {showLoginModal && (
         <div className="login-modal">
-          <LoginSignupPage onClose={handleCloseModal} setIsLoggedIn={setIsLoggedIn} />
+          <LoginSignupPage
+            onClose={handleCloseModal}
+            setIsLoggedIn={setIsLoggedIn}
+          />
         </div>
       )}
     </>

@@ -1,58 +1,60 @@
-/* Topbar styling */
+/* Ensure the body and HTML elements start at the very top */
+body, html {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    height: 100%;
+}
+
+/* Modify topbar with a lighter background */
 .topbar {
-    /* background-color: rgba(51, 51, 51, 0.8); Transparent topbar background */
     top: 0;
+    left: 0;
+    right: 0;
+    width: 100%; /* Ensure topbar fills the entire width */
+    height: 50px; /* Adjust height as desired */
     color: white;
-    padding: 10px 20px;
+    padding: 20px;
     display: flex;
-    justify-content: flex-end;
-    background: black;
+    justify-content: space-between; /* Space between logo and menu */
+    align-items: center; /* Vertically center content */
+    background: #1A1919; /* Lighter shade of black (dark gray) */
     position: sticky;
-    z-index: 100; /* Ensure topbar is above other elements */
-  }
-  
-  .topbar-menu {
+    z-index: 100; /* Ensure topbar stays above other elements */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional: add a subtle shadow */
+}
+
+/* Adjust logo size and alignment */
+.logo-image {
+    width: 210px; /* Adjust the size of the logo */
+    height: auto; /* Keep aspect ratio */
+    margin: 0; /* Remove any extra margin */
+    padding: 0; /* Ensure no padding */
+}
+
+/* Topbar menu styling */
+.topbar-menu {
     list-style-type: none;
     padding: 0;
+    margin: 0;
     display: flex;
-  }
-  
-  .topbar-menu li {
+    align-items: center; /* Vertically center the menu items */
+}
+
+.topbar-menu li {
     margin-left: 20px;
     cursor: pointer;
-  }
-  
-  .topbar-menu li:hover {
-    color: #1abc9c;
-  }
-  .sidebar {
-    width: 250px; /* Reduced width for a more compact look */
-    color: white;
-    padding: 10px; /* Increased padding for better spacing */
-    display: flex;
-    flex-direction: column;
-    background-color: black;
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5); /* Optional: Add a shadow for depth */
 }
 
-.logo {
-    margin-bottom: 20px; /* Increased margin for better separation */
-    text-align: center;
+.topbar-menu li:hover {
+    color: #bf5108; /* Change color on hover */
 }
 
-.logo-image {
-    width: 100px; /* Adjust the logo size */
-    height: auto; /* Maintain aspect ratio */
-    position: absolute;
-    left: 20px;
-    
-}
-.icon {
-    margin-right: 5px; /* Space between icon and text */
-    font-size: 1.2rem; /* Increase icon size for emphasis */
-}
+    .icon {
+        margin-right: 0.3em; /* Adjusted margin-right to a relative unit (em) */
+        font-size: 1.2rem; /* Keep the rem unit for scalability */
+    }/* Increase icon size for emphasis */
 
-/* Modal styling */
 .login-modal {
     position: fixed; /* Cover the entire screen */
     top: 0;
@@ -66,66 +68,3 @@
     z-index: 1000; /* Above other elements */
 }
 
-/* Modal content box */
-.modal-content {
-    background-color: #fff; /* White background for modal */
-    padding: 20px;
-    border-radius: 10px;
-    max-width: 400px;
-    width: 100%;
-    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2); /* Add shadow for depth */
-    text-align: center; /* Center the text inside modal */
-}
-
-/* Modal heading */
-.modal-content h2 {
-    margin-bottom: 20px;
-    font-size: 1.5rem;
-    color: #333;
-}
-
-/* Modal close button */
-.modal-close {
-    cursor: pointer;
-    color: #333;
-    font-size: 1.5rem;
-    position: absolute;
-    top: 15px;
-    right: 20px;
-    font-weight: bold;
-    transition: color 0.3s ease; /* Smooth transition for hover */
-}
-
-.modal-close:hover {
-    color: #1abc9c; /* Hover color for close button */
-}
-
-/* Modal form styling */
-.modal-form {
-    display: flex;
-    flex-direction: column;
-    gap: 15px; /* Spacing between form elements */
-}
-
-.modal-form input {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 1rem;
-    width: 100%;
-}
-
-.modal-form button {
-    padding: 10px;
-    background-color: #1abc9c; /* Primary button color */
-    border: none;
-    border-radius: 5px;
-    color: white;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.modal-form button:hover {
-    background-color: #16a085; /* Slightly darker on hover */
-}

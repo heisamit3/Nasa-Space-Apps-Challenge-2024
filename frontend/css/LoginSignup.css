@@ -1,27 +1,22 @@
-/* General Styles for Container */
-/* General Styles for Container */
+/* Container Styles */
 .container {
     position: relative;
-    width: 350px; /* Increased width for a richer layout */
-    padding: 20px; /* Added padding for spacing */
-    border-radius: 15px; /* Rounded corners */
+    width: 22rem; /* Use rem units for width */
+    padding: 1.25rem; /* Padding in rem */
+    border-radius: 1rem; /* Rounded corners */
     text-align: center;
-    background: linear-gradient(135deg, #003238, #99d4c6); /* Solid gradient colors without transparency */
-    /* Alternatively, use a solid color */
-    /* background-color: #f9f9f9; /* Solid light gray background */
-    /* background-color: #ffffff;  /* Solid white background */
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* Shadow effect */
+    background: linear-gradient(135deg, #1A1919, #99d4c6); /* Adjusted gradient for consistency */
+    box-shadow: 0 0.25rem 1.25rem rgba(0, 0, 0, 0.2); /* Shadow effect in rem */
 }
-
 
 /* Header Styles */
 .header {
-    margin-bottom: 20px;
+    margin-bottom: 1.25rem; /* Margin in rem */
 }
 
 .header .icon {
-    font-size: 2.5rem; /* Increased icon size */
-    color: #007bff; /* Color for the icon */
+    font-size: 2rem; /* Adjusted icon size */
+    color: #bf5108; /* Consistent icon color from topbar hover */
 }
 
 /* Form Styles */
@@ -31,49 +26,51 @@
 }
 
 .form-group {
-    margin-bottom: 15px;
+    margin-bottom: 1rem; /* Margin in rem */
 }
 
 .form-group label {
     display: block;
-    margin-bottom: 5px;
+    margin-bottom: 0.5rem;
     font-weight: bold;
+    color: white; /* Consistent text color */
 }
 
 .form-group input {
     width: 80%;
-    padding: 10px; /* Increased padding for inputs */
+    padding: 0.75rem; /* Padding in rem */
     border: 1px solid #ccc;
-    border-radius: 5px;
+    border-radius: 0.5rem; /* Adjusted border-radius */
     transition: border-color 0.3s; /* Transition for input focus */
 }
 
 .form-group input:focus {
-    border-color: #007bff; /* Border color on focus */
+    border-color: #bf5108; /* Consistent border color on focus */
     outline: none; /* Remove outline */
 }
 
+/* Button Styles */
 .btn {
-    padding: 12px; /* Increased button padding */
-    background-color: #007bff;
+    padding: 0.75rem; /* Button padding in rem */
+    background-color: #bf5108; /* Consistent button background color */
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 0.5rem; /* Rounded corners */
     cursor: pointer;
     transition: background-color 0.3s; /* Transition for button hover */
 }
 
 .btn:hover {
-    background-color: #0056b3;
+    background-color: #bf3e05; /* Darken color on hover */
 }
 
 /* Footer Styles */
 .footer-login {
-    margin-top: 15px;
+    margin-top: 1rem; /* Margin in rem */
 }
 
 .toggle-link {
-    color: #007bff;
+    color: #bf5108; /* Consistent link color */
     cursor: pointer;
     font-weight: bold;
 }
@@ -84,12 +81,12 @@
 
 /* Close button styling */
 .close-icon {
-    position: absolute; /* Place the icon at the absolute top-right of the container */
-    top: 15px; /* Adjust to position closer to the top */
-    right: 15px; /* Adjust to position closer to the right */
+    position: absolute;
+    top: 1rem; /* Adjust to position closer to the top */
+    right: 1rem; /* Adjust to position closer to the right */
     cursor: pointer;
-    font-size: 1.5rem;
-    color: #2b0505af; /* Change color for visibility */
+    font-size: 1.5rem; /* Font size in rem */
+    color: #bf5108; /* Consistent close icon color */
 }
 
 .close-icon:hover {
