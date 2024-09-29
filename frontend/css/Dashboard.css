@@ -1,0 +1,9 @@
+.dashboard {
+    padding: 20px;
+  }
+  
+  .graph-container {
+    width: 700px;      /* Set the width to 700 pixels */
+    margin: 0 auto;    /* Center the graph horizontally */
+  }
+  

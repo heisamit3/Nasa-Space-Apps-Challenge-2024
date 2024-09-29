@@ -1,13 +1,18 @@
 /* General Styles for Container */
+/* General Styles for Container */
 .container {
     position: relative;
     width: 350px; /* Increased width for a richer layout */
     padding: 20px; /* Added padding for spacing */
     border-radius: 15px; /* Rounded corners */
     text-align: center;
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(220, 220, 220, 0.7)); /* Gradient background */
+    background: linear-gradient(135deg, #003238, #99d4c6); /* Solid gradient colors without transparency */
+    /* Alternatively, use a solid color */
+    /* background-color: #f9f9f9; /* Solid light gray background */
+    /* background-color: #ffffff;  /* Solid white background */
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* Shadow effect */
 }
+
 
 /* Header Styles */
 .header {
@@ -36,7 +41,7 @@
 }
 
 .form-group input {
-    width: 100%;
+    width: 80%;
     padding: 10px; /* Increased padding for inputs */
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -63,7 +68,7 @@
 }
 
 /* Footer Styles */
-.footer {
+.footer-login {
     margin-top: 15px;
 }
 

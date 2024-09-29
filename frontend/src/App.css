@@ -6,6 +6,7 @@
   background-size: cover; /* Ensures image covers the full area */
   background-position: center; /* Centers the image */
   background-repeat: no-repeat;
+  overflow-x: hidden; /* Prevent horizontal scrolling */
 }
 
 /* Main content area next to the sidebar */

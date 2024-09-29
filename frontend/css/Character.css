@@ -1,0 +1,41 @@
+.character-container {
+    position: fixed;
+    bottom: 20px; /* Adjust position */
+    left: 20px; /* Adjust position */
+    z-index: 1000;
+}
+
+.character-image {
+    width: 250px; /* Adjust size: Increase from 100px to 150px */ /* RED MARK */
+    animation: move 1s infinite alternate;
+}
+
+@keyframes move {
+    from {
+        transform: translateY(0);
+    }
+    to {
+        transform: translateY(-10px);
+    }
+}
+
+/* Remove the speech bubble */
+.speech-bubble {
+    display: none; /* Hide the speech bubble */ /* RED MARK */
+}
+
+.enable-voice-button, .play-button {
+    margin: 10px;
+    padding: 8px 12px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .play-button {
+    position: absolute;
+    left: 0px; /* Adjust based on your layout */
+  }
+  

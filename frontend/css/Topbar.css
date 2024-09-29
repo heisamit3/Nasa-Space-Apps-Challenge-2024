@@ -1,11 +1,14 @@
 /* Topbar styling */
 .topbar {
     /* background-color: rgba(51, 51, 51, 0.8); Transparent topbar background */
+    top: 0;
     color: white;
     padding: 10px 20px;
     display: flex;
     justify-content: flex-end;
     background: black;
+    position: sticky;
+    z-index: 100; /* Ensure topbar is above other elements */
   }
   
   .topbar-menu {
@@ -38,9 +41,11 @@
 }
 
 .logo-image {
-    width: 100%; /* Adjusts to the width of the sidebar */
+    width: 100px; /* Adjust the logo size */
     height: auto; /* Maintain aspect ratio */
-    max-width: 100%; /* Limit max width to the sidebar */
+    position: absolute;
+    left: 20px;
+    
 }
 .icon {
     margin-right: 5px; /* Space between icon and text */
