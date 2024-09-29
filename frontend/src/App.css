@@ -3,7 +3,8 @@
   display: flex;
   height: 100vh;
   width: 100vw;
-  background-size: cover; /* Ensures image covers the full area */
+  background-color: black; /* Set background color to black */
+  background-size: cover; /* Ensures image (if any) covers the full area */
   background-position: center; /* Centers the image */
   background-repeat: no-repeat;
   overflow-x: hidden; /* Prevent horizontal scrolling */
@@ -15,11 +16,12 @@
   display: flex;
   flex-direction: column;
   padding: 20px;
+  background-color: black; /* Ensure the main content area also has a black background */
 }
 
 /* Content area below the topbar */
 .content-area {
-  color: white;
+  color: white; /* Text color white for contrast against black background */
   text-align: center;
 }
 
@@ -27,12 +29,15 @@
 h1 {
   font-size: 2.5rem;
   margin-bottom: 20px;
+  color: white; /* Ensure heading text is white */
 }
 
 h2 {
   font-size: 2rem;
+  color: white; /* Ensure subheading text is white */
 }
 
 p {
   font-size: 1.2rem;
+  color: white; /* Ensure paragraph text is white */
 }
