@@ -1,9 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css"; // Import the CSS file
+// import backgroundImage from "../images/frontimage.jpg"; // Background image import
 import Sidebar from "../components/Sidebar"; // Sidebar component
 import Topbar from "../components/Topbar"; // Topbar component
-import MessageForm from "../components/MessageForm";
-import SpinningEarth from "../components/SpinningEarth"; // SpinningEarth component
 import {
   BrowserRouter as Router,
   Routes,
@@ -18,11 +17,18 @@ import EducationalResources from "../components/EducationalResources";
 import GlobalData from "../components/GlobalData";
 import SectorsResponsible from "../components/SectorsResponsible";
 import MyArea from "../components/MyArea";
-import AboutUs from "../components/AboutUs"; // Import AboutUs component
-import ContactUs from "../components/ContactUs"; // Import ContactUs component
 
 const App: React.FC = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  // Initialize the login state from localStorage, defaulting to false if not found
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(() => {
+    const savedLoginStatus = localStorage.getItem("isLoggedIn");
+    return savedLoginStatus === "true"; // Returns true if 'isLoggedIn' in localStorage is "true", otherwise false
+  });
+
+  // Effect to update localStorage whenever the login state changes
+  useEffect(() => {
+    localStorage.setItem("isLoggedIn", isLoggedIn.toString());
+  }, [isLoggedIn]);
 
   const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
     if (!isLoggedIn) {
@@ -35,9 +41,12 @@ const App: React.FC = () => {
 
   return (
     <Router>
-      <div className="app-container">
+      <div
+        className="app-container"
+        // style={{ backgroundImage: `url(${backgroundImage})` }}
+      >
         <div className="main-content">
-          <Topbar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
+          <Topbar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />{" "}
           {/* Topbar component */}
           <Routes>
             <Route path="/" element={<Home />} />
@@ -52,7 +61,7 @@ const App: React.FC = () => {
             <Route path="/global-data" element={<GlobalData />} />
             <Route
               path="/educational-resources"
-              element={<EducationalResources />} // Add route for Educational Resources page
+              element={<EducationalResources />}
             />
             <Route
               path="/sectors-responsible"
@@ -66,10 +75,6 @@ const App: React.FC = () => {
                 </ProtectedRoute>
               }
             />
-            <Route path="/about-us" element={<AboutUs />} />
-            {/* Route for About Us */}
-            <Route path="/contact-us" element={<ContactUs />} />
-            {/* Route for Contact Us */}
           </Routes>
           <Character currentPath={window.location.pathname} />
           <Footer /> {/* Footer component */}
