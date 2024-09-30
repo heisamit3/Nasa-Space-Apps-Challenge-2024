@@ -1,46 +1,70 @@
 import React, { useState } from "react";
-import { FaUser, FaTimes } from "react-icons/fa"; // Import close icon
-import "../css/LoginSignup.css"; // Import your CSS here
+import { FaUser, FaTimes } from "react-icons/fa";
+import "../css/LoginSignup.css";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 interface LoginSignupPageProps {
   onClose: () => void;
-  setIsLoggedIn: (loggedIn: boolean) => void; // Add setIsLoggedIn prop
+  setIsLoggedIn: (loggedIn: boolean) => void;
 }
 
-const LoginSignupPage: React.FC<LoginSignupPageProps> = ({ onClose, setIsLoggedIn }) => {
+const LoginSignupPage: React.FC<LoginSignupPageProps> = ({
+  onClose,
+  setIsLoggedIn,
+}) => {
   const [isLogin, setIsLogin] = useState(true);
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [retypePassword, setRetypePassword] = useState("");
+  const [useEmail, setUseEmail] = useState(true); // We can keep this for toggling, but only use email in requests
   const navigate = useNavigate();
 
   const toggleMode = () => {
     setIsLogin(!isLogin);
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (isLogin) {
-      // Handle login logic here
-      console.log("Logging in with:", {
-        email: event.currentTarget.email.value,
-        password,
-      });
 
-      // Set isLoggedIn to true
-      setIsLoggedIn(true);
-      onClose();
-      navigate("/dashboard");
-    } else {
-      // Handle signup logic here
-      if (password === retypePassword) {
-        console.log("Signing up with:", {
-          email: event.currentTarget.email.value,
-          password,
-        });
+    try {
+      const data = { email, password }; // Payload for login/signup
+
+      if (isLogin) {
+        // Handle login logic
+        const response = await axios.post(
+          `http://localhost:8000/api/login/`,
+          data
+        );
+        console.log(response.data.message); // Log success message
+        setIsLoggedIn(true);
+        localStorage.setItem("isLoggedIn", "true");
+        onClose();
+        navigate("/dashboard");
       } else {
-        alert("Passwords do not match!");
+        // Handle signup logic
+        if (password === retypePassword) {
+          const signupData = {
+            email,
+            password,
+            confirm_password: retypePassword,
+          }; // Ensure you match the backend expected format
+          const response = await axios.post(
+            `http://localhost:8000/api/signup/`,
+            signupData
+          );
+          console.log(response.data.message); // Log success message
+          setIsLoggedIn(true);
+          localStorage.setItem("isLoggedIn", "true");
+          onClose();
+          navigate("/dashboard");
+        } else {
+          alert("Passwords do not match!");
+        }
       }
+    } catch (error) {
+      console.error("Error:", error);
+      alert("An error occurred. Please try again.");
     }
   };
 
@@ -59,6 +83,8 @@ const LoginSignupPage: React.FC<LoginSignupPageProps> = ({ onClose, setIsLoggedI
             type="email"
             id="email"
             placeholder="Enter your email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             required
           />
         </div>
@@ -76,19 +102,17 @@ const LoginSignupPage: React.FC<LoginSignupPageProps> = ({ onClose, setIsLoggedI
         </div>
 
         {!isLogin && (
-          <>
-            <div className="form-group">
-              <label htmlFor="retype-password">Retype Password</label>
-              <input
-                type="password"
-                id="retype-password"
-                placeholder="Retype your password"
-                value={retypePassword}
-                onChange={(e) => setRetypePassword(e.target.value)}
-                required
-              />
-            </div>
-          </>
+          <div className="form-group">
+            <label htmlFor="retype-password">Retype Password</label>
+            <input
+              type="password"
+              id="retype-password"
+              placeholder="Retype your password"
+              value={retypePassword}
+              onChange={(e) => setRetypePassword(e.target.value)}
+              required
+            />
+          </div>
         )}
 
         <button type="submit" className="btn">

@@ -1,9 +1,16 @@
 import React, { useState } from "react";
-import { FaInfoCircle, FaEnvelope, FaUser } from "react-icons/fa"; // Importing icons
+import {
+  FaInfoCircle,
+  FaEnvelope,
+  FaUser,
+  FaBars,
+  FaCog,
+  FaSignOutAlt,
+} from "react-icons/fa"; // Importing icons
 import "../css/Topbar.css"; // Topbar CSS
-import LoginSignupPage from "./LoginSignupPage"; // Importing LoginSignupPage component
-import logo from "../images/logo1.png"; // Adjust the path to your logo image
 import { useNavigate } from "react-router-dom"; // Import useNavigate
+import LoginSignupPage from "./LoginSignupPage"; // Import your login/signup component
+import Logo from "../images/logo1.png"; // Import your logo
 
 interface TopbarProps {
   isLoggedIn: boolean;
@@ -11,56 +18,81 @@ interface TopbarProps {
 }
 
 const Topbar: React.FC<TopbarProps> = ({ isLoggedIn, setIsLoggedIn }) => {
-  const [showLoginModal, setShowLoginModal] = useState(false);
+  const [showLoginModal, setShowLoginModal] = useState(false); // State to show/hide login modal
   const navigate = useNavigate(); // Hook for navigation
 
-  const handleLoginClick = () => {
-    setShowLoginModal(true);
-  };
-
-  const handleCloseModal = () => {
-    setShowLoginModal(false);
-  };
-
+  // Handle logo click navigation
   const handleLogoClick = () => {
     if (isLoggedIn) {
-      navigate("/dashboard");
+      navigate("/dashboard"); // Navigate to dashboard if logged in
     } else {
       navigate("/"); // Redirect to homepage if not logged in
     }
   };
 
-  const handleUserClick = () => {
-    navigate("/dashboard");
+  // Handle option clicks like login, logout, settings
+  const handleOptionClick = (option: string) => {
+    if (option === "login") {
+      setShowLoginModal(true); // Show the login/signup modal when "Login" is clicked
+    } else if (option === "logout") {
+      setIsLoggedIn(false); // Handle log out
+      localStorage.removeItem("isLoggedIn"); // Remove login state from localStorage
+      navigate("/"); // Redirect to homepage after logout
+    } else if (option === "settings") {
+      navigate("/settings"); // Navigate to the settings page
+    }
+  };
+
+  // Close the login modal
+  const handleCloseModal = () => {
+    setShowLoginModal(false); // Close modal
   };
 
   return (
     <>
       <div className="topbar">
+        {/* Logo */}
         <img
-          src={logo}
+          src={Logo}
           alt="Logo"
           className="logo-image"
-          onClick={handleLogoClick} // Add click event to logo
+          onClick={handleLogoClick}
         />
         <ul className="topbar-menu">
-          <li>
+          <li onClick={() => navigate("/about-us")}>
             <FaInfoCircle className="icon" /> About Us
           </li>
-          <li>
+          <li onClick={() => navigate("/contact-us")}>
             <FaEnvelope className="icon" /> Contact Us
           </li>
+
+          {/* Conditionally render menu options based on login state */}
           {isLoggedIn ? (
-            <li onClick={handleUserClick}>
-              <FaUser className="icon" /> My Account
-            </li>
+            <>
+              <li onClick={() => navigate("/dashboard")}>
+                <FaUser className="icon" /> My Account
+              </li>
+              <li onClick={() => handleOptionClick("settings")}>
+                <FaCog className="icon" /> Settings
+              </li>
+              <li onClick={() => handleOptionClick("logout")}>
+                <FaSignOutAlt className="icon" /> Log Out
+              </li>
+            </>
           ) : (
-            <li onClick={handleLoginClick}>
-              <FaUser className="icon" /> Sign In/Sign Up
-            </li>
+            <>
+              <li onClick={() => handleOptionClick("login")}>
+                <FaUser className="icon" /> Sign In/Sign Up
+              </li>
+              <li onClick={() => handleOptionClick("settings")}>
+                <FaCog className="icon" /> Settings
+              </li>
+            </>
           )}
         </ul>
       </div>
+
+      {/* Display the Login/Signup Modal */}
       {showLoginModal && (
         <div className="login-modal">
           <LoginSignupPage

@@ -1,0 +1,72 @@
+/* About Us Container */
+.about-us-container {
+    max-width: 900px; /* Increase width for more breathing space */
+    margin: 0 auto;
+    padding: 40px; /* Increased padding for better spacing */
+    background-color: #1a1919; /* Dark background for the theme */
+    color: #f4f4f4; /* Light text for readability */
+    border-radius: 12px; /* Rounded corners for modern design */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4); /* Subtle shadow for depth */
+    font-family: 'Arial', sans-serif; /* Clean sans-serif font */
+  }
+  
+  /* Main Heading (H1) */
+  .about-us-container h1 {
+    font-size: 2.8rem; /* Larger font size for emphasis */
+    margin-bottom: 2rem; /* Increase spacing between heading and content */
+    color: #ff9f1c; /* Yellowish-orange for contrast */
+    text-align: center; /* Center-align the main heading */
+    font-weight: bold; /* Bold for the main heading */
+  }
+  
+  /* Subheading (H2) */
+  .about-us-container h2 {
+    font-size: 2.2rem; /* Larger subheading */
+    margin-top: 2.5rem; /* More spacing above the subheading */
+    margin-bottom: 1rem; /* Consistent spacing below the subheading */
+    color: #ff9f1c; /* Use yellowish-orange for subheadings */
+    font-weight: 600; /* Slightly bold subheadings */
+  }
+  
+  /* Paragraph Text */
+  .about-us-container p {
+    font-size: 1.1rem; /* Standard font size for easy readability */
+    line-height: 1.8; /* Increased line-height for better spacing */
+    margin-bottom: 1.5rem; /* More space between paragraphs */
+    color: #e0e0e0; /* Light gray text for better contrast on the dark background */
+    text-align: justify; /* Justified text for a clean look */
+  }
+  
+  /* Emphasized Text (Strong) */
+  strong {
+    color: #ff9f1c; /* Yellowish-orange for emphasized text */
+    font-weight: 600; /* Make emphasized text a bit bolder */
+  }
+  
+  /* Optional: Add a subtle divider between sections */
+  .divider {
+    width: 100%;
+    height: 2px;
+    background-color: #333; /* Dark gray for subtle separation */
+    margin: 2rem 0;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .about-us-container {
+      padding: 20px; /* Reduce padding for smaller screens */
+    }
+  
+    .about-us-container h1 {
+      font-size: 2.2rem; /* Adjust heading size for mobile */
+    }
+  
+    .about-us-container h2 {
+      font-size: 1.8rem; /* Adjust subheading size for mobile */
+    }
+  
+    .about-us-container p {
+      font-size: 1rem; /* Adjust paragraph font size for readability */
+    }
+  }
+  

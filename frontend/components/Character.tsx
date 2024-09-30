@@ -39,7 +39,6 @@ const Character: React.FC<CharacterProps> = ({ currentPath }) => {
     setIsTalking(true); // Start talking
     speak(instructions[currentPath]); // Narrate the instruction based on the route
 
-    // Stop talking after a short delay
     const timer = setTimeout(() => {
       setIsTalking(false);
     }, 3000); // Duration should match the speech length
