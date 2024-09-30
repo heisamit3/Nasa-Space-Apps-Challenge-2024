@@ -5,7 +5,7 @@
     padding: 1.25rem; /* Padding in rem */
     border-radius: 1rem; /* Rounded corners */
     text-align: center;
-    background: linear-gradient(135deg, #1A1919, #99d4c6); /* Adjusted gradient for consistency */
+    background: linear-gradient(135deg, #1A1919, #000000); /* Adjusted gradient for consistency */
     box-shadow: 0 0.25rem 1.25rem rgba(0, 0, 0, 0.2); /* Shadow effect in rem */
 }
 
@@ -61,7 +61,7 @@
 }
 
 .btn:hover {
-    background-color: #bf3e05; /* Darken color on hover */
+    background-color: #bf5108; /* Darken color on hover */
 }
 
 /* Footer Styles */
@@ -90,5 +90,5 @@
 }
 
 .close-icon:hover {
-    color: red; /* Change color on hover */
+    color: #bf5108; /* Change color on hover */
 }

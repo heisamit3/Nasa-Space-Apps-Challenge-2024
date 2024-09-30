@@ -20,6 +20,7 @@ import SectorsResponsible from "../components/SectorsResponsible";
 import MyArea from "../components/MyArea";
 import AboutUs from "../components/AboutUs"; // Import AboutUs component
 import ContactUs from "../components/ContactUs"; // Import ContactUs component
+import AccountInfo from "../components/AccountInfo";
 
 const App: React.FC = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -69,6 +70,9 @@ const App: React.FC = () => {
             <Route path="/about-us" element={<AboutUs />} />
             {/* Route for About Us */}
             <Route path="/contact-us" element={<ContactUs />} />
+            {/* Route for Contact Us */}
+
+            <Route path="/account-info" element={<AccountInfo />} />
             {/* Route for Contact Us */}
           </Routes>
           <Character currentPath={window.location.pathname} />
