@@ -1,12 +1,5 @@
 import React, { useState } from "react";
-import {
-  FaInfoCircle,
-  FaEnvelope,
-  FaUser,
-  FaBars,
-  FaCog,
-  FaSignOutAlt,
-} from "react-icons/fa"; // Importing icons
+import { FaInfoCircle, FaEnvelope, FaUser, FaSignOutAlt } from "react-icons/fa"; // Importing icons
 import "../css/Topbar.css"; // Topbar CSS
 import { useNavigate } from "react-router-dom"; // Import useNavigate
 import LoginSignupPage from "./LoginSignupPage"; // Import your login/signup component
@@ -69,7 +62,7 @@ const Topbar: React.FC<TopbarProps> = ({ isLoggedIn, setIsLoggedIn }) => {
           {/* Conditionally render menu options based on login state */}
           {isLoggedIn ? (
             <>
-              <li onClick={() => navigate("/dashboard")}>
+              <li onClick={() => navigate("/account-info")}>
                 <FaUser className="icon" /> My Account
               </li>
 

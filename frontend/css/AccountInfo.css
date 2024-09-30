@@ -1,0 +1,129 @@
+/* Container for the entire account info section */
+.account-info-container {
+    background-color: #1c1c1e; /* Dark blackish background */
+    color: #ff9f1c; /* Burnt orange color for text */
+    padding: 20px;
+    border-radius: 10px;
+    width: 80%;
+    margin: 20px auto;
+    max-width: 800px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    font-family: 'Arial', sans-serif;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+/* Adding a subtle hover effect to the container */
+.account-info-container:hover {
+    transform: translateY(-5px);
+    background-color: #1e1e1e;
+}
+
+/* Header section with icon and name */
+.header-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.header-section h2 {
+    color: #ffffff;
+    margin-left: 10px;
+    font-size: 24px; /* Adjust font size for better visibility */
+    letter-spacing: 0.5px;
+}
+
+/* User icon */
+.user-icon {
+    font-size: 40px;
+    color: #ff9f1c; /* Burnt orange */
+}
+
+/* Info cards styling */
+.info-card {
+    display: flex;
+    align-items: flex-start;
+    background-color: #2e2e30;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+/* Hover effect on info cards */
+.info-card:hover {
+    background-color: #38383a;
+    transform: scale(1.02); /* Slight zoom on hover */
+}
+
+/* Icon in info cards */
+.info-icon {
+    font-size: 30px;
+    color: #ff9f1c;
+    margin-right: 15px;
+}
+
+/* Information details styling */
+.info-details h3 {
+    margin: 0;
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.info-details p {
+    margin: 5px 0 0 0;
+    color: #d1d1d1;
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+/* Improved media queries for responsiveness */
+@media (max-width: 768px) {
+    .account-info-container {
+        width: 90%;
+        padding: 15px;
+    }
+
+    .info-card {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .info-icon {
+        margin-bottom: 10px;
+    }
+
+    .info-details h3 {
+        text-align: center;
+    }
+
+    .info-details p {
+        text-align: center;
+    }
+}
+
+/* Further styling for smaller devices (like smartphones) */
+@media (max-width: 480px) {
+    .account-info-container {
+        padding: 10px;
+    }
+
+    .header-section h2 {
+        font-size: 20px;
+    }
+
+    .info-icon {
+        font-size: 24px;
+    }
+
+    .info-details h3 {
+        font-size: 16px;
+    }
+
+    .info-details p {
+        font-size: 14px;
+    }
+}

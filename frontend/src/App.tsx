@@ -17,6 +17,7 @@ import EducationalResources from "../components/EducationalResources";
 import GlobalData from "../components/GlobalData";
 import SectorsResponsible from "../components/SectorsResponsible";
 import MyArea from "../components/MyArea";
+import AccountInfo from "../components/AccountInfo";
 
 const App: React.FC = () => {
   // Initialize the login state from localStorage, defaulting to false if not found
@@ -75,6 +76,13 @@ const App: React.FC = () => {
                 </ProtectedRoute>
               }
             />
+            <Route path="/about-us" element={<AboutUs />} />
+            {/* Route for About Us */}
+            <Route path="/contact-us" element={<ContactUs />} />
+            {/* Route for Contact Us */}
+
+            <Route path="/account-info" element={<AccountInfo />} />
+            {/* Route for Contact Us */}
           </Routes>
           <Character currentPath={window.location.pathname} />
           <Footer /> {/* Footer component */}
