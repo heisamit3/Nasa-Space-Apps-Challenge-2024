@@ -1,0 +1,184 @@
+/* General contact container styling */
+.contact-container {
+    padding: 40px;
+    background-color: #f9f9f9;
+    color: #1a1919;
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.contact-container h1 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+}
+
+.contact-container p {
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+    color: #333;
+}
+
+/* Contact info section */
+.contact-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 20px;
+}
+
+/* Individual contact item styling */
+.contact-item {
+    display: flex;
+    align-items: center;
+    font-size: 1.2rem;
+    color: #1a1919; /* Ensure the contact text is dark */
+    transition: color 0.3s ease;
+}
+
+/* Icon styling */
+.contact-item .icon {
+    margin-right: 10px;
+    font-size: 1.5rem;
+    color: #1a1919; /* Dark color for consistency with topbar */
+    transition: color 0.3s ease;
+}
+
+.contact-item:hover .icon,
+.contact-item:hover {
+    color: #ff9f1c; /* Hover effect similar to topbar */
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .contact-container {
+        padding: 20px;
+    }
+
+    .contact-container h1 {
+        font-size: 2rem;
+    }
+
+    .contact-container p {
+        font-size: 1rem;
+    }
+
+    .contact-info {
+        gap: 15px;
+    }
+
+    .contact-item {
+        font-size: 1rem;
+    }
+}
+/* General contact container styling */
+.contact-container {
+    padding: 50px 40px;
+    background-color: #1a1919; /* Black background for your theme */
+    color: #f4f4f4; /* Light text for readability */
+    text-align: center;
+    max-width: 900px;
+    margin: 40px auto; /* Add top margin for breathing space */
+    border-radius: 12px; /* Softer rounded corners for a modern look */
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3); /* Deep box shadow for depth */
+    font-family: 'Segoe UI', Tahoma, Geneva, sans-serif; /* Clean modern font */
+    transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.contact-container:hover {
+    transform: translateY(-5px); /* Slight lift on hover for interaction */
+    background-color: #171717; /* Slightly darker background on hover */
+}
+
+/* Contact Heading (H1) */
+.contact-container h1 {
+    font-size: 2.8rem; /* Larger font size for emphasis */
+    margin-bottom: 20px;
+    color: #ff9f1c; /* Burnt orange for contrast */
+    text-transform: uppercase; /* Add uppercase for impact */
+    letter-spacing: 1.5px; /* Add spacing between letters for modern feel */
+}
+
+/* Contact Info Text */
+.contact-container p {
+    font-size: 1.3rem; /* Slightly larger text for better readability */
+    margin-bottom: 30px;
+    color: #e0e0e0; /* Light gray text for better contrast */
+    text-align: justify; /* Justify text for a clean look */
+    line-height: 1.8;
+}
+
+/* Contact Info Section */
+.contact-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 25px;
+    margin-top: 20px;
+}
+
+/* Individual contact item styling */
+.contact-item {
+    display: flex;
+    align-items: center;
+    font-size: 1.3rem;
+    color: #f4f4f4; /* Light text color to contrast with dark background */
+    transition: color 0.3s ease;
+}
+
+/* Icon styling */
+.contact-item .icon {
+    margin-right: 15px;
+    font-size: 1.6rem; /* Larger icon for better emphasis */
+    color: #ff9f1c; /* Burnt orange icon for contrast */
+    transition: color 0.3s ease;
+}
+
+/* Hover effects for the contact item */
+.contact-item:hover .icon,
+.contact-item:hover {
+    color: #e58e00; /* Darker orange on hover */
+}
+
+/* Link styling for email or other links */
+.contact-item a {
+    color: #ff9f1c; /* Burnt orange for links */
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+.contact-item a:hover {
+    color: #e58e00; /* Darker orange on hover */
+}
+
+/* Responsive design for smaller screens */
+@media (max-width: 768px) {
+    .contact-container {
+        padding: 30px 20px; /* Adjust padding for smaller screens */
+    }
+
+    .contact-container h1 {
+        font-size: 2.2rem; /* Adjust heading size for mobile */
+    }
+
+    .contact-container p {
+        font-size: 1.1rem; /* Adjust paragraph font size for readability */
+    }
+
+    .contact-info {
+        gap: 15px;
+    }
+
+    .contact-item {
+        font-size: 1.1rem;
+    }
+
+    .contact-item .icon {
+        font-size: 1.4rem; /* Adjust icon size for smaller screens */
+    }
+}

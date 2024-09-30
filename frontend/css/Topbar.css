@@ -1,4 +1,3 @@
-/* Ensure the body and HTML elements start at the very top */
 body, html {
     margin: 0;
     padding: 0;
@@ -6,30 +5,31 @@ body, html {
     height: 100%;
 }
 
-/* Modify topbar with a lighter background */
+/* Topbar container styling */
 .topbar {
     top: 0;
     left: 0;
     right: 0;
-    width: 100%; /* Ensure topbar fills the entire width */
-    height: 50px; /* Adjust height as desired */
+    width: 95%;
+    height: 60px;
     color: white;
-    padding: 20px;
+    padding: 10px 40px;
     display: flex;
-    justify-content: space-between; /* Space between logo and menu */
-    align-items: center; /* Vertically center content */
-    background: #1A1919; /* Lighter shade of black (dark gray) */
+    justify-content: space-between;
+    align-items: center;
+    background: #1A1919;
     position: sticky;
-    z-index: 100; /* Ensure topbar stays above other elements */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional: add a subtle shadow */
+    z-index: 100;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
-/* Adjust logo size and alignment */
+/* Logo styling */
 .logo-image {
-    width: 210px; /* Adjust the size of the logo */
-    height: auto; /* Keep aspect ratio */
-    margin: 0; /* Remove any extra margin */
-    padding: 0; /* Ensure no padding */
+    width: 200px;
+    height: auto;
+    margin: 0;
+    padding: 0;
+    cursor: pointer;
 }
 
 /* Topbar menu styling */
@@ -38,33 +38,109 @@ body, html {
     padding: 0;
     margin: 0;
     display: flex;
-    align-items: center; /* Vertically center the menu items */
+    align-items: center;
 }
 
 .topbar-menu li {
-    margin-left: 20px;
+    margin-left: 25px;
     cursor: pointer;
+    font-size: 1.1rem;
+    transition: color 0.3s ease;
+    color: white; /* Ensuring text is white */
+}
+
+/* Icon styling - set the color to white */
+.icon {
+    margin-right: 0.3em;
+    font-size: 1.4rem;
+    color: white; /* Set icon color to white */
+    transition: color 0.3s ease;
+}
+
+.icon:hover {
+    color: #ff9f1c; /* Icon changes to yellowish-orange on hover */
 }
 
 .topbar-menu li:hover {
-    color: #bf5108; /* Change color on hover */
+    color: #ff9f1c; /* Text changes to yellowish-orange on hover */
 }
 
-    .icon {
-        margin-right: 0.3em; /* Adjusted margin-right to a relative unit (em) */
-        font-size: 1.2rem; /* Keep the rem unit for scalability */
-    }/* Increase icon size for emphasis */
-
+/* Modal styling */
 .login-modal {
-    position: fixed; /* Cover the entire screen */
+    position: fixed;
     top: 0;
     left: 0;
     width: 100vw;
     height: 100vh;
-    background-color: rgba(0, 0, 0, 0.5); /* Dimmed background to focus on modal */
+    background-color: rgba(0, 0, 0, 0.7);
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 1000; /* Above other elements */
+    z-index: 1000;
 }
 
+/* Modal content styling */
+.modal-content {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+}
+
+/* Close button styling */
+.modal-close {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #333;
+    transition: color 0.3s ease;
+}
+
+.modal-close:hover {
+    color: red;
+}
+/* Dropdown Menu */
+.dropdown-menu {
+    position: absolute;
+    top: 60px;
+    right: 40px;
+    background-color: #1A1919;
+    color: white; /* Ensuring the dropdown text is white */
+    border: 1px solid #333;
+    border-radius: 5px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+  }
+  
+  .dropdown-menu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .dropdown-menu ul li {
+    padding: 10px 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    color: white; /* Explicitly set the text color to white */
+  }
+  
+  .dropdown-menu ul li:hover {
+    background-color: #333; /* Background changes on hover */
+  }
+  
+  .dropdown-menu ul li .icon {
+    margin-right: 10px;
+    color: white; /* Set icon color to white */
+  }
+  
+  .dropdown-menu ul li:hover .icon {
+    color: #ff9f1c; /* Change icon color on hover */
+  }
+  

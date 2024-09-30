@@ -1,11 +1,15 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import "./App.css"; // Import the CSS file
-// import backgroundImage from "../images/frontimage.jpg"; // Background image import
 import Sidebar from "../components/Sidebar"; // Sidebar component
 import Topbar from "../components/Topbar"; // Topbar component
 import MessageForm from "../components/MessageForm";
 import SpinningEarth from "../components/SpinningEarth"; // SpinningEarth component
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 import Home from "../components/Home";
 import Dashboard from "../components/Dashboard";
 import Footer from "../components/Footer";
@@ -14,7 +18,8 @@ import EducationalResources from "../components/EducationalResources";
 import GlobalData from "../components/GlobalData";
 import SectorsResponsible from "../components/SectorsResponsible";
 import MyArea from "../components/MyArea";
-
+import AboutUs from "../components/AboutUs"; // Import AboutUs component
+import ContactUs from "../components/ContactUs"; // Import ContactUs component
 
 const App: React.FC = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -30,24 +35,43 @@ const App: React.FC = () => {
 
   return (
     <Router>
-      <div
-        className="app-container"
-        // style={{ backgroundImage: `url(${backgroundImage})` }}
-      >
+      <div className="app-container">
         <div className="main-content">
-          <Topbar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} /> {/* Topbar component */}
+          <Topbar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
+          {/* Topbar component */}
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+            <Route
+              path="/dashboard"
+              element={
+                <ProtectedRoute>
+                  <Dashboard />
+                </ProtectedRoute>
+              }
+            />
             <Route path="/global-data" element={<GlobalData />} />
-            <Route path="/educational-resources" element={<EducationalResources />} />
-            <Route path="/sectors-responsible" element={<SectorsResponsible />} />
-            <Route path="/my-area" element={<ProtectedRoute><MyArea/></ProtectedRoute>} />
+            <Route
+              path="/educational-resources"
+              element={<EducationalResources />} // Add route for Educational Resources page
+            />
+            <Route
+              path="/sectors-responsible"
+              element={<SectorsResponsible />}
+            />
+            <Route
+              path="/my-area"
+              element={
+                <ProtectedRoute>
+                  <MyArea />
+                </ProtectedRoute>
+              }
+            />
+            <Route path="/about-us" element={<AboutUs />} />
+            {/* Route for About Us */}
+            <Route path="/contact-us" element={<ContactUs />} />
+            {/* Route for Contact Us */}
           </Routes>
-
-          <Character currentPath={window.location.pathname} /> 
-
-
+          <Character currentPath={window.location.pathname} />
           <Footer /> {/* Footer component */}
         </div>
       </div>

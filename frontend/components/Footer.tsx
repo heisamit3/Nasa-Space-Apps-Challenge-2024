@@ -9,10 +9,29 @@ const Footer: React.FC = () => {
         © {new Date().getFullYear()} SunClimate Chronicles. All Rights Reserved.
       </p>
       <p>
-        Follow us on: 
-        <a href="https://twitter.com" target="_blank" rel="noopener noreferrer"> Twitter</a> | 
-        <a href="https://facebook.com" target="_blank" rel="noopener noreferrer"> Facebook</a> | 
-        <a href="https://instagram.com" target="_blank" rel="noopener noreferrer"> Instagram</a>
+        Follow us on:
+        <a href="https://twitter.com" target="_blank" rel="noopener noreferrer">
+          {" "}
+          Twitter
+        </a>{" "}
+        |
+        <a
+          href="https://facebook.com"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {" "}
+          Facebook
+        </a>{" "}
+        |
+        <a
+          href="https://instagram.com"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {" "}
+          Instagram
+        </a>
       </p>
     </footer>
   );
