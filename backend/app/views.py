@@ -7,7 +7,6 @@ from rest_framework.authtoken.models import Token
 @api_view(['POST'])
 def login_view(request):
     serializer = LoginSerializer(data=request.data)
-
     if serializer.is_valid():
         user = serializer.validated_data['user']
         token, created = Token.objects.get_or_create(user=user)
@@ -22,7 +21,6 @@ def login_view(request):
 @api_view(['POST'])
 def signup_view(request):
     serializer = SignupSerializer(data=request.data)
-
     if serializer.is_valid():
         user = serializer.save()
         token, created = Token.objects.get_or_create(user=user)

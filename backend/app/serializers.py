@@ -30,19 +30,15 @@ class SignupSerializer(serializers.ModelSerializer):
         validators=[UniqueValidator(queryset=User.objects.all())]
     )
     password = serializers.CharField(write_only=True)
-    confirm_password = serializers.CharField(write_only=True)
 
     class Meta:
         model = User
-        fields = ('email', 'password', 'confirm_password')
-
-    def validate(self, data):
-        if data['password'] != data['confirm_password']:
-            raise serializers.ValidationError("Passwords do not match.")
-        return data
+        fields = ('email', 'password')
 
     def create(self, validated_data):
+        # Set the username to be the same as the email
         user = User(
+            username=validated_data['email'],  # Set username to email
             email=validated_data['email']
         )
         user.set_password(validated_data['password'])
