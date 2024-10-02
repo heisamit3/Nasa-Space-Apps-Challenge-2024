@@ -7,7 +7,7 @@ import {
   FaCalendarAlt,
   FaEnvelope,
 } from "react-icons/fa"; // Importing icons
-import "../css/AccountInfo.css"; // Import CSS file for styling
+import "../../css/AccountInfo.css"; // Import CSS file for styling
 
 interface UserInfo {
   fullName: string;

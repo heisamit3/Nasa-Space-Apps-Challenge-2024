@@ -3,7 +3,7 @@ import { Line } from "react-chartjs-2";
 import { Chart, registerables } from "chart.js";
 import { FaMapMarkerAlt, FaGlobe, FaBook, FaIndustry } from "react-icons/fa"; // Import React Icons
 import "leaflet/dist/leaflet.css";
-import "../css/Dashboard.css";
+import "../../css/Dashboard.css";
 import { useNavigate } from "react-router-dom"; // Import useNavigate for navigation
 
 Chart.register(...registerables);

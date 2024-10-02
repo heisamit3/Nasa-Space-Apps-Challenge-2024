@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "../css/Character.css"; // Import the CSS file
+import "../../css/Character.css"; // Import the CSS file
 
 interface CharacterProps {
   currentPath: string; // The current route path

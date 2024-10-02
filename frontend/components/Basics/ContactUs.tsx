@@ -1,6 +1,6 @@
 import React from "react";
 import { FaPhone, FaEnvelope, FaMapMarkerAlt } from "react-icons/fa"; // Importing icons
-import "../css/ContactUs.css"; // Import the CSS for the Contact Us page
+import "../../css/ContactUs.css"; // Import the CSS for the Contact Us page
 
 const ContactUs: React.FC = () => {
   return (

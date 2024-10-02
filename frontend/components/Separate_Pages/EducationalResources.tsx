@@ -134,7 +134,7 @@
 // export default EducationalResources;
 import React, { useEffect } from "react";
 import { useLocation } from "react-router-dom"; // Import useLocation
-import "../css/EducationalResources.css"; // Assuming you have a CSS file for styling
+import "../../css/EducationalResources.css"; // Assuming you have a CSS file for styling
 
 const EducationalResources: React.FC = () => {
   const location = useLocation(); // Get the current location

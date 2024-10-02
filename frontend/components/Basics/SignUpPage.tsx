@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "../css/SignUpPage.css";
+import "../../css/SignUpPage.css";
 
 const SignUpPage: React.FC<{ setIsLoggedIn: (value: boolean) => void }> = ({ setIsLoggedIn }) => {
     const navigate = useNavigate();

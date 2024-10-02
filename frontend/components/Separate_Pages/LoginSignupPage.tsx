@@ -122,7 +122,7 @@
 // export default LoginSignupPage;
 import React, { useState } from "react";
 import { FaUser, FaTimes } from "react-icons/fa";
-import "../css/LoginSignup.css";
+import "../../css/LoginSignup.css";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
