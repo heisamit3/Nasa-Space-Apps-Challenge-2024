@@ -1,5 +1,6 @@
 import React from "react";
-import "../css/EducationalResources.css"; // Assuming you have a CSS file for styling
+import { FaTree, FaFireAlt, FaLeaf, FaGlobe, FaChartPie } from "react-icons/fa"; // Importing icons
+import "../css/EducationalResources.css"; // Custom CSS for advanced styles
 
 const EducationalResources: React.FC = () => {
   return (
@@ -8,124 +9,219 @@ const EducationalResources: React.FC = () => {
       <nav className="navbar">
         <ul>
           <li>
-            <a href="#gases">Greenhouse Gases</a>
+            <a href="#gases">
+              <FaLeaf /> Greenhouse Gases
+            </a>
           </li>
           <li>
-            <a href="#causes">Causes of Climate Change</a>
+            <a href="#fossilfuels">
+              <FaFireAlt /> Fossil Fuels
+            </a>
           </li>
           <li>
-            <a href="#fightback">How to Fight Climate Change</a>
+            <a href="#carbon">
+              <FaGlobe /> CO₂ and CH₄
+            </a>
           </li>
           <li>
-            <a href="#treeplantation">Tree Plantation</a>
+            <a href="#sourcesandsinks">
+              <FaTree /> GHG Sources & Sinks
+            </a>
+          </li>
+          <li>
+            <a href="#carbonbudget">
+              <FaChartPie /> Carbon Budget
+            </a>
           </li>
         </ul>
       </nav>
 
       {/* Section 1: Greenhouse Gases */}
       <section id="gases" className="content-section">
-        <h2>Greenhouse Gases</h2>
-        <p>
-          Greenhouse gases trap heat in the Earth's atmosphere, contributing to
-          global warming and climate change. The most common greenhouse gases
-          are carbon dioxide (CO<sub>2</sub>), methane (CH<sub>4</sub>), nitrous
-          oxide (N<sub>2</sub>O), and fluorinated gases.
+        <h2>
+          <FaLeaf /> Greenhouse Gases (GHGs)
+        </h2>
+        <p className="intro-text">
+          Greenhouse gases (GHGs) trap heat from the Sun, contributing to the
+          warming of our planet. These gases act like a blanket, keeping the
+          Earth's temperature livable, but too much can lead to climate change.
+          The primary GHGs include:
         </p>
-        <ul>
-          <li>
-            <strong>
-              Carbon Dioxide (CO<sub>2</sub>):
-            </strong>{" "}
-            Mainly produced from burning fossil fuels like coal, oil, and gas.
-          </li>
-          <li>
-            <strong>
-              Methane (CH<sub>4</sub>):
-            </strong>{" "}
-            Emitted during the production and transport of coal, oil, and
-            natural gas.
-          </li>
-          <li>
-            <strong>
-              Nitrous Oxide (N<sub>2</sub>O):
-            </strong>{" "}
-            Released from agricultural and industrial activities, as well as
-            combustion of fossil fuels.
-          </li>
-        </ul>
+        <div className="grid-container">
+          <div className="grid-item">
+            <h3>Carbon Dioxide (CO₂)</h3>
+            <p>
+              The most abundant GHG, largely from fossil fuel burning.{" "}
+              <a
+                href="https://www.epa.gov/ghgemissions/overview-greenhouse-gases"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Learn more from EPA
+              </a>
+            </p>
+          </div>
+          <div className="grid-item">
+            <h3>Methane (CH₄)</h3>
+            <p>
+              A potent GHG from natural gas production and agriculture.{" "}
+              <a
+                href="https://www.globalmethane.org/"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Learn more
+              </a>
+            </p>
+          </div>
+          <div className="grid-item">
+            <h3>Nitrous Oxide (N₂O)</h3>
+            <p>
+              Released from fertilizers and combustion processes.{" "}
+              <a
+                href="https://www.ipcc.ch/srccl/chapter/summary-for-policymakers/"
+                target="_blank"
+                rel="noreferrer"
+              >
+                More details from IPCC
+              </a>
+            </p>
+          </div>
+        </div>
+        <p>
+          GHGs cause the greenhouse effect, leading to global warming and
+          climate change. Explore the role of GHGs in this{" "}
+          <a
+            href="https://climate.nasa.gov/causes/"
+            target="_blank"
+            rel="noreferrer"
+          >
+            NASA article
+          </a>
+          .
+        </p>
       </section>
 
-      {/* Section 2: Causes of Climate Change */}
-      <section id="causes" className="content-section">
-        <h2>Causes of Climate Change</h2>
+      {/* Section 2: Fossil Fuels */}
+      <section id="fossilfuels" className="content-section">
+        <h2>
+          <FaFireAlt /> Fossil Fuels
+        </h2>
         <p>
-          The primary cause of climate change is human activity, particularly
-          the burning of fossil fuels, which increases concentrations of
-          greenhouse gases in the atmosphere. Other causes include deforestation
-          and certain agricultural practices.
+          Fossil fuels are hydrocarbon deposits that can be burned for heat or
+          power. The three primary types of fossil fuels are:
         </p>
         <ul>
           <li>
-            <strong>Fossil Fuels:</strong> Burning coal, oil, and natural gas
-            for energy releases large amounts of CO<sub>2</sub>.
+            <strong>Coal</strong>
           </li>
           <li>
-            <strong>Deforestation:</strong> Cutting down forests reduces the
-            amount of CO<sub>2</sub> absorbed from the atmosphere.
+            <strong>Oil</strong>
           </li>
           <li>
-            <strong>Agriculture:</strong> Methane emissions from livestock and
-            fertilizers contribute to greenhouse gases.
+            <strong>Natural Gas</strong>
           </li>
         </ul>
+        <p>
+          These fuels release carbon dioxide and other GHGs into the atmosphere,
+          contributing significantly to global warming. For an in-depth
+          explanation of fossil fuels and their environmental impact, check out
+          this{" "}
+          <a
+            href="https://www.nationalgeographic.org/encyclopedia/fossil-fuels/"
+            target="_blank"
+            rel="noreferrer"
+          >
+            National Geographic article
+          </a>
+          .
+        </p>
       </section>
 
-      {/* Section 3: How to Fight Climate Change */}
-      <section id="fightback" className="content-section">
-        <h2>How to Fight Climate Change</h2>
+      {/* Section 3: CO₂ and Methane */}
+      <section id="carbon" className="content-section">
+        <h2>
+          <FaGlobe /> CO₂ and Methane (CH₄)
+        </h2>
         <p>
-          There are many ways we can all fight climate change. Reducing your
-          carbon footprint, conserving energy, supporting renewable energy, and
-          making sustainable lifestyle choices can make a big difference.
+          <strong>Carbon Dioxide (CO₂):</strong> CO₂ is the primary GHG
+          contributing to climate change. It is released by burning fossil fuels
+          and is responsible for approximately 76% of global emissions. More on
+          CO₂:{" "}
+          <a
+            href="https://www.epa.gov/ghgemissions/overview-greenhouse-gases"
+            target="_blank"
+            rel="noreferrer"
+          >
+            EPA’s CO₂ overview
+          </a>
+          .
         </p>
-        <ul>
-          <li>
-            <strong>Use Renewable Energy:</strong> Switch to solar, wind, or
-            hydropower to reduce reliance on fossil fuels.
-          </li>
-          <li>
-            <strong>Reduce Carbon Footprint:</strong> Carpool, use public
-            transportation, or cycle to reduce emissions.
-          </li>
-          <li>
-            <strong>Conserve Energy:</strong> Turn off lights, unplug
-            electronics, and opt for energy-efficient appliances.
-          </li>
-        </ul>
+        <p>
+          <strong>Methane (CH₄):</strong> CH₄ is about 25 times more effective
+          than CO₂ at trapping heat over a 100-year period, though it is less
+          prevalent in the atmosphere. Human activities, such as livestock
+          farming and oil extraction, significantly contribute to methane
+          emissions.{" "}
+          <a
+            href="https://www.globalmethane.org/about/index.aspx"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Explore methane’s role
+          </a>
+          .
+        </p>
       </section>
 
-      {/* Section 4: Tree Plantation */}
-      <section id="treeplantation" className="content-section">
-        <h2>Tree Plantation</h2>
+      {/* Section 4: GHG Sources and Sinks */}
+      <section id="sourcesandsinks" className="content-section">
+        <h2>
+          <FaTree /> GHG Sources and Sinks
+        </h2>
         <p>
-          Planting trees is one of the simplest and most effective ways to
-          combat climate change. Trees absorb carbon dioxide, release oxygen,
-          and help maintain ecological balance.
+          A <strong>GHG source</strong> is any process that releases greenhouse
+          gases into the atmosphere. For instance, the burning of fossil fuels
+          releases large quantities of CO₂.
         </p>
-        <ul>
-          <li>
-            <strong>Reforestation:</strong> Replanting forests that have been
-            cut down or destroyed.
-          </li>
-          <li>
-            <strong>Afforestation:</strong> Planting trees in areas that have
-            never been forested.
-          </li>
-          <li>
-            <strong>Urban Tree Planting:</strong> Planting trees in cities to
-            improve air quality and reduce heat islands.
-          </li>
-        </ul>
+        <p>
+          A <strong>GHG sink</strong> is something that absorbs and stores GHGs
+          from the atmosphere, such as forests and oceans. Trees, through
+          photosynthesis, are vital carbon sinks.
+        </p>
+        <p>
+          Learn more about GHG sources and sinks at{" "}
+          <a
+            href="https://www.epa.gov/ghgemissions/sources-greenhouse-gas-emissions"
+            target="_blank"
+            rel="noreferrer"
+          >
+            EPA’s GHG sources and sinks
+          </a>
+          .
+        </p>
+      </section>
+
+      {/* Section 5: Carbon Budget */}
+      <section id="carbonbudget" className="content-section">
+        <h2>
+          <FaChartPie /> Carbon Budget
+        </h2>
+        <p>
+          The <strong>Global Carbon Budget</strong> tracks the balance between
+          GHG emissions and the planet’s capacity to absorb them. The total
+          carbon budget refers to the maximum amount of CO₂ we can emit while
+          still limiting global warming to 1.5°C or 2°C. To stay within this
+          limit, we must rapidly reduce emissions.{" "}
+          <a
+            href="https://www.globalcarbonproject.org/"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Learn more about global carbon budgeting
+          </a>
+          .
+        </p>
       </section>
     </div>
   );

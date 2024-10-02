@@ -15,8 +15,8 @@
 }
 
 .button {
-  background-color: rgba(0, 0, 0, 0.7); /* Background color */
-  color: #f6b93c; /* Text color */
+  background-color:#f6b93c; /* Background color */
+  color: white; /* Text color */
   border-radius: 10px; /* Rounded corners */
   padding: 20px;
   text-align: center;
