@@ -88,7 +88,6 @@
 import React, { useState, useEffect } from "react";
 import "./App.css"; // Import the CSS file
 // import backgroundImage from "../images/frontimage.jpg"; // Background image import
-import Sidebar from "../components/Basics/Sidebar"; // Sidebar component
 import Topbar from "../components/Basics/Topbar"; // Topbar component
 import {
   BrowserRouter as Router,
