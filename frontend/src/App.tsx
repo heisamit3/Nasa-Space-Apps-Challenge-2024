@@ -100,16 +100,20 @@ import Dashboard from "../components/Separate_Pages/Dashboard";
 import Footer from "../components/Basics/Footer";
 import Character from "../components/Basics/Character";
 import EducationalResources from "../components/Separate_Pages/EducationalResources";
-import GlobalData from "../components/Separate_Pages/GlobalData";
+import GlobalData from "../components/Dataset_Visualize/GlobalData";
 import SectorsResponsible from "../components/Separate_Pages/SectorsResponsible";
-import MyArea from "../components/Separate_Pages/MyArea";
+import MyArea from "../components/Dataset_Visualize/MyArea";
 import AccountInfo from "../components/Basics/AccountInfo";
 import LoginSignupPage from "../components/Separate_Pages/LoginSignupPage"; // Import LoginSignupPage
 import SignUpPage from "../components/Basics/SignUpPage"; // Import SignUpPage
 import AboutUs from "../components/Separate_Pages/AboutUs"; // Import AboutUs
 import ContactUs from "../components/Basics/ContactUs"; // Import ContactUs
 import CarbonDataVisualization from "../components/MiCasa_Carbon_Flux/CarbonDataVisualization"; // Import CarbonDataVisualization
-import CH4FluxComparison from "../components/CH4/CH4FluxComparison"; // Import CH4FluxComparison
+import CH4FluxComparison from "../components/CH4/CH4FluxComparison";
+import Graph from "../components/Dataset_Visualize/Graph";
+import Map from "../components/Dataset_Visualize/Map";
+import Statistics from "../components/Dataset_Visualize/Statistics";
+
 const App: React.FC = () => {
   // Initialize the login state from localStorage, defaulting to false if not found
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(() => {
@@ -164,6 +168,9 @@ const App: React.FC = () => {
               }
             />
             <Route path="/global-data" element={<GlobalData />} />
+            <Route path="/graph" element={<Graph />} />
+            <Route path="/map" element={<Map />} />
+            <Route path="/statistics" element={<Statistics />} />
             <Route
               path="/educational-resources"
               element={<EducationalResources />}
