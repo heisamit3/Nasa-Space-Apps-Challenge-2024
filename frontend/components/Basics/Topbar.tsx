@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { FaInfoCircle, FaEnvelope, FaUser, FaSignOutAlt } from "react-icons/fa"; // Importing icons
 import "../css/Topbar.css"; // Topbar CSS
 import { useNavigate } from "react-router-dom"; // Import useNavigate
-import LoginSignupPage from "./LoginSignupPage"; // Import your login/signup component
+import LoginSignupPage from "../Separate_Pages/LoginSignupPage"; // Import your login/signup component
 import Logo from "../images/logo1.png"; // Import your logo
 
 interface TopbarProps {
