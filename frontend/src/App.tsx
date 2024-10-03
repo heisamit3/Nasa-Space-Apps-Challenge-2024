@@ -28,8 +28,8 @@ import Statistics from "../components/Dataset_Visualize/Statistics";
 
 // Import the combined CH4 map and data component
 import CH4MapWithDataPage from "../components/CH4/CH4MapWithDataPage"; // Combined CH4 map and data page component
-// import CH4MapComponent from "../components/CH4/CH4MapComponent"; // Import your CH4MapComponent
-// import CH4DataPage from "../components/CH4/CH4DataPage"; // Import your CH4DataPage
+// // import CH4MapComponent from "../components/CH4/CH4MapComponent"; // Import your CH4MapComponent
+// // import CH4DataPage from "../components/CH4/CH4DataPage"; // Import your CH4DataPage
 import MethaneFluxGlobe from "../components/CH4/MethaneFluxGlobe"; // Import your MethaneFluxGlobe
 import NasaData from "../components/Separate_Pages/NasaData"; // Import your NasaData
 
