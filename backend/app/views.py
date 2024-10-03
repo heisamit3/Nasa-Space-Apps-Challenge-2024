@@ -422,15 +422,12 @@ def compute_global_stats():
                 json=global_aoi
             ).json()
             if stat:
-                # Add datetime from the item
-                stat["datetime"] = item.get("properties", {}).get("datetime")
                 stats.append(stat)
         df = pd.json_normalize(stats)
         return df
     except Exception as e:
         print(f"Error in compute_global_stats: {str(e)}")
         return pd.DataFrame()
-
 
 from rest_framework.decorators import api_view
 from django.http import JsonResponse

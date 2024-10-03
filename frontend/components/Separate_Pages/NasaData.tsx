@@ -115,7 +115,7 @@ const NasaData: React.FC = () => {
             <span>CH4</span>
             <DropdownContent>
               <DropdownItem onClick={() => handleNavigation("/ch4-flux-comparison")}>Map</DropdownItem>
-              <DropdownItem onClick={() => handleNavigation("/ch4-map")}>Statistics</DropdownItem>
+              <DropdownItem onClick={() => handleNavigation("/ch4-map-with-data")}>Statistics</DropdownItem>
               <DropdownItem onClick={() => handleNavigation("/ch4-simul")}>Simulation</DropdownItem>
             </DropdownContent>
           </Dropdown>
