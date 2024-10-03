@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import "./App.css"; // Import the CSS file
-// import backgroundImage from "../images/frontimage.jpg"; // Background image import
 import Topbar from "../components/Basics/Topbar"; // Topbar component
 import {
   BrowserRouter as Router,
@@ -27,41 +26,38 @@ import Graph from "../components/Dataset_Visualize/Graph";
 import Map from "../components/Dataset_Visualize/Map";
 import Statistics from "../components/Dataset_Visualize/Statistics";
 
+
+// Import the combined CH4 map and data component
+import CH4MapWithDataPage from "../components/CH4/CH4MapWithDataPage"; // Combined CH4 map and data page component
 import CH4MapComponent from "../components/CH4/CH4MapComponent"; // Import your CH4MapComponent
 import CH4DataPage from "../components/CH4/CH4DataPage"; // Import your CH4DataPage
 import MethaneFluxGlobe from "../components/CH4/MethaneFluxGlobe"; // Import your MethaneFluxGlobe
 import NasaData from "../components/Separate_Pages/NasaData"; // Import your NasaData
 
+
 const App: React.FC = () => {
-  // Initialize the login state from localStorage, defaulting to false if not found
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(() => {
     const savedLoginStatus = localStorage.getItem("isLoggedIn");
-    return savedLoginStatus === "true"; // Returns true if 'isLoggedIn' in localStorage is "true", otherwise false
+    return savedLoginStatus === "true";
   });
 
-  // Effect to update localStorage whenever the login state changes
   useEffect(() => {
     localStorage.setItem("isLoggedIn", isLoggedIn.toString());
   }, [isLoggedIn]);
 
   const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
     if (!isLoggedIn) {
-      // If the user is not logged in, navigate to the homepage
       return <Navigate to="/" />;
     }
 
-    return children; // If logged in, allow access to the route
+    return children;
   };
 
   return (
     <Router>
-      <div
-        className="app-container"
-        // style={{ backgroundImage: `url(${backgroundImage})` }}
-      >
+      <div className="app-container">
         <div className="main-content">
-          <Topbar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />{" "}
-          {/* Topbar component */}
+          <Topbar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
           <Routes>
             <Route path="/" element={<Home />} />
             <Route
@@ -106,28 +102,27 @@ const App: React.FC = () => {
               }
             />
             <Route path="/about-us" element={<AboutUs />} />
-            {/* Route for About Us */}
             <Route path="/contact-us" element={<ContactUs />} />
-            {/* Route for Contact Us */}
             <Route path="/account-info" element={<AccountInfo />} />
             <Route
               path="/carbon-data-visualization"
               element={<CarbonDataVisualization />}
-            />{" "}
-            {/* Add the route for carbon data */}
-            {/* Route for Contact Us */}
-            {/* Add the new CH4 Flux Comparison route */}
+            />
             <Route
               path="/ch4-flux-comparison"
               element={<CH4FluxComparison />}
             />
+
+            {/* New unified CH4 map and data page */}
+            <Route path="/ch4-map-with-data" element={<CH4MapWithDataPage />} />
             <Route path="/ch4-map" element={<CH4MapComponent />} />
             <Route path="/ch4-data-show" element={<CH4DataPage />} />
             <Route path="/methane-flux-globe" element={<MethaneFluxGlobe />} />
             <Route path="nasa-data" element={<NasaData />} />
+
           </Routes>
           <Character currentPath={window.location.pathname} />
-          <Footer /> {/* Footer component */}
+          <Footer />
         </div>
       </div>
     </Router>

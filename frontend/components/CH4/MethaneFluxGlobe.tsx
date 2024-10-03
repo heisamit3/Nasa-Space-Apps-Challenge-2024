@@ -67,7 +67,11 @@ const MethaneFluxGlobe: React.FC = () => {
       setGlobeData(processedData);
     } catch (error) {
       console.error("Error in fetchData:", error);
-      setError(error.message);
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError(String(error));
+      }
     } finally {
       setIsLoading(false);
     }
