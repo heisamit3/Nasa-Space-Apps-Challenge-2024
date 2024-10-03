@@ -275,10 +275,7 @@ def create_aoi(coordinates):
         },
     }
 
-# def fetch_stac_items(collection_name, limit=10):
-#     response = requests.get(f"{STAC_API_URL}/collections/{collection_name}/items?limit={limit}")
-#     items = response.json()["features"]
-#     return items
+
 
 def fetch_stac_items(collection_name, start_year=1999, end_year=2024, limit=1):
     all_items = []
@@ -447,3 +444,169 @@ def compute_global_stats_view(request):
 
 
 # You'll need to add 'compute_global_stats_view' to your Django URLs configuration.
+
+
+
+
+
+
+
+
+
+
+
+
+
+#working for MIKASA**************************************************************************
+
+
+
+
+
+
+
+
+# Collection name and asset name for MiCASA Land Carbon Flux dataset
+micasa_collection_name = "micasa-carbonflux-daygrid-v1"
+micasa_asset_name = "rh"
+
+# Function to get the CH₄ flux remains unchanged
+# The logic will be similar but we will now modify it for MiCASA in a different function
+
+# Function to fetch MiCASA dataset rescale values
+def get_micasa_flux(item, color_map, rescale_values):
+    response = requests.get(
+        f"{RASTER_API_URL}/collections/{item['collection']}/items/{item['id']}/tilejson.json?"
+        f"&assets={micasa_asset_name}"
+        f"&color_formula=gamma+r+1.05&colormap_name={color_map}"
+        f"&rescale={rescale_values['min']},{rescale_values['max']}"
+    )
+    return response.json()
+
+# View for MiCASA Land Carbon Flux Data
+@api_view(["GET"])
+def carbon_data_view_micasa(request):
+    print("MiCASA data request received")
+    
+    # Fetch the total number of items in the MiCASA collection
+    items_response = requests.get(f"{STAC_API_URL}/collections/{micasa_collection_name}/items?limit=800")
+
+    if not items_response.ok:
+        return JsonResponse({"error": "Error fetching items from STAC API"}, status=500)
+
+    items = items_response.json()["features"]
+
+    # Map the items with their start date
+    items_dict = {item["properties"]["datetime"][:10]: item for item in items}
+
+    # Fetch rescale values from one of the items (e.g., 2023-01-01)
+    rescale_values = {
+        "max": items_dict["2023-01-01"]["assets"][micasa_asset_name]["raster:bands"][0]["histogram"]["max"],
+        "min": items_dict["2023-01-01"]["assets"][micasa_asset_name]["raster:bands"][0]["histogram"]["min"]
+    }
+
+    # Colormap for visualization
+    color_map = "purd"
+
+    # Fetch MiCASA flux data for January 2023 (start and end of month)
+    micasa_flux_1 = get_micasa_flux(items_dict['2023-01-01'], color_map, rescale_values)
+    micasa_flux_2 = get_micasa_flux(items_dict['2023-01-31'], color_map, rescale_values)
+
+    # Return the response to React with both datasets
+    return JsonResponse({
+        "micasa_flux_1": micasa_flux_1,
+        "micasa_flux_2": micasa_flux_2,
+        "rescale_values": rescale_values,
+        "metadata": {
+            "collection_name": micasa_collection_name,
+            "total_items": len(items),
+            "asset_name": micasa_asset_name,
+            "color_map": color_map,
+            "description": "MiCASA Land Carbon Flux Data for January 2023"
+        }
+    })
+    
+    
+    
+def create_micasa_aoi(coordinates):
+    return {
+        "type": "Feature",
+        "properties": {},
+        "geometry": {
+            "type": "Polygon",
+            "coordinates": [coordinates],
+        },
+    }
+
+# Fetch the MiCASA dataset items (granules)
+def fetch_micasa_stac_items(collection_name, start_year=2021, end_year=2024, limit=1):
+    all_items = []
+    
+    for year in range(start_year, end_year + 1):
+        datetime_range = f"{year}-01-01T00:00:00Z/{year}-12-31T23:59:59Z"
+        response = requests.get(f"{STAC_API_URL}/collections/{collection_name}/items?limit={limit}&datetime={datetime_range}")
+        response.raise_for_status()  # Check for errors
+        items = response.json()["features"]
+        all_items.extend(items)
+    
+    return all_items
+
+# Generate statistics for a specific granule
+def generate_micasa_stats(item, geojson, asset_name):
+    try:
+        result = requests.post(
+            f"{RASTER_API_URL}/cog/statistics",
+            params={"url": item["assets"][asset_name]["href"]},
+            json=geojson,
+        ).json()
+        return {
+            **result["properties"],
+            "datetime": item["properties"]["start_datetime"][:10],
+        }
+    except Exception as e:
+        print(f"Error generating stats: {str(e)}")
+        return None
+
+# Clean and process the statistics JSON to a Pandas DataFrame
+def clean_micasa_stats(stats_json):
+    if not stats_json:
+        return pd.DataFrame()  # Return empty DataFrame if no stats
+    
+    df = pd.DataFrame(stats_json)
+    if 'statistics.b1.' in df.columns[0]:
+        df.columns = [col.replace("statistics.b1.", "") for col in df.columns]
+    df["date"] = pd.to_datetime(df["datetime"])
+    return df
+
+# Main function to compute the statistics
+def compute_micasa_stats(coordinates):
+    try:
+        aoi = create_micasa_aoi(coordinates)
+        items = fetch_micasa_stac_items(collection_name)
+        asset_name = "total"
+        stats = [generate_micasa_stats(item, aoi, asset_name) for item in items]
+        df = clean_micasa_stats(stats)
+        return df
+    except Exception as e:
+        print(f"Error in compute_micasa_stats: {str(e)}")
+        return pd.DataFrame()
+
+# API view to handle the POST request for computing statistics
+@api_view(['POST'])
+def compute_micasa_stats_view(request):
+    try:
+        data = json.loads(request.body)
+        coordinates = data.get("coordinates", [])
+        if not coordinates:
+            return JsonResponse({"error": "No coordinates provided"}, status=400)
+
+        df = compute_micasa_stats(coordinates)
+        
+        if df.empty:
+            return JsonResponse({"error": "No data found for the given coordinates"}, status=404)
+        
+        response_data = df.to_dict(orient='records')
+        return JsonResponse({"data": response_data}, status=200)
+    
+    except Exception as e:
+        return JsonResponse({"error": str(e)}, status=500)

@@ -20,12 +20,11 @@ import LoginSignupPage from "../components/Separate_Pages/LoginSignupPage"; // I
 import SignUpPage from "../components/Basics/SignUpPage"; // Import SignUpPage
 import AboutUs from "../components/Separate_Pages/AboutUs"; // Import AboutUs
 import ContactUs from "../components/Basics/ContactUs"; // Import ContactUs
-import CarbonDataVisualization from "../components/MiCasa_Carbon_Flux/CarbonDataVisualization"; // Import CarbonDataVisualization
+import MiCASAFluxComparison from "../components/MiCasa_Carbon_Flux/MiCASAFluxComparison"; // Import CarbonDataVisualization
 import CH4FluxComparison from "../components/CH4/CH4FluxComparison";
 import Graph from "../components/Dataset_Visualize/Graph";
 import Map from "../components/Dataset_Visualize/Map";
 import Statistics from "../components/Dataset_Visualize/Statistics";
-
 
 // Import the combined CH4 map and data component
 import CH4MapWithDataPage from "../components/CH4/CH4MapWithDataPage"; // Combined CH4 map and data page component
@@ -105,8 +104,8 @@ const App: React.FC = () => {
             <Route path="/contact-us" element={<ContactUs />} />
             <Route path="/account-info" element={<AccountInfo />} />
             <Route
-              path="/carbon-data-visualization"
-              element={<CarbonDataVisualization />}
+              path="/carbon-micasa-comparison"
+              element={<MiCASAFluxComparison />}
             />
             <Route
               path="/ch4-flux-comparison"
