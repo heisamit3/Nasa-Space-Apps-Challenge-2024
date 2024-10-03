@@ -78,34 +78,36 @@ const MethaneFluxGlobe: React.FC = () => {
       console.error("Expected an array for rawData:", rawData);
       return [];
     }
-
+  
     return rawData.flatMap((item) => {
-      // Check if necessary data points are present and correctly formatted.
-
+      // Check if necessary data points are present and correctly formatted
       console.log(item);
-
-      if (
-        !item.datetime ||
-        !item.statistics ||
-        !item.statistics.b1 ||
-        !item.statistics.b1.mean
-      ) {
-        console.error("Malformed item in rawData:", item);
-        return []; // Skip malformed data.
+  
+      // Access the mean value
+      const mean = item.properties?.statistics?.b1?.mean;
+  
+      if (mean === undefined) {
+        console.error("Mean value not found in item:", item);
+        return []; // Skip items without a mean value.
       }
-
-      const mean = item.statistics.b1.mean; // Accessing the mean value correctly
-      const timestamp = item.datetime; // Assuming 'datetime' is formatted correctly
-      let lat = 0; // Placeholder value for latitude
-      let lng = 0; // Placeholder value for longitude
-
-      // Check for geographic bounding box data if available
-      if (item.bbox) {
-        const bbox = item.bbox;
-        lat = (bbox[1] + bbox[3]) / 2;
-        lng = (bbox[0] + bbox[2]) / 2;
+  
+      // Compute the centroid of the geometry to get lat and lng
+      let lat = 0;
+      let lng = 0;
+  
+      if (item.geometry && item.geometry.type === 'Polygon' && Array.isArray(item.geometry.coordinates)) {
+        // Compute centroid of the polygon
+        const coordinates = item.geometry.coordinates[0]; // Assuming first ring is the outer boundary
+        const centroid = computeCentroid(coordinates);
+        lat = centroid.lat;
+        lng = centroid.lng;
+      } else {
+        console.warn("Geometry data not found or malformed:", item);
       }
-
+  
+      // If there's no timestamp, you might assign a default or skip it
+      const timestamp = item.properties?.datetime || "Unknown";
+  
       return [
         {
           timestamp: timestamp,
@@ -116,6 +118,31 @@ const MethaneFluxGlobe: React.FC = () => {
       ];
     });
   }, []);
+
+  const computeCentroid = (coordinates: number[][]): { lat: number; lng: number } => {
+  let area = 0;
+  let x = 0;
+  let y = 0;
+  const numPoints = coordinates.length;
+
+  for (let i = 0; i < numPoints; i++) {
+    const [x1, y1] = coordinates[i];
+    const [x2, y2] = coordinates[(i + 1) % numPoints];
+
+    const a = x1 * y2 - x2 * y1;
+    area += a;
+    x += (x1 + x2) * a;
+    y += (y1 + y2) * a;
+  }
+
+  area = area / 2;
+  x = x / (6 * area);
+  y = y / (6 * area);
+
+  return { lat: y, lng: x };
+};
+
+  
 
   useEffect(() => {
     fetchData();

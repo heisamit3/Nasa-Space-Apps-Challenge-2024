@@ -253,6 +253,7 @@ def carbon_data_stats_CH4(request):
 # Function to generate statistics for a specific granule****************************************
 
 # Function to generate the AOI (Area of Interest)
+
 from rest_framework.decorators import api_view
 from django.http import JsonResponse
 import json
@@ -421,12 +422,15 @@ def compute_global_stats():
                 json=global_aoi
             ).json()
             if stat:
+                # Add datetime from the item
+                stat["datetime"] = item.get("properties", {}).get("datetime")
                 stats.append(stat)
         df = pd.json_normalize(stats)
         return df
     except Exception as e:
         print(f"Error in compute_global_stats: {str(e)}")
         return pd.DataFrame()
+
 
 from rest_framework.decorators import api_view
 from django.http import JsonResponse
