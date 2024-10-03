@@ -26,14 +26,12 @@ import Graph from "../components/Dataset_Visualize/Graph";
 import Map from "../components/Dataset_Visualize/Map";
 import Statistics from "../components/Dataset_Visualize/Statistics";
 
-
 // Import the combined CH4 map and data component
 import CH4MapWithDataPage from "../components/CH4/CH4MapWithDataPage"; // Combined CH4 map and data page component
-import CH4MapComponent from "../components/CH4/CH4MapComponent"; // Import your CH4MapComponent
-import CH4DataPage from "../components/CH4/CH4DataPage"; // Import your CH4DataPage
+// import CH4MapComponent from "../components/CH4/CH4MapComponent"; // Import your CH4MapComponent
+// import CH4DataPage from "../components/CH4/CH4DataPage"; // Import your CH4DataPage
 import MethaneFluxGlobe from "../components/CH4/MethaneFluxGlobe"; // Import your MethaneFluxGlobe
 import NasaData from "../components/Separate_Pages/NasaData"; // Import your NasaData
-
 
 const App: React.FC = () => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(() => {
@@ -115,11 +113,9 @@ const App: React.FC = () => {
 
             {/* New unified CH4 map and data page */}
             <Route path="/ch4-map-with-data" element={<CH4MapWithDataPage />} />
-            <Route path="/ch4-map" element={<CH4MapComponent />} />
-            <Route path="/ch4-data-show" element={<CH4DataPage />} />
+
             <Route path="/methane-flux-globe" element={<MethaneFluxGlobe />} />
             <Route path="nasa-data" element={<NasaData />} />
-
           </Routes>
           <Character currentPath={window.location.pathname} />
           <Footer />
