@@ -1,0 +1,148 @@
+/* Container for the entire page */
+.map-data-container {
+    background-color: #1a1a1a;
+    color: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid #ff8000;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.7);
+  }
+  
+  /* Map Component Styles */
+  .map-box {
+    height: 60vh;
+    width: 100%;
+    border: 2px solid #ff8000;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+  }
+  
+  /* Circle Path Options (Map) */
+  .leaflet-interactive {
+    stroke: #ff8000 !important;
+    fill: #1a1a1a !important;
+    fill-opacity: 0.6 !important;
+    stroke-width: 2px;
+  }
+  
+  /* Loading Container */
+  .loading-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 20px;
+    margin-top: 20px;
+  }
+  
+  .loading-spinner {
+    font-size: 3rem;
+    color: #ff8000;
+    animation: spin 1.5s linear infinite;
+  }
+  
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  
+  .loading-text {
+    font-size: 1.5rem;
+    color: #ff8000;
+    margin-top: 10px;
+  }
+  
+  /* Chart Container (Emission Graph) */
+  .chart-container {
+    background-color: #000;
+    color: #ff8000;
+    padding: 20px;
+    border-radius: 10px;
+    border: 2px solid #ff8000;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.6);
+    margin-top: 20px;
+  }
+  
+  .chart-header {
+    font-size: 1.5rem;
+    color: #ff8000;
+    margin-bottom: 20px;
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.8);
+  }
+  
+  .chart {
+    height: 500px;
+  }
+  
+  /* Comparison Layout for Graphs */
+  .graph-comparison-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
+  
+  .graph-column {
+    width: 48%; /* Make both graphs take 48% of the width for a two-column layout */
+  }
+  
+  /* Region Title Styling */
+  .region-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #ff8000;
+    text-align: center;
+    margin-bottom: 10px;
+  }
+  
+  /* Button Styles */
+  .button-group {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  
+  button {
+    display: inline-flex;
+    align-items: center;
+    padding: 10px 20px;
+    font-size: 1.25rem;
+    color: #fff;
+    background-color: #ff8000;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-right: 10px;
+  }
+  
+  button svg {
+    margin-right: 8px;
+    font-size: 1.5rem;
+  }
+  
+  button:hover {
+    background-color: #e67300;
+  }
+  
+  /* Responsive Layout for Smaller Screens */
+  @media (max-width: 768px) {
+    .graph-comparison-container {
+      flex-direction: column; /* Stack graphs vertically on smaller screens */
+    }
+  
+    .graph-column {
+      width: 100%; /* Make graphs full width on smaller screens */
+      margin-bottom: 20px;
+    }
+  
+    button {
+      width: 100%;
+      justify-content: center;
+      margin-bottom: 10px;
+    }
+  }
+  

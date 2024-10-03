@@ -1,0 +1,21 @@
+/* Chart Container
+.chart-container {
+    background-color: #000;
+    color: #ff8000;
+    padding: 20px;
+    border-radius: 10px;
+    border: 2px solid #ff8000;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.6);
+  }
+  
+  .chart-header {
+    font-size: 1.5rem;
+    color: #ff8000;
+    margin-bottom: 20px;
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.8);
+  }
+  
+  .chart {
+    height: 500px;
+  }
+   */

@@ -1,0 +1,33 @@
+/* Data Page Styles
+.data-container {
+    background-color: #1a1a1a;
+    color: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid #ff8000;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.7);
+  }
+  
+  .coordinates-box {
+    background-color: #262626;
+    border-radius: 8px;
+    padding: 16px;
+    border: 1px solid #333;
+    margin-bottom: 20px;
+  }
+  
+  .coordinates-header {
+    font-size: 1.2rem;
+    color: #ff8000;
+    margin-bottom: 10px;
+  }
+  
+  .back-link {
+    color: #ff8000;
+    font-weight: bold;
+  }
+  
+  .back-link:hover {
+    text-decoration: underline;
+  }
+   */
