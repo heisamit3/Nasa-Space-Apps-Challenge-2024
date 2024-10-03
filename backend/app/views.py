@@ -12,7 +12,9 @@ import requests
 from django.http import JsonResponse
 from rest_framework.decorators import api_view
 from django.conf import settings
-
+import json
+import pandas as pd
+from django.views.decorators.csrf import csrf_exempt
 
 @api_view(['POST'])
 def login_view(request):
@@ -165,3 +167,168 @@ def carbon_data_view_CH4(request):
         }
     })
 
+
+
+
+# # Function to generate statistics for a specific granule
+# def generate_stats(item, geojson):
+#     result = requests.post(
+#         f"{RASTER_API_URL}/cog/statistics",
+#         params={"url": item["assets"][asset_name]["href"]},
+#         json=geojson,
+#     ).json()
+    
+#     return {
+#         **result["properties"],
+#         "datetime": item["properties"]["start_datetime"][:10],
+#     }
+
+# # Function to clean stats into a DataFrame
+# def clean_stats(stats_json) -> pd.DataFrame:
+#     df = pd.json_normalize(stats_json)
+#     df.columns = [col.replace("statistics.b1.", "") for col in df.columns]
+#     df["date"] = pd.to_datetime(df["datetime"])
+#     return df
+
+# @csrf_exempt
+# def compute_stats(request):
+#     print("got here")
+#     if request.method == 'POST':
+#         # Parse the incoming request data
+#         data = json.loads(request.body)
+        
+#         # Area of interest (AOI) received from frontend, must be in correct GeoJSON format
+#         aoi = data.get("aoi", None)
+#         if not aoi:
+#             return JsonResponse({"error": "Invalid area of interest"}, status=400)
+
+#         # Fetch items from STAC API
+#         items = requests.get(
+#             f"{STAC_API_URL}/collections/{collection_name}/items?limit=600"
+#         ).json()["features"]
+
+#         # Generate statistics for each item using the specified region (AOI)
+#         stats = [generate_stats(item, aoi) for item in items]
+        
+#         # Clean the statistics into a Pandas DataFrame
+#         df = clean_stats(stats)
+
+#         # Convert DataFrame to JSON to send back to React
+#         df_json = df.to_json(orient='records', date_format='iso')
+
+#         return JsonResponse({"data": df_json}, safe=False)
+
+#     return JsonResponse({"error": "Invalid request method"}, status=400)
+from rest_framework.decorators import api_view
+from django.http import JsonResponse
+
+@api_view(["POST"])
+def carbon_data_stats_CH4(request):
+    # Parse the incoming request data
+    data = request.data
+    aoi = data.get("aoi", None)
+    
+    if not aoi:
+        print("Invalid area of interest")
+        return JsonResponse({"error": "Invalid area of interest"}, status=400)
+
+    # Extract latitude and longitude from the GeoJSON
+    coordinates = aoi['features'][0]['geometry']['coordinates']
+    lng, lat = coordinates
+
+    # Print latitude and longitude
+    print(f"Latitude: {lat}, Longitude: {lng}")
+
+    # Send back the center coordinates and the radius
+    return JsonResponse({
+        "message": "Received latitude and longitude",
+        "lat": lat,
+        "lng": lng,
+        "radius": 5000,  # Radius in meters
+    }, status=200)
+    
+    
+    
+    
+# Function to generate statistics for a specific granule****************************************
+
+# Function to generate the AOI (Area of Interest)
+def create_aoi(coordinates):
+    return {
+        "type": "Feature",
+        "properties": {},
+        "geometry": {
+            "type": "Polygon",
+            "coordinates": [coordinates],
+        },
+    }
+
+# Function to fetch items from the STAC API
+def fetch_stac_items(collection_name, limit=600):
+    response = requests.get(f"{STAC_API_URL}/collections/{collection_name}/items?limit={limit}")
+    items = response.json()["features"]
+    print(f"Found {len(items)} items")
+    return items
+
+# Function to examine available asset names in the first item
+def inspect_assets(item):
+    print("Available assets:", item["assets"].keys())
+
+# Function to generate statistics for a given item and AOI
+def generate_stats(item, geojson, asset_name):  # Use the correct asset_name from assets
+    result = requests.post(
+        f"{RASTER_API_URL}/cog/statistics",
+        params={"url": item["assets"][asset_name]["href"]},
+        json=geojson,
+    ).json()
+    
+    return {
+        **result["properties"],
+        "datetime": item["properties"]["start_datetime"][:10],
+    }
+
+# Function to clean the statistics data into a DataFrame
+def clean_stats(stats_json) -> pd.DataFrame:
+    df = pd.json_normalize(stats_json)
+    df.columns = [col.replace("statistics.b1.", "") for col in df.columns]
+    df["date"] = pd.to_datetime(df["datetime"])
+    return df
+# Main function to get statistics and plot for a specific location
+def compute_stats(area_name, coordinates, limit=600):
+    # Generate AOI
+    aoi = create_aoi(coordinates)
+
+    # Fetch items from the STAC API
+    items = fetch_stac_items(collection_name, limit)
+
+    # Inspect available assets for the first item
+    inspect_assets(items[0])  # See what asset names are available
+
+    # Set the correct asset name (replace "asset_name" with the correct one found in inspect_assets)
+    asset_name = "fossil"  # Update based on inspection
+
+    # Generate statistics for all items
+    stats = [generate_stats(item, aoi, asset_name) for item in items]
+
+    # Clean and process stats
+    df = clean_stats(stats)
+
+@api_view(['POST'])
+def compute_stats_view(request):
+    data = json.loads(request.body)
+    coordinates = data.get("coordinates", [])
+    print("Received coordinates:", coordinates)
+    if not coordinates:
+        return JsonResponse({"error": "No coordinates provided"}, status=400)
+
+    # Create area name based on the coordinates
+    area_name = "Area"  # You can customize this as needed
+
+    # Call the compute_stats function with the given coordinates
+    df = compute_stats(area_name, coordinates)  # Update this to your function definition
+    print("DataFrame received:", df)
+    if df is None:
+        return JsonResponse({"error": "Failed to compute statistics."}, status=500)
+    response_data = df.to_dict(orient='records')
+    print("Computed stats for the area:", response_data)
+    return JsonResponse({"data": response_data}, status=200)
