@@ -24,6 +24,8 @@ import ContactUs from "../components/Basics/ContactUs"; // Import ContactUs
 import CarbonDataVisualization from "../components/MiCasa_Carbon_Flux/CarbonDataVisualization"; // Import CarbonDataVisualization
 import CH4FluxComparison from "../components/CH4/CH4FluxComparison"; // Import CH4FluxComparison
 import CH4MapComponent from "../components/CH4/CH4MapComponent"; // Import your CH4MapComponent
+import CH4DataPage from "../components/CH4/CH4DataPage"; // Import your CH4DataPage
+import MethaneFluxGlobe from "../components/CH4/MethaneFluxGlobe"; // Import your MethaneFluxGlobe
 
 const App: React.FC = () => {
   // Initialize the login state from localStorage, defaulting to false if not found
@@ -111,10 +113,10 @@ const App: React.FC = () => {
               path="/ch4-flux-comparison"
               element={<CH4FluxComparison />}
             />
-
             <Route path="/ch4-map" element={<CH4MapComponent />} />
-
-        </Routes>
+            <Route path="/ch4-data-show" element={<CH4DataPage />} />
+            <Route path="/methane-flux-globe" element={<MethaneFluxGlobe />} />
+          </Routes>
           <Character currentPath={window.location.pathname} />
           <Footer /> {/* Footer component */}
         </div>

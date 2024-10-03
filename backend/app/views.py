@@ -253,6 +253,17 @@ def carbon_data_stats_CH4(request):
 # Function to generate statistics for a specific granule****************************************
 
 # Function to generate the AOI (Area of Interest)
+from rest_framework.decorators import api_view
+from django.http import JsonResponse
+import json
+import pandas as pd
+import requests
+
+# Constants
+STAC_API_URL = "https://earth.gov/ghgcenter/api/stac"
+RASTER_API_URL = "https://earth.gov/ghgcenter/api/raster"
+collection_name = "tm54dvar-ch4flux-monthgrid-v1"
+
 def create_aoi(coordinates):
     return {
         "type": "Feature",
@@ -263,72 +274,175 @@ def create_aoi(coordinates):
         },
     }
 
-# Function to fetch items from the STAC API
-def fetch_stac_items(collection_name, limit=600):
-    response = requests.get(f"{STAC_API_URL}/collections/{collection_name}/items?limit={limit}")
-    items = response.json()["features"]
-    print(f"Found {len(items)} items")
-    return items
+# def fetch_stac_items(collection_name, limit=10):
+#     response = requests.get(f"{STAC_API_URL}/collections/{collection_name}/items?limit={limit}")
+#     items = response.json()["features"]
+#     return items
 
-# Function to examine available asset names in the first item
-def inspect_assets(item):
-    print("Available assets:", item["assets"].keys())
-
-# Function to generate statistics for a given item and AOI
-def generate_stats(item, geojson, asset_name):  # Use the correct asset_name from assets
-    result = requests.post(
-        f"{RASTER_API_URL}/cog/statistics",
-        params={"url": item["assets"][asset_name]["href"]},
-        json=geojson,
-    ).json()
+def fetch_stac_items(collection_name, start_year=1999, end_year=2024, limit=1):
+    all_items = []
     
-    return {
-        **result["properties"],
-        "datetime": item["properties"]["start_datetime"][:10],
-    }
+    for year in range(start_year, end_year + 1):
+        # Define the datetime range for the specific year
+        datetime_range = f"{year}-01-01T00:00:00Z/{year}-12-31T23:59:59Z"
+        
+        # Construct the URL with the correct query parameter syntax
+        response = requests.get(f"{STAC_API_URL}/collections/{collection_name}/items?limit={limit}&datetime={datetime_range}")
+        
+        # Check if the response was successful
+        response.raise_for_status()  # Raises an HTTPError if the response code is 4XX or 5XX
+        
+        # Parse the JSON response
+        items = response.json()["features"]
+        all_items.extend(items)
+        print(f"Found {len(items)} items for year {year}")
+    
+    print(f"Total items found: {len(all_items)}")
+    return all_items
 
-# Function to clean the statistics data into a DataFrame
-def clean_stats(stats_json) -> pd.DataFrame:
-    df = pd.json_normalize(stats_json)
-    df.columns = [col.replace("statistics.b1.", "") for col in df.columns]
+def generate_stats(item, geojson, asset_name):
+    try:
+        result = requests.post(
+            f"{RASTER_API_URL}/cog/statistics",
+            params={"url": item["assets"][asset_name]["href"]},
+            json=geojson,
+        ).json()
+        
+        return {
+            **result["properties"],
+            "datetime": item["properties"]["start_datetime"][:10],
+        }
+    except Exception as e:
+        print(f"Error generating stats: {str(e)}")
+        return None
+
+def clean_stats(stats_json):
+    if not stats_json:
+        return pd.DataFrame()  # Return empty DataFrame if no stats
+    
+    df = pd.DataFrame(stats_json)
+    if 'statistics.b1.' in df.columns[0]:
+        df.columns = [col.replace("statistics.b1.", "") for col in df.columns]
     df["date"] = pd.to_datetime(df["datetime"])
     return df
-# Main function to get statistics and plot for a specific location
-def compute_stats(area_name, coordinates, limit=600):
-    # Generate AOI
-    aoi = create_aoi(coordinates)
 
-    # Fetch items from the STAC API
-    items = fetch_stac_items(collection_name, limit)
+def compute_stats(coordinates):
+    try:
+        # Generate AOI
+        aoi = create_aoi(coordinates)
 
-    # Inspect available assets for the first item
-    inspect_assets(items[0])  # See what asset names are available
+        # Fetch items from the STAC API
+        items = fetch_stac_items(collection_name)
 
-    # Set the correct asset name (replace "asset_name" with the correct one found in inspect_assets)
-    asset_name = "fossil"  # Update based on inspection
+        # Generate statistics for all items
+        asset_name = "total"
+        stats = []
+        for item in items:
+            stat = generate_stats(item, aoi, asset_name)
+            if stat:
+                stats.append(stat)
 
-    # Generate statistics for all items
-    stats = [generate_stats(item, aoi, asset_name) for item in items]
-
-    # Clean and process stats
-    df = clean_stats(stats)
+        # Clean and process stats
+        df = clean_stats(stats)
+        return df
+    except Exception as e:
+        print(f"Error in compute_stats: {str(e)}")
+        return pd.DataFrame()
 
 @api_view(['POST'])
 def compute_stats_view(request):
-    data = json.loads(request.body)
-    coordinates = data.get("coordinates", [])
-    print("Received coordinates:", coordinates)
-    if not coordinates:
-        return JsonResponse({"error": "No coordinates provided"}, status=400)
+    try:
+        data = json.loads(request.body)
+        coordinates = data.get("coordinates", [])
+        print("Received coordinates:", coordinates)
+        
+        if not coordinates:
+            return JsonResponse({"error": "No coordinates provided"}, status=400)
 
-    # Create area name based on the coordinates
-    area_name = "Area"  # You can customize this as needed
+        df = compute_stats(coordinates)
+        
+        if df.empty:
+            return JsonResponse({"error": "No data found for the given coordinates"}, status=404)
+        
+        response_data = df.to_dict(orient='records')
+        return JsonResponse({"data": response_data}, status=200)
+    
+    except Exception as e:
+        return JsonResponse({"error": str(e)}, status=500)
 
-    # Call the compute_stats function with the given coordinates
-    df = compute_stats(area_name, coordinates)  # Update this to your function definition
-    print("DataFrame received:", df)
-    if df is None:
-        return JsonResponse({"error": "Failed to compute statistics."}, status=500)
-    response_data = df.to_dict(orient='records')
-    print("Computed stats for the area:", response_data)
-    return JsonResponse({"data": response_data}, status=200)
+
+#************************************************************************************************
+# Function to generate spinning world 
+
+
+from rest_framework.decorators import api_view
+from django.http import JsonResponse
+import json
+import pandas as pd
+import requests
+
+STAC_API_URL = "https://earth.gov/ghgcenter/api/stac"
+RASTER_API_URL = "https://earth.gov/ghgcenter/api/raster"
+collection_name = "tm54dvar-ch4flux-monthgrid-v1"
+
+def create_global_aoi():
+    """Creates a GeoJSON object representing a global bounding box."""
+    return {
+        "type": "Feature",
+        "properties": {},
+        "geometry": {
+            "type": "Polygon",
+            "coordinates": [[[-180, -90], [180, -90], [180, 90], [-180, 90], [-180, -90]]],
+        },
+    }
+
+def fetch_stac_items_for_global_stats(start_year=1999, end_year=2024):
+    """Fetches STAC items for all years, assuming global coverage."""
+    all_items = []
+    for year in range(start_year, end_year + 1):
+        datetime_range = f"{year}-01-01T00:00:00Z/{year}-12-31T23:59:59Z"
+        url = f"{STAC_API_URL}/collections/{collection_name}/items?limit=1&datetime={datetime_range}"
+        response = requests.get(url)
+        response.raise_for_status()
+        items = response.json()["features"]
+        all_items.extend(items)
+    return all_items
+
+def compute_global_stats():
+    """Computes statistics for a global AOI across all available items."""
+    try:
+        global_aoi = create_global_aoi()
+        items = fetch_stac_items_for_global_stats()
+        stats = []
+        for item in items:
+            stat = requests.post(
+                f"{RASTER_API_URL}/cog/statistics",
+                params={"url": item["assets"]["total"]["href"]},
+                json=global_aoi
+            ).json()
+            if stat:
+                stats.append(stat)
+        df = pd.json_normalize(stats)
+        return df
+    except Exception as e:
+        print(f"Error in compute_global_stats: {str(e)}")
+        return pd.DataFrame()
+
+from rest_framework.decorators import api_view
+from django.http import JsonResponse
+
+@api_view(['POST'])  # This allows only POST requests
+def compute_global_stats_view(request):
+    try:
+        # Assuming you might be passing parameters through POST, you handle them here
+        # If no parameters are needed and you still want to use POST, just ignore the request data
+        df = compute_global_stats()
+        if df.empty:
+            return JsonResponse({"error": "No global data found"}, status=404)
+        response_data = df.to_dict(orient='records')
+        return JsonResponse({"data": response_data}, status=200)
+    except Exception as e:
+        return JsonResponse({"error": str(e)}, status=500)
+
+
+# You'll need to add 'compute_global_stats_view' to your Django URLs configuration.
