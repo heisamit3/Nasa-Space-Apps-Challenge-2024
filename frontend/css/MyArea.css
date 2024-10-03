@@ -1,0 +1,70 @@
+.graph-container,
+.stories-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center horizontally */
+    justify-content: center; /* Center vertically */
+    margin: 20px auto; /* Center the section horizontally */
+    width: 80%; /* Optional: Adjust the width of the container */
+    text-align: center; /* Center the text */
+
+}
+.existing-stories {
+    display: flex;
+    flex-wrap: wrap; /* Wrap the stories */
+    gap: 20px; /* Add space between stories */
+    margin-top: 20px;
+    color:aliceblue;
+}
+.stories-container {
+    display: flex;
+    flex-direction: column; /* Stack vertically */
+    align-items: center; /* Center horizontally */
+    width: 100%;
+    margin-top: 20px;
+    color:aliceblue;
+}
+
+textarea {
+    width: 80%; /* Adjust width of the text area */
+    height: 100px;
+    padding: 10px;
+    margin-bottom: 10px;
+    color: rgb(62, 41, 9);
+}
+.alert-section {
+    margin: 20px;
+    text-align: center;
+  }
+  
+  .alert-form {
+    margin-top: 20px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #f9f9f9;
+  }
+  
+  .alert-form div {
+    margin: 15px;
+  }
+  
+  .alert-form label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    text-align: left;
+  }
+  
+  .alert-form input,
+  .alert-form textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+  }
+  
