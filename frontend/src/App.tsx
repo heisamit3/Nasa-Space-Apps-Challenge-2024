@@ -30,6 +30,7 @@ import Statistics from "../components/Dataset_Visualize/Statistics";
 import CH4MapComponent from "../components/CH4/CH4MapComponent"; // Import your CH4MapComponent
 import CH4DataPage from "../components/CH4/CH4DataPage"; // Import your CH4DataPage
 import MethaneFluxGlobe from "../components/CH4/MethaneFluxGlobe"; // Import your MethaneFluxGlobe
+import NasaData from "../components/Separate_Pages/NasaData"; // Import your NasaData
 
 const App: React.FC = () => {
   // Initialize the login state from localStorage, defaulting to false if not found
@@ -123,6 +124,7 @@ const App: React.FC = () => {
             <Route path="/ch4-map" element={<CH4MapComponent />} />
             <Route path="/ch4-data-show" element={<CH4DataPage />} />
             <Route path="/methane-flux-globe" element={<MethaneFluxGlobe />} />
+            <Route path="nasa-data" element={<NasaData />} />
           </Routes>
           <Character currentPath={window.location.pathname} />
           <Footer /> {/* Footer component */}
