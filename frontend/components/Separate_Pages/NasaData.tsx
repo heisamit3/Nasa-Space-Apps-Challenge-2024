@@ -103,7 +103,7 @@ const NasaData: React.FC = () => {
           <Dropdown>
             <span>MiCasa Land Carbon Flux</span>
             <DropdownContent>
-              <DropdownItem onClick={() => handleNavigation("/micasa_map")}>Map</DropdownItem>
+              <DropdownItem onClick={() => handleNavigation("/carbon-micasa-comparison")}>Map</DropdownItem>
               <DropdownItem onClick={() => handleNavigation("/micasa/monthly")}>Statistics</DropdownItem>
               <DropdownItem onClick={() => handleNavigation("/micasa/daily")}>Simulation</DropdownItem>
             </DropdownContent>

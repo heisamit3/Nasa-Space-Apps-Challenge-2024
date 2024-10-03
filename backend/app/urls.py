@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import message_view, login_view, signup_view,carbon_data_view,carbon_data_view_CH4,carbon_data_stats_CH4,compute_stats_view,compute_global_stats_view
+from .views import *
 
 urlpatterns = [
     path('api/message/', message_view, name='message_view'),
@@ -12,4 +12,7 @@ urlpatterns = [
     path('carbon_data_stats_CH4/', carbon_data_stats_CH4, name='carbon_data_stats_CH4'),
     path('compute_stats_view/', compute_stats_view, name='compute_stats_view'),
     path('compute_global_stats_view/', compute_global_stats_view, name='compute_global_stats_view'),
+    path('carbon_data_view_micasa/', carbon_data_view_micasa, name='carbon_data_view_micasa'),
+    # compute_micasa_stats_view
+    path('compute_micasa_stats_view/', compute_micasa_stats_view, name='compute_micasa_stats_view'),
 ]
