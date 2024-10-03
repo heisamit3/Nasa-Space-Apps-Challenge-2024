@@ -1,130 +1,71 @@
-// import React, { useState } from "react";
-// import { MapContainer, TileLayer, useMapEvents, Circle } from "react-leaflet";
-// import "leaflet/dist/leaflet.css";
-
-// const CH4MapComponent: React.FC = () => {
-//   const [area, setArea] = useState<any | null>(null); // State to store the area information
-
-//   // Custom hook to handle map events
-//   const MapEvents = () => {
-//     useMapEvents({
-//       dblclick: async (event) => {
-//         const { lat, lng } = event.latlng; // Get latitude and longitude from the event
-
-//         try {
-//           const response = await fetch("http://127.0.0.1:8000/carbon_data_stats_CH4/", {
-//             method: "POST",
-//             headers: {
-//               "Content-Type": "application/json",
-//             },
-//             body: JSON.stringify({
-//               aoi: {
-//                 type: "FeatureCollection",
-//                 features: [
-//                   {
-//                     type: "Feature",
-//                     geometry: {
-//                       type: "Point",
-//                       coordinates: [lng, lat], // Send coordinates in [longitude, latitude] format
-//                     },
-//                   },
-//                 ],
-//               },
-//             }),
-//           });
-
-//           if (!response.ok) {
-//             throw new Error("Network response was not ok");
-//           }
-
-//           const data = await response.json();
-//           console.log("Response Data:", data); // Log the response data for debugging
-
-//           // Set the area state with data from the server
-//           setArea({
-//             lat: data.lat,
-//             lng: data.lng,
-//             radius: data.radius,
-//           });
-//         } catch (error) {
-//           console.error("Error:", error);
-//         }
-//       },
-//     });
-//     return null; // This component does not render anything
-//   };
-
-//   return (
-//     <MapContainer 
-//       center={[20, 0]} // Center of the map (20°N, 0°E) for a global view
-//       zoom={2} // Set a lower zoom level to show the whole world
-//       style={{ height: "100vh", width: "100%" }}
-//     >
-//       <TileLayer
-//         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-//         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-//       />
-//       <MapEvents /> {/* Include the event handler */}
-
-//       {/* Render a circle for the marked area */}
-//       {area && (
-//         <Circle 
-//           center={[area.lat, area.lng]} 
-//           radius={area.radius} 
-//           pathOptions={{ color: 'blue', fillColor: 'blue', fillOpacity: 0.5 }} 
-//         />
-//       )}
-//     </MapContainer>
-//   );
-// };
-
-// export default CH4MapComponent;
-
-
-
-
-
-
-
-
-
-
-
-
-
 import React, { useState } from "react";
 import { MapContainer, TileLayer, useMapEvents, Circle } from "react-leaflet";
+import { useNavigate } from "react-router-dom";
 import "leaflet/dist/leaflet.css";
+import CH4EmissionsGraph from "./CH4EmissionsGraph";
+
+interface Area {
+  lat: number;
+  lng: number;
+  radius: number;
+}
+
+const LoadingSpinner: React.FC = () => (
+  <div className="flex justify-center items-center h-20">
+    <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-500"></div>
+  </div>
+);
+
+interface EmissionDataPoint {
+  timestamp: string;
+  value: number;
+}
 
 const CH4MapComponent: React.FC = () => {
-  const [area, setArea] = useState<any | null>(null); // State to store the area information
-  const [error, setError] = useState<string | null>(null); // State to store error messages
+  const navigate = useNavigate();
 
-  // Custom hook to handle map events
+  const [area, setArea] = useState<Area | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [emissionsData, setEmissionsData] = useState<
+    EmissionDataPoint[] | null
+  >(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
   const MapEvents = () => {
     useMapEvents({
-      dblclick: async (event) => {
-        const { lat, lng } = event.latlng; // Get latitude and longitude from the event
+      click: async (event) => {
+        const { lat, lng } = event.latlng;
 
-        // Define the coordinates in the required format
         const coordinates = [
-          [lng, lat], // Bottom left
-          [lng, lat + 4], // Top left
-          [lng - 4, lat + 4], // Top right
-          [lng - 4, lat], // Bottom right
-          [lng, lat], // Closing the polygon
+          [lng, lat],
+          [lng, lat + 4],
+          [lng - 4, lat + 4],
+          [lng - 4, lat],
+          [lng, lat],
         ];
 
+        setArea({
+          lat: lat,
+          lng: lng,
+          radius: 50000,
+        });
+
+        setIsLoading(true);
+        setError(null);
+
         try {
-          const response = await fetch("http://127.0.0.1:8000/compute_stats_view/", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              coordinates: coordinates, // Send coordinates
-            }),
-          });
+          const response = await fetch(
+            "http://127.0.0.1:8000/compute_stats_view/",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                coordinates: coordinates,
+              }),
+            }
+          );
 
           if (!response.ok) {
             const errorText = await response.text();
@@ -132,54 +73,55 @@ const CH4MapComponent: React.FC = () => {
           }
 
           const data = await response.json();
-          console.log("Response Data:", data); // Log the response data for debugging
+          console.log(data);
+          setEmissionsData(data.data);
 
-          // Set the area state with data from the server
-          setArea({
-            lat: lat,
-            lng: lng,
-            radius: 50000, // Set your desired radius here
+          // Navigate to a new route with state
+          navigate("/ch4-data-show", {
+            state: { emissionsData: data.data, coordinates },
           });
-          setError(null); // Reset error state on successful request
-        } catch (error: unknown) {
-          // Use type assertion to handle the error correctly
+        } catch (error) {
           if (error instanceof Error) {
-            console.error("Error:", error.message);
-            setError(error.message); // Set error state
+            setError(error.message);
           } else {
-            console.error("Unknown error:", error);
-            setError("An unknown error occurred."); // Handle unknown errors
+            setError("An unknown error occurred.");
           }
+          setEmissionsData(null);
+        } finally {
+          setIsLoading(false);
         }
       },
     });
-    return null; // This component does not render anything
+    return null;
   };
 
   return (
-    <MapContainer 
-      center={[20, 0]} // Center of the map (20°N, 0°E) for a global view
-      zoom={2} // Set a lower zoom level to show the whole world
-      style={{ height: "100vh", width: "100%" }}
-    >
-      <TileLayer
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-      />
-      <MapEvents /> {/* Include the event handler */}
-
-      {/* Render a circle for the marked area */}
-      {area && (
-        <Circle 
-          center={[area.lat, area.lng]} 
-          radius={area.radius} 
-          pathOptions={{ color: 'blue', fillColor: 'blue', fillOpacity: 0.5 }} 
+    <div className="flex flex-col h-screen">
+      <h1 className="text-2xl font-bold p-4">
+        Click on the map to view CH4 emissions data
+      </h1>
+      <MapContainer
+        center={[20, 0]}
+        zoom={2}
+        style={{ height: "60vh", width: "100%" }}
+      >
+        <TileLayer
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         />
-      )}
+        <MapEvents />
+        {area && (
+          <Circle
+            center={[area.lat, area.lng]}
+            radius={area.radius}
+            pathOptions={{ color: "blue", fillColor: "blue", fillOpacity: 0.5 }}
+          />
+        )}
+      </MapContainer>
 
-      {/* Display error message if any */}
-      {error && <div style={{ color: 'red' }}>{error}</div>}
-    </MapContainer>
+      {isLoading && <LoadingSpinner />}
+      {error && <div className="text-red-500 p-4">{error}</div>}
+    </div>
   );
 };
 
