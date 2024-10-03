@@ -1,7 +1,13 @@
 import React from "react";
 import { Line } from "react-chartjs-2";
 import { Chart, registerables } from "chart.js";
-import { FaMapMarkerAlt, FaGlobe, FaBook, FaIndustry } from "react-icons/fa"; // Import React Icons
+import {
+  FaMapMarkerAlt,
+  FaGlobe,
+  FaBook,
+  FaIndustry,
+  FaGamepad,
+} from "react-icons/fa"; // Import React Icons
 import "leaflet/dist/leaflet.css";
 import "../../css/Dashboard.css";
 import { useNavigate } from "react-router-dom"; // Import useNavigate for navigation
@@ -10,6 +16,10 @@ Chart.register(...registerables);
 
 const Dashboard: React.FC = () => {
   const navigate = useNavigate(); // Initialize useNavigate for navigation
+
+  const openGameLink = () => {
+    window.open("https://scijinks.gov/menu/games/", "_blank");
+  };
 
   // CO2 data from 2000 to 2023
   const co2Data = {
@@ -105,6 +115,14 @@ const Dashboard: React.FC = () => {
         >
           <FaIndustry className="icon" />
           <h3>Sectors Responsible</h3>
+        </div>
+        <div className="button" onClick={openGameLink}>
+          <FaGamepad className="icon" />
+          <h3>Game</h3>
+        </div>
+        <div className= "button" onClick={() => handleButtonClick("/nasa-data")}>
+          <FaBook className="icon" />
+          <h3>Nasa Data</h3>
         </div>
       </div>
     </div>
