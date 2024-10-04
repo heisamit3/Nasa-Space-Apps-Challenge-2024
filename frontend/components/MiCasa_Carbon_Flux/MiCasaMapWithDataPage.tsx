@@ -106,7 +106,7 @@ const MiCasaMapWithDataPage: React.FC = () => {
         setTimeout(async () => {
           try {
             const response = await fetch(
-              "http://127.0.0.1:8000/compute_micasa_stats_view/",
+              "http://127.0.0.1:8000/compute_micasa_stats_view",
               {
                 method: "POST",
                 headers: {
@@ -150,11 +150,11 @@ const MiCasaMapWithDataPage: React.FC = () => {
     coordinates: number[][],
     regionName: string | null
   ) => {
-    setIsLoading(true); // Start loading animation
+    setIsLoading(true);
 
     try {
       const response = await fetch(
-        "http://127.0.0.1:8000/compute_micasa_stats_view/",
+        "http://127.0.0.1:8000/compute_micasa_stats_view/", // Note the trailing slash
         {
           method: "POST",
           headers: {
@@ -167,19 +167,12 @@ const MiCasaMapWithDataPage: React.FC = () => {
       );
 
       if (!response.ok) {
-        throw new Error(`Network response was not ok`);
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
 
       const data = await response.json();
 
-      if (compareMode) {
-        setPreviousEmissionsData(emissionsData);
-        setPreviousRegion(currentRegion);
-      }
-
-      setEmissionsData(data.data);
-      setCurrentRegion(regionName || "Unknown Region");
-      setCompareMode(true);
+      // Rest of your code...
     } catch (error) {
       console.error("Error fetching data:", error);
       setEmissionsData(null);
@@ -188,7 +181,6 @@ const MiCasaMapWithDataPage: React.FC = () => {
     }
   };
 
- 
   const handleSearch = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const query = e.target.value;
     setSearchQuery(query);
@@ -293,7 +285,6 @@ const MiCasaMapWithDataPage: React.FC = () => {
     setSearchQuery(""); // Clear the search query
     setSuggestions([]); // Clear suggestions
   };
-
 
   // Emission Graph Component
   const MicasaEmissionsGraph = ({
@@ -455,7 +446,11 @@ const MiCasaMapWithDataPage: React.FC = () => {
         {suggestions.length > 0 && (
           <ul className="suggestions-list">
             {suggestions.map((suggestion, index) => (
-              <li key={index} className="suggestion-item" onClick={() => handleSuggestionClick(suggestion)}>
+              <li
+                key={index}
+                className="suggestion-item"
+                onClick={() => handleSuggestionClick(suggestion)}
+              >
                 {suggestion}
               </li>
             ))}

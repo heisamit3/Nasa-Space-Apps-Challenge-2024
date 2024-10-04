@@ -20,6 +20,8 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from .serializers import SignupSerializer
 from .models import User, Profile
+import os
+import django
 
 
 
@@ -450,6 +452,7 @@ def compute_global_stats_view(request):
     try:
         # Assuming you might be passing parameters through POST, you handle them here
         # If no parameters are needed and you still want to use POST, just ignore the request data
+        print("*****************")
         df = compute_global_stats()
         if df.empty:
             return JsonResponse({"error": "No global data found"}, status=404)
@@ -505,10 +508,12 @@ def carbon_data_view_micasa(request):
     print("MiCASA data request received")
     
     # Fetch the total number of items in the MiCASA collection
-    items_response = requests.get(f"{STAC_API_URL}/collections/{micasa_collection_name}/items?limit=800")
+    items_response = requests.get(f"https://earth.gov/ghgcenter/api/stac/collections/micasa-carbonflux-daygrid-v1/items?limit=1")
 
     if not items_response.ok:
         return JsonResponse({"error": "Error fetching items from STAC API"}, status=500)
+    
+    print("MiCASA items fetched successfully")
 
     items = items_response.json()["features"]
 
@@ -517,16 +522,16 @@ def carbon_data_view_micasa(request):
 
     # Fetch rescale values from one of the items (e.g., 2023-01-01)
     rescale_values = {
-        "max": items_dict["2023-01-01"]["assets"][micasa_asset_name]["raster:bands"][0]["histogram"]["max"],
-        "min": items_dict["2023-01-01"]["assets"][micasa_asset_name]["raster:bands"][0]["histogram"]["min"]
+        "max": items_dict["2023-12-31"]["assets"][micasa_asset_name]["raster:bands"][0]["histogram"]["max"],
+        "min": items_dict["2023-12-31"]["assets"][micasa_asset_name]["raster:bands"][0]["histogram"]["min"]
     }
 
     # Colormap for visualization
     color_map = "purd"
 
     # Fetch MiCASA flux data for January 2023 (start and end of month)
-    micasa_flux_1 = get_micasa_flux(items_dict['2023-01-01'], color_map, rescale_values)
-    micasa_flux_2 = get_micasa_flux(items_dict['2023-01-31'], color_map, rescale_values)
+    micasa_flux_1 = get_micasa_flux(items_dict['2023-12-31'], color_map, rescale_values)
+    micasa_flux_2 = get_micasa_flux(items_dict['2023-12-31'], color_map, rescale_values)
 
     # Return the response to React with both datasets
     return JsonResponse({
@@ -577,7 +582,7 @@ def generate_micasa_stats(item, geojson, asset_name):
         ).json()
         return {
             **result["properties"],
-            "datetime": item["properties"]["start_datetime"],
+            "datetime": item["properties"]["datetime"],
         }
     except Exception as e:
         print(f"Error generating stats: {str(e)}")

@@ -12,7 +12,7 @@ import Dashboard from "../components/Separate_Pages/Dashboard";
 import Footer from "../components/Basics/Footer";
 import Character from "../components/Basics/Character";
 import EducationalResources from "../components/EducationalResources";
-import GlobalData from "../components/Dataset_Visualize/GlobalData";
+// import GlobalData from "../components/Dataset_Visualize/GlobalData";
 
 import MyArea from "../components/Dataset_Visualize/MyArea";
 import AccountInfo from "../components/Basics/AccountInfo";
