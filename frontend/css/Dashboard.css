@@ -16,7 +16,7 @@
 
 .button {
   background-color:#f6b93c; /* Background color */
-  color: white; /* Text color */
+  color: rgb(0, 0, 0); /* Text color */
   border-radius: 10px; /* Rounded corners */
   padding: 20px;
   text-align: center;

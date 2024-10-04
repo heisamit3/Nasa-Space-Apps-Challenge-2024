@@ -5,7 +5,6 @@ import {
   FaMapMarkerAlt,
   FaGlobe,
   FaBook,
-  FaIndustry,
   FaGamepad,
 } from "react-icons/fa"; // Import React Icons
 import "leaflet/dist/leaflet.css";
@@ -109,20 +108,13 @@ const Dashboard: React.FC = () => {
           <FaBook className="icon" />
           <h3>Educational Resources</h3>
         </div>
-        <div
-          className="button"
-          onClick={() => handleButtonClick("/sectors-responsible")}
-        >
-          <FaIndustry className="icon" />
-          <h3>Sectors Responsible</h3>
-        </div>
         <div className="button" onClick={openGameLink}>
           <FaGamepad className="icon" />
           <h3>Game</h3>
         </div>
         <div className= "button" onClick={() => handleButtonClick("/nasa-data")}>
           <FaBook className="icon" />
-          <h3>Nasa Data</h3>
+          <h3>Nasa Datasets</h3>
         </div>
       </div>
     </div>

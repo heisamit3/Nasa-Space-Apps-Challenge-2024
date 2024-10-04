@@ -43,10 +43,10 @@ const NasaData: React.FC = () => {
         <li className="list-item">
           <div className="dropdown">
             <span className="dropdown-label">
-              MiCasa Land Carbon Flux <FaChevronDown className="icon" />
+              MiCASA Land Carbon Flux <FaChevronDown className="icon" />
             </span>
             <div className="dropdown-content">
-              <a onClick={() => handleNavigation("/micasa/yearly")}>
+              <a onClick={() => handleNavigation("/carbon-micasa-comparison")}>
                 <FaMapMarkedAlt className="icon" /> Map
               </a>
               <a onClick={() => handleNavigation("/micasa/monthly")}>
@@ -62,13 +62,13 @@ const NasaData: React.FC = () => {
         <li className="list-item">
           <div className="dropdown">
             <span className="dropdown-label">
-              CH4 <FaChevronDown className="icon" />
+              Isotopic CH4 Inverse Flux <FaChevronDown className="icon" />
             </span>
             <div className="dropdown-content">
               <a onClick={() => handleNavigation("/ch4-flux-comparison")}>
                 <FaMapMarkedAlt className="icon" /> Map
               </a>
-              <a onClick={() => handleNavigation("/ch4-map")}>
+              <a onClick={() => handleNavigation("/ch4-map-with-data")}>
                 <FaChartBar className="icon" /> Statistics
               </a>
               <a onClick={() => handleNavigation("/ch4-simul")}>
