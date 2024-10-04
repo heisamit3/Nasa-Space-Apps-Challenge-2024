@@ -1,94 +1,130 @@
 /* Container Styles */
 .container {
     position: relative;
-    width: 22rem; /* Use rem units for width */
-    padding: 1.25rem; /* Padding in rem */
-    border-radius: 1rem; /* Rounded corners */
+    width: 24rem; /* Increased width for a better layout */
+    padding: 2rem; /* Larger padding for spacious layout */
+    border-radius: 1.5rem; /* Softer, larger rounded corners */
     text-align: center;
-    background: linear-gradient(135deg, #1A1919, #000000); /* Adjusted gradient for consistency */
-    box-shadow: 0 0.25rem 1.25rem rgba(0, 0, 0, 0.2); /* Shadow effect in rem */
+    background: linear-gradient(135deg, #1A1919, #333); /* Subtle gradient for a sleek look */
+    box-shadow: 0 0.75rem 2rem rgba(0, 0, 0, 0.4); /* Stronger shadow for depth */
+    color: white;
 }
 
 /* Header Styles */
 .header {
-    margin-bottom: 1.25rem; /* Margin in rem */
+    margin-bottom: 2rem; /* Increase margin for better spacing */
 }
 
 .header .icon {
-    font-size: 2rem; /* Adjusted icon size */
-    color: #bf5108; /* Consistent icon color from topbar hover */
+    font-size: 2.5rem; /* Larger icon for emphasis */
+    color: #f57c00; /* Bright orange for the icon */
+}
+
+.header h2 {
+    font-size: 1.8rem; /* Larger, bolder heading */
+    margin: 0.5rem 0;
+    color: #f57c00; /* Orange color for heading */
+    font-weight: 700;
 }
 
 /* Form Styles */
 .form {
     display: flex;
     flex-direction: column;
+    align-items: center;
 }
 
 .form-group {
-    margin-bottom: 1rem; /* Margin in rem */
+    margin-bottom: 1.5rem; /* Increase spacing between form fields */
+    width: 100%; /* Full width for form groups */
 }
 
 .form-group label {
     display: block;
     margin-bottom: 0.5rem;
     font-weight: bold;
-    color: white; /* Consistent text color */
+    color: #f57c00; /* Orange for labels */
+    text-align: left;
 }
 
 .form-group input {
-    width: 80%;
-    padding: 0.75rem; /* Padding in rem */
-    border: 1px solid #ccc;
-    border-radius: 0.5rem; /* Adjusted border-radius */
-    transition: border-color 0.3s; /* Transition for input focus */
+    width: 100%;
+    padding: 0.8rem 1rem; /* Comfortable padding */
+    border: 1px solid #444; /* Darker border */
+    border-radius: 0.75rem; /* Rounded input fields */
+    background-color: #262626; /* Black background for inputs */
+    color: white;
+    font-size: 1rem;
+    transition: border-color 0.3s;
 }
 
 .form-group input:focus {
-    border-color: #bf5108; /* Consistent border color on focus */
-    outline: none; /* Remove outline */
+    border-color: #f57c00; /* Orange border on focus */
+    outline: none;
 }
 
 /* Button Styles */
 .btn {
-    padding: 0.75rem; /* Button padding in rem */
-    background-color: #bf5108; /* Consistent button background color */
+    width: 100%; /* Full-width button */
+    padding: 0.8rem 1.5rem; /* Larger padding for comfort */
+    background-color: #f57c00; /* Bright orange background */
     color: white;
     border: none;
-    border-radius: 0.5rem; /* Rounded corners */
+    border-radius: 0.75rem; /* Rounded corners */
     cursor: pointer;
-    transition: background-color 0.3s; /* Transition for button hover */
+    font-size: 1rem;
+    font-weight: bold;
+    transition: background-color 0.3s, box-shadow 0.3s;
 }
 
 .btn:hover {
-    background-color: #bf5108; /* Darken color on hover */
+    background-color: #ff8c42; /* Lighter orange on hover */
+    box-shadow: 0 0.5rem 1.5rem rgba(255, 140, 66, 0.5); /* Hover shadow effect */
 }
 
 /* Footer Styles */
 .footer-login {
-    margin-top: 1rem; /* Margin in rem */
+    margin-top: 2rem;
 }
 
 .toggle-link {
-    color: #bf5108; /* Consistent link color */
+    color: #f57c00; /* Bright orange link color */
     cursor: pointer;
     font-weight: bold;
+    transition: color 0.3s;
 }
 
 .toggle-link:hover {
+    color: #ff8c42; /* Lighter orange on hover */
     text-decoration: underline;
 }
 
 /* Close button styling */
 .close-icon {
     position: absolute;
-    top: 1rem; /* Adjust to position closer to the top */
-    right: 1rem; /* Adjust to position closer to the right */
+    top: 1.5rem; /* Adjusted to match container size */
+    right: 1.5rem; /* Adjusted to match container size */
     cursor: pointer;
-    font-size: 1.5rem; /* Font size in rem */
-    color: #bf5108; /* Consistent close icon color */
+    font-size: 1.75rem; /* Larger close icon */
+    color: #f57c00; /* Bright orange for close button */
 }
 
 .close-icon:hover {
-    color: #bf5108; /* Change color on hover */
+    color: #ff8c42; /* Lighter orange on hover */
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+    .container {
+        padding: 1.5rem; /* Adjust padding for smaller screens */
+        width: 100%; /* Full width on smaller screens */
+    }
+
+    .btn {
+        width: 100%; /* Full-width button on small screens */
+    }
+
+    .form-group input {
+        width: 100%; /* Full-width inputs on smaller screens */
+    }
 }

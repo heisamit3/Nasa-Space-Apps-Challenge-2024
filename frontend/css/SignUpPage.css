@@ -1,23 +1,153 @@
+/* Container Styles */
 .signup-container {
-    max-width: 600px; /* Maximum width of the signup form */
-    margin: 0 auto; /* Center horizontally */
-    padding: 20px; /* Padding around the form */
-    border: 1px solid #ccc; /* Border around the form */
-    /* Rounded corners */
-    position: relative;
-    width: 22rem; /* Use rem units for width */
-    padding: 1.25rem; /* Padding in rem */
-    border-radius: 1rem; /* Rounded corners */
-    text-align: center;
-    color: white; /* Text color */
-    background: linear-gradient(135deg, #1A1919, #99d4c6); /* Adjusted gradient for consistency */
-    box-shadow: 0 0.25rem 1.25rem rgba(0, 0, 0, 0.2); /* Shadow effect in rem */
-  }
-  
-  
-  .error-message {
-    color: red; /* Error message color */
-    margin-bottom: 10px; /* Space below the error message */
-    text-align: center; /* Center the error message */
+  max-width: 500px;
+  margin: 40px auto; /* Center horizontally and add vertical space */
+  padding: 2rem; /* Larger padding for a clean, spacious look */
+  border: none; /* Remove border */
+  border-radius: 1rem;
+  text-align: center;
+  color: white;
+  background: linear-gradient(135deg, #1A1919, #333); /* Darker gradient background */
+  box-shadow: 0 0.5rem 2rem rgba(0, 0, 0, 0.3); /* More pronounced shadow for depth */
+  position: relative;
+}
+
+/* Error Message */
+.error-message {
+  color: #ff4d4d; /* Bright red error message */
+  margin-bottom: 15px;
+  font-size: 0.9rem; /* Smaller, consistent font size */
+  text-align: center;
+}
+
+/* Header */
+.header {
+  margin-bottom: 2rem; /* Larger margin for better spacing */
+}
+
+.header .icon {
+  font-size: 2.5rem; /* Adjusted icon size */
+  color: #f57c00; /* Orange icon color */
+}
+
+.header h2 {
+  font-size: 1.8rem; /* Larger, bolder heading */
+  margin: 0.5rem 0; /* Spacing for heading */
+  color: #f57c00; /* Orange heading */
+  font-weight: 700;
+}
+
+/* Form Styles */
+.form {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group {
+  margin-bottom: 1.5rem; /* Increased margin between fields */
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.4rem;
+  font-weight: bold;
+  color: #f57c00; /* Orange label color */
+  text-align: left;
+  font-size: 1rem;
+}
+
+.form-group input {
+  width: 100%; /* Full-width input fields */
+  padding: 0.8rem 1rem; /* Padding for a comfortable input size */
+  border: 1px solid #444; /* Darker border for input fields */
+  border-radius: 0.5rem;
+  background-color: #262626; /* Black input background */
+  color: white;
+  font-size: 1rem;
+  transition: border-color 0.3s;
+}
+
+.form-group input:focus {
+  border-color: #f57c00; /* Orange border on focus */
+  outline: none;
+}
+
+/* Button Styles */
+.btn {
+  padding: 0.8rem 1.5rem;
+  background-color: #f57c00;
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: bold;
+  transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.btn:hover {
+  background-color: #ff8c42; /* Lighter orange on hover */
+  box-shadow: 0 0.3rem 1rem rgba(255, 140, 66, 0.4); /* Shadow effect on hover */
+}
+
+/* Checkbox Group */
+.checkbox-group {
+  margin: 1.5rem 0;
+}
+
+.checkbox-group label {
+  margin-right: 1rem;
+  color: white;
+  font-size: 1rem;
+}
+
+.checkbox-group input {
+  margin-right: 0.5rem;
+  accent-color: #f57c00; /* Orange checkbox color */
+}
+
+/* Close Icon */
+.close-icon {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  cursor: pointer;
+  font-size: 1.5rem;
+  color: #f57c00;
+}
+
+.close-icon:hover {
+  color: #ff8c42;
+}
+
+/* Form Layout */
+.form-group input,
+.form-group label {
+  width: 100%; /* Ensures inputs and labels span the full width */
+  text-align: left;
+}
+
+.form-group label {
+  font-size: 1rem; /* Larger font for labels */
+}
+
+.form-group input {
+  font-size: 1rem; /* Uniform font size for inputs */
+  padding: 0.8rem; /* Larger padding for inputs */
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+  .signup-container {
+    padding: 1.5rem; /* Adjust padding for smaller screens */
+    max-width: 100%; /* Full width on small screens */
   }
 
+  .btn {
+    width: 100%; /* Full-width button on smaller screens */
+  }
+
+  .form-group input {
+    width: 100%; /* Full-width inputs on smaller screens */
+  }
+}

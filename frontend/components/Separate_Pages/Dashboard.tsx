@@ -108,11 +108,12 @@ const Dashboard: React.FC = () => {
           <FaBook className="icon" />
           <h3>Educational Resources</h3>
         </div>
+
         <div className="button" onClick={openGameLink}>
           <FaGamepad className="icon" />
           <h3>Game</h3>
         </div>
-        <div className= "button" onClick={() => handleButtonClick("/nasa-data")}>
+        <div className="button" onClick={() => handleButtonClick("/nasa-data")}>
           <FaBook className="icon" />
           <h3>Nasa Datasets</h3>
         </div>

@@ -47,23 +47,22 @@ const Character: React.FC<CharacterProps> = ({ currentPath }) => {
   const setVoice = () => {
     const voices = window.speechSynthesis.getVoices();
 
-    // Log all available voices to the console
-    console.log("Available voices:", voices);
-
-    // Try to find a US English female voice (this may vary based on the system/browser)
-    const usEnglishFemaleVoice = voices.find(
+    // Try to find a US English female voice based on known female voice names and characteristics
+    const femaleVoice = voices.find(
       (voice) =>
         voice.lang === "en-US" &&
         (voice.name.includes("Female") ||
-          voice.name.includes("Zira") ||
-          voice.name.includes("Google US English"))
+          voice.name.includes("Google US English") ||
+          voice.name.includes("Zira") || // Windows voice
+          voice.name.includes("Samantha") || // Apple's voice
+          voice.name.includes("Karen")) // Another common voice for some systems
     );
 
-    if (usEnglishFemaleVoice) {
-      setSelectedVoice(usEnglishFemaleVoice);
-      console.log("Selected voice:", usEnglishFemaleVoice.name); // Log the selected voice
+    if (femaleVoice) {
+      setSelectedVoice(femaleVoice);
+      console.log("Selected female voice:", femaleVoice.name); // Log the selected voice
     } else {
-      console.warn("US English female voice not found. Using default voice.");
+      console.warn("Female US English voice not found. Using default voice.");
     }
   };
 

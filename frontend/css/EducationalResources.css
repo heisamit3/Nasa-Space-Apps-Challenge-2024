@@ -24,6 +24,9 @@
   font-weight: bold;
   padding: 12px 20px;
   border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 5px; /* Adds space between the icon and the text */
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
@@ -63,7 +66,6 @@
   margin-bottom: 20px;
 }
 
-/* Grid layout for improved readability */
 .grid-container {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
