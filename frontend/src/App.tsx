@@ -31,7 +31,8 @@ import CH4MapWithDataPage from "../components/CH4/CH4MapWithDataPage"; // Combin
 // // import CH4MapComponent from "../components/CH4/CH4MapComponent"; // Import your CH4MapComponent
 // // import CH4DataPage from "../components/CH4/CH4DataPage"; // Import your CH4DataPage
 import MethaneFluxGlobe from "../components/CH4/MethaneFluxGlobe"; // Import your MethaneFluxGlobe
-import NasaData from "../components/Separate_Pages/NasaData"; // Import your NasaData
+import NasaData from "../components/Separate_Pages/NasaData";
+import MiCasaMapWithDataPage from "../components/MiCasa_Carbon_Flux/MiCasaMapWithDataPage";
 
 const App: React.FC = () => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(() => {
@@ -112,10 +113,14 @@ const App: React.FC = () => {
             />
             {/* New unified CH4 map and data page */}
             <Route path="/ch4-map-with-data" element={<CH4MapWithDataPage />} />
+            <Route
+              path="/micasa-map-with-data"
+              element={<MiCasaMapWithDataPage />}
+            />
             {/* <Route path="/ch4-map" element={<CH4MapComponent />} />
             <Route path="/ch4-data-show" element={<CH4DataPage />} /> */}
             <Route path="/methane-flux-globe" element={<MethaneFluxGlobe />} />
-            <Route path="/nasa-data" element={<NasaData />} />b
+            <Route path="/nasa-data" element={<NasaData />} />
           </Routes>
           <Character currentPath={window.location.pathname} />
           <Footer />
