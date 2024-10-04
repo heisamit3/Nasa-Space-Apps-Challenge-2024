@@ -12,7 +12,6 @@ import Dashboard from "../components/Separate_Pages/Dashboard";
 import Footer from "../components/Basics/Footer";
 import Character from "../components/Basics/Character";
 import EducationalResources from "../components/Separate_Pages/EducationalResources";
-import GlobalData from "../components/Dataset_Visualize/GlobalData";
 import SectorsResponsible from "../components/Separate_Pages/SectorsResponsible";
 import MyArea from "../components/Dataset_Visualize/MyArea";
 import AccountInfo from "../components/Basics/AccountInfo";
@@ -33,6 +32,7 @@ import CH4MapWithDataPage from "../components/CH4/CH4MapWithDataPage"; // Combin
 import MethaneFluxGlobe from "../components/CH4/MethaneFluxGlobe"; // Import your MethaneFluxGlobe
 import NasaData from "../components/Separate_Pages/NasaData";
 import MiCasaMapWithDataPage from "../components/MiCasa_Carbon_Flux/MiCasaMapWithDataPage";
+import GlobalCH4 from "../components/CH4/GlobalCH4";
 
 const App: React.FC = () => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(() => {
@@ -80,7 +80,7 @@ const App: React.FC = () => {
                 </ProtectedRoute>
               }
             />
-            <Route path="/global-data" element={<GlobalData />} />
+            <Route path="/global-data" element={<GlobalCH4 />} />
             <Route path="/graph" element={<Graph />} />
             <Route path="/map" element={<Map />} />
             <Route path="/statistics" element={<Statistics />} />
