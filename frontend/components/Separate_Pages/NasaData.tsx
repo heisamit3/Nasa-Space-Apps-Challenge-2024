@@ -46,10 +46,10 @@ const NasaData: React.FC = () => {
               MiCasa Land Carbon Flux <FaChevronDown className="icon" />
             </span>
             <div className="dropdown-content">
-              <a onClick={() => handleNavigation("/micasa/yearly")}>
+              <a onClick={() => handleNavigation("/carbon-micasa-comparison")}>
                 <FaMapMarkedAlt className="icon" /> Map
               </a>
-              <a onClick={() => handleNavigation("/micasa/monthly")}>
+              <a onClick={() => handleNavigation("/micasa-map-with-data")}>
                 <FaChartBar className="icon" /> Statistics
               </a>
               <a onClick={() => handleNavigation("/micasa/daily")}>

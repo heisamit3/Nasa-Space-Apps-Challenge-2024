@@ -1,0 +1,262 @@
+/* General Styles */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
+    background-color: #1a1a1a;
+    color: #fff;
+    line-height: 1.6;
+  }
+  
+  /* Container for the entire page */
+  .map-data-container {
+    background-color: #1a1a1a;
+    color: #fff;
+    padding: 40px;
+    border-radius: 15px;
+    border: 2px solid #ff8000;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.9);
+    max-width: 1200px;
+    margin: 40px auto;
+    text-align: center;
+  }
+  
+  /* Headings */
+  h1 {
+    font-size: 2.5rem;
+    color: #ff8000;
+    text-align: center;
+    margin-bottom: 30px;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+  }
+  
+  /* Map Component Styles */
+  .map-box {
+    height: 60vh;
+    width: 100%;
+    border: 2px solid #ff8000;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+    margin-bottom: 30px;
+  }
+  
+  /* Circle Path Options (Map) */
+  .leaflet-interactive {
+    stroke: #ff8000 !important;
+    fill: #ff8000 !important;
+    fill-opacity: 0.2 !important;
+    stroke-width: 2px;
+  }
+  
+  /* Loading Container */
+  .loading-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 20px;
+    margin-top: 20px;
+  }
+  
+  .loading-spinner {
+    font-size: 3rem;
+    color: #ff8000;
+    animation: spin 1.5s linear infinite;
+  }
+  
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  
+  .loading-text {
+    font-size: 1.5rem;
+    color: #ff8000;
+    margin-top: 10px;
+  }
+  
+  /* Chart Container (Emission Graph) */
+  .chart-container {
+    background-color: #202020;
+    color: #ff8000;
+    padding: 30px;
+    border-radius: 15px;
+    border: 2px solid #ff8000;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+    margin-top: 40px;
+    text-align: center;
+  }
+  
+  .chart-header {
+    font-size: 1.5rem;
+    color: #ff8000;
+    margin-bottom: 20px;
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.8);
+  }
+  
+  .chart {
+    height: 500px;
+  }
+  
+  /* Comparison Layout for Graphs */
+  .graph-comparison-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    margin-top: 30px;
+  }
+  
+  .graph-column {
+    width: 48%;
+  }
+  
+  .graph-column h3 {
+    color: #ff8000;
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.6);
+    margin-bottom: 15px;
+  }
+  
+  /* Search Bar Container */
+  .search-bar-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 30px;
+    position: relative;
+  }
+  
+  .search-input {
+    width: 70%;
+    padding: 12px 20px;
+    border: 2px solid #ff8000;
+    border-radius: 10px;
+    background-color: #202020;
+    color: #fff;
+    font-size: 1.2rem;
+    margin-right: 10px;
+    box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.5);
+  }
+  
+  .search-input::placeholder {
+    color: #999;
+  }
+  
+  /* Search Button Styling */
+  .search-button {
+    padding: 12px 24px;
+    font-size: 1.25rem;
+    color: #fff;
+    background-color: #ff8000;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  }
+  
+  .search-button svg {
+    margin-right: 8px;
+    font-size: 1.5rem;
+  }
+  
+  .search-button:hover {
+    background-color: #e67300;
+  }
+  
+  /* Search Dropdown Styling */
+  .search-results-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 15%;
+    width: 70%;
+    background-color: #202020;
+    border: 2px solid #ff8000;
+    border-radius: 10px;
+    margin-top: 5px;
+    z-index: 1000;
+    list-style: none;
+    padding: 10px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+  }
+  
+  .search-results-dropdown li {
+    padding: 10px 15px;
+    cursor: pointer;
+  }
+  
+  .search-results-dropdown li:hover {
+    background-color: #ff8000;
+    color: #000;
+  }
+  
+  /* Region Title Styling */
+  .region-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #ff8000;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  /* Button Styles */
+  .button-group {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+  }
+  
+  button {
+    display: inline-flex;
+    align-items: center;
+    padding: 12px 24px;
+    font-size: 1.25rem;
+    color: #fff;
+    background-color: #ff8000;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-right: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  }
+  
+  button svg {
+    margin-right: 8px;
+    font-size: 1.5rem;
+  }
+  
+  button:hover {
+    background-color: #e67300;
+  }
+  
+  /* Responsive Layout for Smaller Screens */
+  @media (max-width: 768px) {
+    .graph-comparison-container {
+      flex-direction: column;
+    }
+  
+    .graph-column {
+      width: 100%;
+      margin-bottom: 20px;
+    }
+  
+    button {
+      width: 100%;
+      justify-content: center;
+      margin-bottom: 10px;
+    }
+  
+    .search-input {
+      width: 100%;
+    }
+  
+    .search-results-dropdown {
+      left: 0;
+      width: 100%;
+    }
+  }
+  
