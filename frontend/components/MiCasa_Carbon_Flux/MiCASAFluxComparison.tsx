@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css"; // Import Leaflet CSS
+import { FaSpinner, FaMapMarkedAlt, FaExclamationCircle } from "react-icons/fa"; // Import React Icons
+import "../../css/MiCASAFluxComparison.css";
 
 interface MiCASAFluxData {
   micasa_flux_1: { tiles: string[]; minzoom?: number; maxzoom?: number };
@@ -31,16 +33,18 @@ const MiCASAFluxComparison: React.FC = () => {
 
   useEffect(() => {
     if (data && !map2020) {
-      console.log("Initializing the 2020 map...");
       const map2020 = L.map("map2020").setView([34, -118], 6); // Centering on California
       setMap2020(map2020);
 
-      // Add OpenStreetMap base layer
-      const baseLayer2020 = L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-        minZoom: 0,
-        maxZoom: 24,
-      });
+      const baseLayer2020 = L.tileLayer(
+        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+        {
+          attribution:
+            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+          minZoom: 0,
+          maxZoom: 24,
+        }
+      );
       baseLayer2020.addTo(map2020);
 
       const layer2020 = L.tileLayer(data.micasa_flux_1.tiles[0], {
@@ -49,24 +53,24 @@ const MiCASAFluxComparison: React.FC = () => {
         minZoom: data.micasa_flux_1.minzoom || 0,
         maxZoom: data.micasa_flux_1.maxzoom || 24,
       });
-
       layer2020.addTo(map2020);
     }
   }, [data, map2020]);
 
-  // Initialize the 2005 map once the data is available
   useEffect(() => {
     if (data && !map2005) {
-      console.log("Initializing the 2005 map...");
       const map2005 = L.map("map2005").setView([34, -118], 6); // Centering on California
       setMap2005(map2005);
 
-      // Add OpenStreetMap base layer
-      const baseLayer2005 = L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-        minZoom: 0,
-        maxZoom: 24,
-      });
+      const baseLayer2005 = L.tileLayer(
+        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+        {
+          attribution:
+            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+          minZoom: 0,
+          maxZoom: 24,
+        }
+      );
       baseLayer2005.addTo(map2005);
 
       const layer2005 = L.tileLayer(data.micasa_flux_2.tiles[0], {
@@ -75,12 +79,10 @@ const MiCASAFluxComparison: React.FC = () => {
         minZoom: data.micasa_flux_2.minzoom || 0,
         maxZoom: data.micasa_flux_2.maxzoom || 24,
       });
-
       layer2005.addTo(map2005);
     }
   }, [data, map2005]);
 
-  // Synchronize both maps (pan and zoom)
   useEffect(() => {
     if (map2020 && map2005) {
       map2020.on("move", () => {
@@ -96,17 +98,42 @@ const MiCASAFluxComparison: React.FC = () => {
     }
   }, [map2020, map2005]);
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>{error}</p>;
-  if (!data) return <p>No data available</p>;
+  if (loading) {
+    return (
+      <div className="loading-container">
+        <FaSpinner className="loading-spinner" />
+        <p>Loading data, please wait...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="error-container">
+        <FaExclamationCircle className="error-icon" />
+        <p>{error}</p>
+      </div>
+    );
+  }
+
+  if (!data) {
+    return <p>No data available</p>;
+  }
 
   return (
-    <div>
-      <h1>MiCASA Flux Comparison (2005 vs 2020)</h1>
-      <div style={{ display: "flex" }}>
-        {/* Create two side-by-side maps */}
-        <div id="map2020" style={{ height: "600px", width: "50%" }}></div>
-        <div id="map2005" style={{ height: "600px", width: "50%" }}></div>
+    <div className="micasa-container">
+      <h1 className="micasa-title">
+        <FaMapMarkedAlt /> MiCASA Flux Comparison (2005 vs 2020)
+      </h1>
+      <div className="micasa-maps-container">
+        <div className="micasa-map-column">
+          <div className="micasa-map-label">2020</div>
+          <div id="map2020" className="micasa-map"></div>
+        </div>
+        <div className="micasa-map-column">
+          <div className="micasa-map-label">2005</div>
+          <div id="map2005" className="micasa-map"></div>
+        </div>
       </div>
     </div>
   );

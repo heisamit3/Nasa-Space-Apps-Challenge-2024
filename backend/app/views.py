@@ -547,9 +547,11 @@ def fetch_micasa_stac_items(collection_name, start_year=2021, end_year=2024, lim
         response = requests.get(f"{STAC_API_URL}/collections/{collection_name}/items?limit={limit}&datetime={datetime_range}")
         response.raise_for_status()  # Check for errors
         items = response.json()["features"]
+        print(f"Fetched items for {year}: {items}")  # Log fetched items for debugging
         all_items.extend(items)
     
     return all_items
+
 
 # Generate statistics for a specific granule
 def generate_micasa_stats(item, geojson, asset_name):
@@ -559,6 +561,7 @@ def generate_micasa_stats(item, geojson, asset_name):
             params={"url": item["assets"][asset_name]["href"]},
             json=geojson,
         ).json()
+        print(f"Generated stats for item: {result}")  # Log the generated statistics
         return {
             **result["properties"],
             "datetime": item["properties"]["start_datetime"][:10],
@@ -566,6 +569,7 @@ def generate_micasa_stats(item, geojson, asset_name):
     except Exception as e:
         print(f"Error generating stats: {str(e)}")
         return None
+
 
 # Clean and process the statistics JSON to a Pandas DataFrame
 def clean_micasa_stats(stats_json):
@@ -576,6 +580,7 @@ def clean_micasa_stats(stats_json):
     if 'statistics.b1.' in df.columns[0]:
         df.columns = [col.replace("statistics.b1.", "") for col in df.columns]
     df["date"] = pd.to_datetime(df["datetime"])
+    print(f"Cleaned DataFrame: {df}")  # Log the cleaned DataFrame
     return df
 
 # Main function to compute the statistics
@@ -586,6 +591,7 @@ def compute_micasa_stats(coordinates):
         asset_name = "total"
         stats = [generate_micasa_stats(item, aoi, asset_name) for item in items]
         df = clean_micasa_stats(stats)
+        print(f"Final DataFrame: {df}")  # Log the final DataFrame before returning
         return df
     except Exception as e:
         print(f"Error in compute_micasa_stats: {str(e)}")
@@ -597,6 +603,8 @@ def compute_micasa_stats_view(request):
     try:
         data = json.loads(request.body)
         coordinates = data.get("coordinates", [])
+        print(f"Coordinates received: {coordinates}")  # Log the received coordinates
+        
         if not coordinates:
             return JsonResponse({"error": "No coordinates provided"}, status=400)
 
@@ -606,7 +614,9 @@ def compute_micasa_stats_view(request):
             return JsonResponse({"error": "No data found for the given coordinates"}, status=404)
         
         response_data = df.to_dict(orient='records')
+        print(f"Response data: {response_data}")  # Log the response data to inspect the output
         return JsonResponse({"data": response_data}, status=200)
     
     except Exception as e:
+        print(f"Error: {str(e)}")  # Log any errors encountered
         return JsonResponse({"error": str(e)}, status=500)
