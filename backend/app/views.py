@@ -527,7 +527,18 @@ def carbon_data_view_micasa(request):
     })
     
     
-    
+from rest_framework.decorators import api_view
+from django.http import JsonResponse
+import json
+import pandas as pd
+import requests
+
+# Constants
+STAC_API_URL = "https://earth.gov/ghgcenter/api/stac"
+RASTER_API_URL = "https://earth.gov/ghgcenter/api/raster"
+micasa_collection_name = "micasa-dataset-collection"  # Update with the actual collection name
+
+# Create an AOI (Area of Interest) for MiCASA
 def create_micasa_aoi(coordinates):
     return {
         "type": "Feature",
@@ -538,58 +549,61 @@ def create_micasa_aoi(coordinates):
         },
     }
 
-# Fetch the MiCASA dataset items (granules)
-def fetch_micasa_stac_items(collection_name, start_year=2021, end_year=2024, limit=1):
+# Fetch MiCASA dataset items (granules)
+def fetch_micasa_stac_items(collection_name, start_year=1999, end_year=2021, limit=1):
     all_items = []
     
     for year in range(start_year, end_year + 1):
         datetime_range = f"{year}-01-01T00:00:00Z/{year}-12-31T23:59:59Z"
         response = requests.get(f"{STAC_API_URL}/collections/{collection_name}/items?limit={limit}&datetime={datetime_range}")
         response.raise_for_status()  # Check for errors
-        items = response.json()["features"]
-        print(f"Fetched items for {year}: {items}")  # Log fetched items for debugging
+        items = response.json().get("features", [])
+        # print(f"Fetched items for {year}: {items}")  # Log fetched items for debugging
         all_items.extend(items)
     
     return all_items
 
-
-# Generate statistics for a specific granule
+# Generate statistics for a specific MiCASA granule
 def generate_micasa_stats(item, geojson, asset_name):
     try:
+        asset = item["assets"].get(asset_name)
+        if not asset:
+            print(f"Asset '{asset_name}' not found for item: {item['id']}")
+            return None  # or handle it as appropriate
+
         result = requests.post(
             f"{RASTER_API_URL}/cog/statistics",
-            params={"url": item["assets"][asset_name]["href"]},
+            params={"url": asset["href"]},
             json=geojson,
         ).json()
         print(f"Generated stats for item: {result}")  # Log the generated statistics
         return {
             **result["properties"],
-            "datetime": item["properties"]["start_datetime"][:10],
+            "datetime": item["properties"]["datetime"][:10],  # Updated to use the correct property
         }
     except Exception as e:
         print(f"Error generating stats: {str(e)}")
         return None
 
-
-# Clean and process the statistics JSON to a Pandas DataFrame
+# Clean and process the MiCASA statistics JSON to a Pandas DataFrame
 def clean_micasa_stats(stats_json):
     if not stats_json:
         return pd.DataFrame()  # Return empty DataFrame if no stats
     
     df = pd.DataFrame(stats_json)
-    if 'statistics.b1.' in df.columns[0]:
+    if any('statistics.b1.' in col for col in df.columns):  # Check for the presence of the column
         df.columns = [col.replace("statistics.b1.", "") for col in df.columns]
-    df["date"] = pd.to_datetime(df["datetime"])
+    df["date"] = pd.to_datetime(df["datetime"], errors='coerce')  # Use errors='coerce' to handle invalid dates
     print(f"Cleaned DataFrame: {df}")  # Log the cleaned DataFrame
     return df
 
-# Main function to compute the statistics
+# Main function to compute MiCASA statistics
 def compute_micasa_stats(coordinates):
     try:
         aoi = create_micasa_aoi(coordinates)
-        items = fetch_micasa_stac_items(collection_name)
-        asset_name = "total"
-        stats = [generate_micasa_stats(item, aoi, asset_name) for item in items]
+        items = fetch_micasa_stac_items(micasa_collection_name)
+        asset_name = "rh"  # Adjust as necessary for your specific use case
+        stats = [generate_micasa_stats(item, aoi, asset_name) for item in items if generate_micasa_stats(item, aoi, asset_name) is not None]
         df = clean_micasa_stats(stats)
         print(f"Final DataFrame: {df}")  # Log the final DataFrame before returning
         return df
@@ -597,7 +611,7 @@ def compute_micasa_stats(coordinates):
         print(f"Error in compute_micasa_stats: {str(e)}")
         return pd.DataFrame()
 
-# API view to handle the POST request for computing statistics
+# API view to handle the POST request for computing MiCASA statistics
 @api_view(['POST'])
 def compute_micasa_stats_view(request):
     try:
@@ -619,4 +633,130 @@ def compute_micasa_stats_view(request):
     
     except Exception as e:
         print(f"Error: {str(e)}")  # Log any errors encountered
+        return JsonResponse({"error": str(e)}, status=500)
+
+
+
+from rest_framework.decorators import api_view
+from django.http import JsonResponse
+import json
+import pandas as pd
+import requests
+
+# Constants
+STAC_API_URL = "https://earth.gov/ghgcenter/api/stac"
+RASTER_API_URL = "https://earth.gov/ghgcenter/api/raster"
+micasa_collection_name = "micasa-carbonflux-daygrid-v1"  # Updated collection name
+asset_name = "rh"  # Asset name for Heterotrophic Respiration
+
+# Function to create the AOI (Area of Interest)
+def create_aoi(coordinates):
+    return {
+        "type": "Feature",
+        "properties": {},
+        "geometry": {
+            "type": "Polygon",
+            "coordinates": [coordinates],
+        },
+    }
+
+# Fetch MiCASA dataset items (granules)
+def fetch_stac_items(collection_name, start_year=1999, end_year=2021, limit=100):
+    all_items = []
+    
+    for year in range(start_year, end_year + 1):
+        datetime_range = f"{year}-01-01T00:00:00Z/{year}-12-31T23:59:59Z"
+        try:
+            response = requests.get(f"{STAC_API_URL}/collections/{collection_name}/items?limit={limit}&datetime={datetime_range}")
+            response.raise_for_status()  # Raise an error for bad responses
+            
+            items = response.json().get("features", [])
+            all_items.extend(items)
+            print(f"Found {len(items)} items for year {year}")
+        except requests.exceptions.RequestException as e:
+            print(f"Error fetching STAC items for year {year}: {str(e)}")
+    
+    print(f"Total items found: {len(all_items)}")
+    return all_items
+
+# Generate statistics for a specific MiCASA granule
+def generate_stats(item, geojson, asset_name):
+    try:
+        asset = item["assets"].get(asset_name)
+        if not asset:
+            print(f"Asset '{asset_name}' not found for item: {item['id']}")
+            return None
+
+        response = requests.post(
+            f"{RASTER_API_URL}/cog/statistics",
+            params={"url": asset["href"]},
+            json=geojson,
+        )
+        response.raise_for_status()  # Raise an error for bad responses
+
+        result = response.json()  # Parse the JSON response
+        return {
+            **result["properties"],
+            "datetime": item["properties"]["datetime"][:10],
+        }
+    except Exception as e:
+        print(f"Error generating stats for item {item['id']}: {str(e)}")
+        return None
+
+# Clean and process the MiCASA statistics JSON to a Pandas DataFrame
+def clean_stats(stats_json):
+    if not stats_json:
+        return pd.DataFrame()  # Return empty DataFrame if no stats
+    
+    df = pd.DataFrame(stats_json)
+    if 'statistics.b1.' in df.columns[0]:
+        df.columns = [col.replace("statistics.b1.", "") for col in df.columns]
+    df["date"] = pd.to_datetime(df["datetime"], errors='coerce')  # Use errors='coerce' to handle invalid dates
+    return df
+
+# Main function to compute MiCASA statistics
+def compute_stats(coordinates):
+    try:
+        # Generate AOI
+        aoi = create_aoi(coordinates)
+
+        # Fetch items from the STAC API
+        items = fetch_stac_items(micasa_collection_name)
+
+        # Generate statistics for all items
+        stats = []
+        for item in items:
+            stat = generate_stats(item, aoi, asset_name)
+            if stat:
+                stats.append(stat)
+
+        # Clean and process stats
+        df = clean_stats(stats)
+        return df
+    except Exception as e:
+        print(f"Error in compute_stats: {str(e)}")
+        return pd.DataFrame()
+
+# API view to handle the POST request for computing MiCASA statistics
+@api_view(['POST'])
+def compute_stats_view(request):
+    try:
+        data = json.loads(request.body)
+        coordinates = data.get("coordinates", [])
+        print("Received coordinates:", coordinates)
+        
+        if not coordinates or not isinstance(coordinates[0], list):
+            return JsonResponse({"error": "Invalid coordinates format"}, status=400)
+
+        df = compute_stats(coordinates)
+        
+        if df.empty:
+            return JsonResponse({"error": "No data found for the given coordinates"}, status=404)
+        
+        response_data = df.to_dict(orient='records')
+        return JsonResponse({"data": response_data}, status=200)
+    
+    except json.JSONDecodeError:
+        return JsonResponse({"error": "Invalid JSON input"}, status=400)
+    except Exception as e:
         return JsonResponse({"error": str(e)}, status=500)
