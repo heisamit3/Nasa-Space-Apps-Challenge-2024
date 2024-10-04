@@ -36,18 +36,23 @@ const App: React.FC = () => {
     const savedLoginStatus = localStorage.getItem("isLoggedIn");
     return savedLoginStatus === "true";
   });
-
+  const [userEmail, setUserEmail] = useState<string>(() => {
+    return localStorage.getItem("userEmail") || ""; // Load email from local storage
+  });
   useEffect(() => {
     localStorage.setItem("isLoggedIn", isLoggedIn.toString());
   }, [isLoggedIn]);
-
-  const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
+  
+  useEffect(() => {
+    localStorage.setItem("userEmail", userEmail); // Keep email in sync
+  }, [userEmail]);
+  const ProtectedRoute = ({ children, email }: { children: JSX.Element; email: string }) => {
     if (!isLoggedIn) {
       return <Navigate to="/" />;
     }
-    return children;
+    return React.cloneElement(children, { email });
   };
-
+  
   return (
     <Router>
       <div className="app-container">
@@ -69,11 +74,10 @@ const App: React.FC = () => {
                 />
               }
             />
-
             <Route
               path="/dashboard"
               element={
-                <ProtectedRoute>
+                <ProtectedRoute email={userEmail}>
                   <Dashboard />
                 </ProtectedRoute>
               }
@@ -90,14 +94,17 @@ const App: React.FC = () => {
             <Route
               path="/my-area"
               element={
-                <ProtectedRoute>
-                  <MyArea />
+                <ProtectedRoute email={userEmail}>
+                  <MyArea email={userEmail} />
                 </ProtectedRoute>
               }
             />
             <Route path="/about-us" element={<AboutUs />} />
             <Route path="/contact-us" element={<ContactUs />} />
-            <Route path="/account-info" element={<AccountInfo />} />
+            <Route
+              path="/account-info"
+              element={<AccountInfo email={userEmail} />} // Pass email to AccountInfo
+            />
             <Route
               path="/carbon-micasa-comparison"
               element={<MiCASAFluxComparison />}

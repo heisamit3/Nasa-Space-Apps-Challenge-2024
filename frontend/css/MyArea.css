@@ -1,5 +1,5 @@
 .graph-container,
-.stories-section {
+.stories-section, .alert-section {
     display: flex;
     flex-direction: column;
     align-items: center; /* Center horizontally */
@@ -9,44 +9,14 @@
     text-align: center; /* Center the text */
 
 }
-.existing-stories {
-    display: flex;
-    flex-wrap: wrap; /* Wrap the stories */
-    gap: 20px; /* Add space between stories */
-    margin-top: 20px;
-    color:aliceblue;
-}
-.stories-container {
-    display: flex;
-    flex-direction: column; /* Stack vertically */
-    align-items: center; /* Center horizontally */
-    width: 100%;
-    margin-top: 20px;
-    color:aliceblue;
-}
 
-textarea {
-    width: 80%; /* Adjust width of the text area */
-    height: 100px;
-    padding: 10px;
-    margin-bottom: 10px;
-    color: rgb(62, 41, 9);
-}
+
+
 .alert-section {
     margin: 20px;
     text-align: center;
   }
   
-  .alert-form {
-    margin-top: 20px;
-    padding: 20px;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    max-width: 500px;
-    margin-left: auto;
-    margin-right: auto;
-    background: linear-gradient(to right, rgba(22, 19, 1, 0.865), rgba(34, 32, 23, 0.6));
-  }
   
   .alert-form div {
     margin: 15px;
@@ -61,10 +31,105 @@ textarea {
   
   .alert-form input,
   .alert-form textarea {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
+    width: 100%; /* Full width for text areas */
+    height: 120px; /* Fixed height */
+    border: 2px solid #ff56227f; /* Bold border */
     border-radius: 5px;
-    font-size: 16px;
+    padding: 10px;
+    resize: none;
+    font-size: 1rem; /* Increased font size */
+    transition: border-color 0.3s;
   }
   
+  /* MyArea.css */
+
+
+/* Section Styles */
+.stories-section,
+.alert-section {
+  background-color: rgb(53, 8, 8); /* White background for sections */
+  border-radius: 10px; /* More rounded corners */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Enhanced shadow for depth */
+  padding: 25px; /* Increased padding */
+  margin: 20px auto; /* Center sections with auto margin */
+  max-width: 600px; /* Limit maximum width */
+  transition: transform 0.3s; /* Smooth scale transition */
+}
+
+.stories-section:hover,
+.alert-section:hover {
+  transform: scale(1.02); /* Slightly scale on hover */
+}
+
+
+textarea {
+  width: 100%; /* Full width for text areas */
+  height: 120px; /* Fixed height */
+  border: 2px solid #ff56227f; /* Bold border */
+  border-radius: 5px;
+  padding: 10px;
+  resize: none;
+  font-size: 1rem; /* Increased font size */
+  transition: border-color 0.3s; /* Smooth border color transition */
+}
+
+textarea:focus {
+  border-color: #ff8f00; /* Change border color on focus */
+  outline: none; /* Remove outline */
+  box-shadow: 0 0 5px rgba(255, 143, 0, 0.5); /* Glow effect */
+}
+
+.existing-stories,
+.alerts-list {
+  margin-top: 15px; /* Space above lists */
+}
+
+h3 {
+  color: #473e3e; /* Darker text color for subheadings */
+  padding-bottom: 5px; /* Space between text and underline */
+}
+
+ul {
+  list-style-type: none; /* Remove bullets */
+  padding: 0; /* Remove padding */
+}
+
+li {
+  padding: 10px; /* Space between list items */
+  transition: background 0.3s; /* Smooth background change */
+}
+
+li:hover {
+  background-color: rgba(255, 165, 0, 0.1); /* Highlight on hover */
+}
+
+li:last-child {
+  border-bottom: none; /* Remove border from last item */
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  h1 {
+    font-size: 2rem; /* Smaller heading on mobile */
+  }
+
+  .stories-section,
+  .alert-section {
+    padding: 15px; /* Reduce padding on mobile */
+  }
+
+  .button {
+    padding: 10px 15px; /* Adjust button size */
+  }
+
+  textarea {
+    width: 100%; /* Full width for text areas */
+    height: 120px; /* Fixed height */
+    border: 2px solid #ff56227f; /* Bold border */
+    border-radius: 5px;
+    padding: 10px;
+    resize: none;
+    font-size: 1rem; /* Increased font size */
+    transition: border-color 0.3s;
+  }
+}

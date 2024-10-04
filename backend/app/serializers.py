@@ -6,7 +6,6 @@ from django.contrib.auth.models import User
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 from .models import Profile
-
 class LoginSerializer(serializers.Serializer):
     email = serializers.EmailField()
     password = serializers.CharField(write_only=True)
@@ -66,3 +65,7 @@ class SignupSerializer(serializers.ModelSerializer):
             phone_number=profile_data['phone_number']
         )
         return user
+class ProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Profile
+        fields = ['full_name', 'city', 'phone_number', 'age', 'email']  # Include all necessary fields

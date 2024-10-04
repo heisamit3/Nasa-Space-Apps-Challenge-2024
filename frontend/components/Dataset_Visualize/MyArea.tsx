@@ -1,152 +1,345 @@
+// import React, { useState, useEffect } from "react";
+// import { Line } from "react-chartjs-2";
+// import { Chart, registerables } from "chart.js";
+// import axios from "axios"; // Import Axios
+// import "../../css/MyArea.css";
+// Chart.register(...registerables);
+
+// interface MyAreaProps {
+//   email: string; // Receive email as prop from parent component
+// }
+
+// const MyArea: React.FC<MyAreaProps> = ({ email }) => {
+//   const [stories, setStories] = useState<string[]>([
+//     "The first story about climate change...",
+//     "Another user's inspiring story...",
+//   ]);
+//   const [newStory, setNewStory] = useState<string>("");
+//   const [showStories, setShowStories] = useState<boolean>(false);
+//   const [showTextArea, setShowTextArea] = useState<boolean>(false);
+
+//   // Fetch stories when the component mounts
+//   useEffect(() => {
+//     const fetchStories = async () => {
+//       try {
+//         const response = await axios.post(`http://localhost:8000/api/getstories/`, { email });
+//         if (response.status === 200) {
+//           const storiesData = response.data.stories.map(
+//             (story: { profile_name: string; text: string; city: string }) =>
+//               `${story.profile_name} from ${story.city}: ${story.text}`
+//           );
+//           setStories(storiesData); // Update the state with fetched stories
+//         }
+//       } catch (error) {
+//         console.error("Error fetching stories:", error);
+//       }
+//     };
+
+//     fetchStories();
+//   }, [email]);
+
+//   // Handle story submission
+//   const handleSubmitStory = async () => {
+//     if (newStory.trim()) {
+//       console.log("Submitting story:", newStory);
+//       try {
+//         const response = await axios.post(`http://localhost:8000/api/setstory/`, {
+//           email, // Use actual user's email
+//           text: newStory,
+//         });
+//         console.log({email});
+//         console.log(response);
+//         if (response.status === 201) {
+//           alert("Story created successfully!");
+//           setStories([...stories, newStory]); // Add the new story to the list
+//           setNewStory("");
+//           setShowTextArea(false); // Hide the textarea after submission
+//         }
+//       } catch (error) {
+//         console.error("Error creating story:", error);
+//         alert("Failed to submit story. Please try again.");
+//       }
+//     } else {
+//       alert("Please write something before submitting.");
+//     }
+//   };
+
+//   // Toggle stories visibility
+//   const toggleStories = () => {
+//     setShowStories(!showStories);
+//   };
+
+//   // States for alert form inputs
+//   const [showAlertForm, setShowAlertForm] = useState<boolean>(false);
+//   const [subject, setSubject] = useState<string>("");
+//   const [message, setMessage] = useState<string>("");
+//   const [recipients, setRecipients] = useState<string>("");
+//   const [users, setUsers] = useState<string[]>([]);
+//   const [loadingUsers, setLoadingUsers] = useState<boolean>(true);
+//   const [showAlerts, setShowAlerts] = useState(false);
+//   const [alertText, setAlertText] = useState("");  
+//   const [alerts, setAlerts] = useState<string[]>([]);
+  
+
+//   // Fetch users from backend
+//   useEffect(() => {
+//     const fetchUsers = async () => {
+//       try {
+//         const response = await axios.get("/api/users/");
+//         const usersList = response.data.map(
+//           (user: { email: string }) => user.email
+//         );
+//         setUsers(usersList);
+//         setRecipients(usersList.join(", ")); // Set default recipients to all users
+//         setLoadingUsers(false);
+//       } catch (error) {
+//         console.error("Error fetching users:", error);
+//         setLoadingUsers(false);
+//       }
+//     };
+
+//     fetchUsers();
+//   }, []);
+//   const fetchAlerts = async () => {
+//     try {
+//       const response = await axios.post("http://localhost:8000/api/get_alerts/", { email });
+//       if (response.status === 200) {
+//         const alertsData = response.data.alerts.map(
+//           (alert: { sender_name: string; text: string; city: string }) =>
+//             `${alert.sender_name} from ${alert.city}: ${alert.text}`
+//         );
+//         setAlerts(alertsData);
+//       }
+//     } catch (error) {
+//       console.error("Error fetching alerts:", error);
+//     }
+//   };
+//   // Handle email alert submission
+//   const handleAlertSubmit = async () => {
+//     if (alertText.trim()) {
+//       try {
+//         const response = await axios.post("http://localhost:8000/api/set_alert/", {
+//           email,
+//           text: alertText,
+//         });
+//         if (response.status === 201) {
+//           alert("Alert created successfully!");
+//           setAlertText(""); // Clear the alert text after submission
+//         }
+//       } catch (error) {
+//         console.error("Error creating alert:", error);
+//         alert("Failed to create alert. Please try again.");
+//       }
+//     } else {
+//       alert("Please write an alert before submitting.");
+//     }
+//   };
+
+//   return (
+//     <div>
+//       <h1>Welcome to My Area</h1>
+
+//       <div className="stories-section">
+//         <div className="stories-container">
+//           <button className="button" onClick={toggleStories}>
+//             {showStories ? "Hide Stories" : "See Other Stories"}
+//           </button>
+
+//           {showStories && (
+//             <div className="existing-stories">
+//               <h3>Stories</h3>
+//               <ul>
+//                 {stories.map((story, index) => (
+//                   <li key={index}>{story}</li>
+//                 ))}
+//               </ul>
+//             </div>
+//           )}
+
+//           {/* Share Story Section */}
+//           {!showTextArea && (
+//             <button
+//               className="button"
+//               onClick={() => setShowTextArea(true)}
+//               style={{ marginTop: "10px" }}
+//             >
+//               Share Your Story
+//             </button>
+//           )}
+
+//           {showTextArea && (
+//             <div className="share-story">
+//               <textarea
+//                 value={newStory}
+//                 onChange={(e) => setNewStory(e.target.value)}
+//                 style={{ margin: "10px" }}
+//                 placeholder="Write your story..."
+//               />
+//               <button className="button" onClick={handleSubmitStory}>
+//                 Submit
+//               </button>
+//             </div>
+//           )}
+//         </div>
+//       </div>
+//           {/* Alerts Section */}
+//       <div className="alert-section">
+//         <button
+//           onClick={() => {
+//             fetchAlerts();
+//             setShowAlerts(!showAlerts);
+//           }}
+//           className="button"
+//           style={{ margin: "10px" }}
+//         >
+//           {showAlerts ? "Hide Alerts" : "Get Alerts"}
+//         </button>
+
+//         {showAlerts && (
+//           <div className="alerts-list">
+//             <h3>Alerts:</h3>
+//             <ul>
+//               {alerts.map((alert, index) => (
+//                 <li key={index}>{alert}</li>
+//               ))}
+//             </ul>
+
+//             {/* Alert Submission Section */}
+//             <div className="alert-form">
+//               <textarea
+//                 value={alertText}
+//                 onChange={(e) => setAlertText(e.target.value)}
+//                 placeholder="Write your alert..."
+//                 style={{ marginBottom: "10px", display: "block" }}
+//               />
+//               <button className="button" onClick={handleAlertSubmit}>
+//                 Submit Alert
+//               </button>
+//             </div>
+//           </div>
+//         )}
+//       </div>
+      
+//     </div>
+//   );
+// };
+
+// export default MyArea;
 import React, { useState, useEffect } from "react";
-import { Line } from "react-chartjs-2";
-import { Chart, registerables } from "chart.js";
-import axios from "axios"; // Import Axios
+import axios from "axios";
 import "../../css/MyArea.css";
-Chart.register(...registerables);
 
-const MyArea: React.FC = () => {
-  const co2Data = {
-    labels: [
-      "2000",
-      "2001",
-      "2002",
-      "2003",
-      "2004",
-      "2005",
-      "2006",
-      "2007",
-      "2008",
-      "2009",
-      "2010",
-      "2011",
-      "2012",
-      "2013",
-      "2014",
-      "2015",
-      "2016",
-      "2017",
-      "2018",
-      "2019",
-      "2020",
-      "2021",
-      "2022",
-      "2023",
-    ],
-    datasets: [
-      {
-        label: "CO2 Levels (ppm)",
-        data: [
-          368, 370, 375, 378, 381, 384, 387, 390, 393, 396, 400, 404, 408, 412,
-          416, 420, 424, 428, 432, 436, 440, 444, 448,
-        ],
-        borderColor: "rgba(75, 192, 192, 1)",
-        backgroundColor: "rgba(75, 192, 192, 0.2)",
-        fill: true,
-        tension: 0.3,
-      },
-      {
-        label: "Heat Rise (°C)",
-        data: [
-          14.5, 14.6, 14.7, 14.8, 14.9, 15.0, 15.1, 15.2, 15.3, 15.4, 15.5,
-          15.6, 15.7, 15.8, 15.9, 16.0, 16.1, 16.2, 16.3, 16.4, 16.5, 16.6,
-          16.7,
-        ],
-        borderColor: "rgba(255, 99, 132, 1)",
-        backgroundColor: "rgba(255, 99, 132, 0.2)",
-        fill: true,
-        tension: 0.3,
-      },
-    ],
-  };
+interface MyAreaProps {
+  email: string; // Receive email as prop from parent component
+}
 
-  const [stories, setStories] = useState<string[]>([
-    "The first story about climate change...",
-    "Another user's inspiring story...",
-  ]);
+const MyArea: React.FC<MyAreaProps> = ({ email }) => {
+  const [stories, setStories] = useState<string[]>([]);
   const [newStory, setNewStory] = useState<string>("");
   const [showStories, setShowStories] = useState<boolean>(false);
   const [showTextArea, setShowTextArea] = useState<boolean>(false);
+  const [alerts, setAlerts] = useState<string[]>([]);
+  const [showAlerts, setShowAlerts] = useState(false);
+  const [alertText, setAlertText] = useState("");
 
-  const handleShareStory = () => {
-    setShowTextArea(true); // Show the textarea
+  // Function to clear the previous session and refresh data when email changes
+  const refreshData = () => {
+    setStories([]); // Clear stories
+    setAlerts([]); // Clear alerts
   };
 
-  const handleSubmitStory = () => {
-    if (newStory.trim()) {
-      setStories([...stories, newStory]);
-      setNewStory("");
-      setShowTextArea(false); // Hide the textarea after submission
-    } else {
-      alert("Please write something before submitting.");
-      setShowTextArea(false); // Hide the textarea if it's empty
-    }
-  };
-
-  const toggleStories = () => {
-    setShowStories(!showStories);
-  };
-
-  // States for alert form inputs
-  const [showAlertForm, setShowAlertForm] = useState<boolean>(false);
-  const [email, setEmail] = useState<string>("");
-  const [subject, setSubject] = useState<string>("");
-  const [message, setMessage] = useState<string>("");
-  const [recipients, setRecipients] = useState<string>("");
-  const [users, setUsers] = useState<string[]>([]);
-  const [loadingUsers, setLoadingUsers] = useState<boolean>(true);
-
-  // Fetch users from backend
+  // UseEffect to detect when the logged-in email changes and refresh automatically
   useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const response = await axios.get("/api/users/");
-        const usersList = response.data.map(
-          (user: { email: string }) => user.email
-        );
-        setUsers(usersList);
-        setRecipients(usersList.join(", ")); // Set default recipients
-        setLoadingUsers(false);
-      } catch (error) {
-        console.error("Error fetching users:", error);
-        setLoadingUsers(false);
-      }
-    };
-    fetchUsers();
-  }, []);
-
-  // Function to handle alert submission
-  const handleAlertSubmit = async () => {
-    if (!recipients.trim()) {
-      alert("Please enter at least one recipient.");
-      return; // Stop execution if no recipients
+    const storedEmail = localStorage.getItem("email");
+    console.log({ storedEmail, email });
+    // Detect if the user email has changed and refresh data
+    if (storedEmail && storedEmail !== email) {
+      refreshData();
+      console.log({ storedEmail, email });
+      localStorage.setItem("email", email); // Update email in localStorage
+    } else if (!storedEmail) {
+      // If no email was previously stored, set the current email
+      localStorage.setItem("email", email);
     }
-    if (email.trim() && subject.trim() && message.trim()) {
-      try {
-        const response = await axios.post("/api/send-email", {
-          subject,
-          message,
-          recipients: recipients
-            .split(",")
-            .map((recipient) => recipient.trim()),
-          email,
-        });
 
-        if (response.status === 200) {
-          alert("Email alert sent successfully!");
+    // Fetch new data (stories and alerts) after email has been detected/changed
+    fetchStories();
+    fetchAlerts();
+  }, [email]); // Re-run this effect whenever the email prop changes
+
+  // Function to fetch stories
+  const fetchStories = async () => {
+    try {
+      const response = await axios.post(`http://localhost:8000/api/getstories/`, { email });
+      if (response.status === 200) {
+        const storiesData = response.data.stories.map(
+          (story: { profile_name: string; text: string; city: string }) =>
+            `${story.profile_name} from ${story.city}: ${story.text}`
+        );
+        setStories(storiesData);
+      }
+    } catch (error) {
+      console.error("Error fetching stories:", error);
+    }
+  };
+
+  // Function to fetch alerts
+  const fetchAlerts = async () => {
+    try {
+      const response = await axios.post("http://localhost:8000/api/get_alerts/", { email });
+      if (response.status === 200) {
+        const alertsData = response.data.alerts.map(
+          (alert: { sender_name: string; text: string; city: string }) =>
+            `${alert.sender_name} from ${alert.city}: ${alert.text}`
+        );
+        setAlerts(alertsData);
+      }
+    } catch (error) {
+      console.error("Error fetching alerts:", error);
+    }
+  };
+
+  // Handle story submission
+  const handleSubmitStory = async () => {
+    if (newStory.trim()) {
+      try {
+        const response = await axios.post(`http://localhost:8000/api/setstory/`, {
+          email,
+          text: newStory,
+        });
+        if (response.status === 201) {
+          alert("Story created successfully!");
+          setStories([...stories, newStory]); // Add new story to the list
+          setNewStory("");
+          setShowTextArea(false); // Hide the textarea after submission
         }
       } catch (error) {
-        console.error("Error sending email alert", error);
-        alert("Failed to send email alert. Please try again.");
+        console.error("Error creating story:", error);
+        alert("Failed to submit story. Please try again.");
       }
-      // Reset the form after submission
-      setShowAlertForm(false);
-      setEmail("");
-      setSubject("");
-      setMessage("");
-      setRecipients("");
     } else {
-      alert("Please fill in all fields before submitting.");
+      alert("Please write something before submitting.");
+    }
+  };
+
+  // Handle alert submission
+  const handleAlertSubmit = async () => {
+    if (alertText.trim()) {
+      try {
+        const response = await axios.post("http://localhost:8000/api/set_alert/", {
+          email,
+          text: alertText,
+        });
+        if (response.status === 201) {
+          alert("Alert created successfully!");
+          setAlertText(""); // Clear the alert text after submission
+        }
+      } catch (error) {
+        console.error("Error creating alert:", error);
+        alert("Failed to create alert. Please try again.");
+      }
+    } else {
+      alert("Please write an alert before submitting.");
     }
   };
 
@@ -154,113 +347,80 @@ const MyArea: React.FC = () => {
     <div>
       <h1>Welcome to My Area</h1>
 
-      {/* Centered Graph Container */}
-      <div className="graph-container">
-        <h2>CO2 Levels and Heat Rise (2000 - 2023)</h2>
-        <Line data={co2Data} options={{ responsive: true }} />
-      </div>
-
+      {/* Stories Section */}
       <div className="stories-section">
-        <div className="stories-container">
-          <button className="button" onClick={toggleStories}>
-            {showStories ? "Hide Stories" : "See Other Stories"}
+        <button className="button" onClick={() => setShowStories(!showStories)}>
+          {showStories ? "Hide Stories" : "See Other Stories"}
+        </button>
+
+        {showStories && (
+          <div className="existing-stories">
+            <h3>Stories</h3>
+            <ul>
+              {stories.map((story, index) => (
+                <li key={index}>{story}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {/* Share Story Section */}
+        {!showTextArea && (
+          <button
+            className="button"
+            onClick={() => setShowTextArea(true)}
+            style={{ marginTop: "10px" }}
+          >
+            Share Your Story
           </button>
+        )}
 
-          {showStories && (
-            <div className="existing-stories">
-              <h3>Stories</h3>
-              <ul>
-                {stories.map((story, index) => (
-                  <li key={index}>{story}</li>
-                ))}
-              </ul>
-            </div>
-          )}
-
-          {/* Button to display the textarea */}
-          {!showTextArea && (
-            <button
-              className="button"
-              onClick={handleShareStory}
-              style={{ marginTop: "10px" }}
-            >
-              Share Your Story
+        {showTextArea && (
+          <div className="share-story">
+            <textarea
+              value={newStory}
+              onChange={(e) => setNewStory(e.target.value)}
+              style={{ margin: "10px" }}
+              placeholder="Write your story..."
+            />
+            <button className="button" onClick={handleSubmitStory}>
+              Submit
             </button>
-          )}
-
-          {/* Textarea and Submit button */}
-          {showTextArea && (
-            <div className="share-story">
-              <textarea
-                value={newStory}
-                onChange={(e) => setNewStory(e.target.value)}
-                style={{ margin: "10px" }}
-                placeholder="Write your story..."
-              />
-              <button className="button" onClick={handleSubmitStory}>
-                Submit
-              </button>
-            </div>
-          )}
-        </div>
+          </div>
+        )}
       </div>
 
-      {/* Alert Button */}
+      {/* Alerts Section */}
       <div className="alert-section">
         <button
-          onClick={() => setShowAlertForm(!showAlertForm)}
+          onClick={() => setShowAlerts(!showAlerts)}
           className="button"
           style={{ margin: "10px" }}
         >
-          {showAlertForm ? "Cancel Alert" : "Send Climate Alert"}
+          {showAlerts ? "Hide Alerts" : "Get Alerts"}
         </button>
 
-        {/* Alert Form (email, subject, message, recipients) */}
-        {showAlertForm && (
-          <div className="alert-form">
-            <div>
-              <label>Email:</label>
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="Enter your email"
-                style={{ marginBottom: "10px", display: "block" }}
-              />
-            </div>
-            <div>
-              <label>Subject:</label>
-              <input
-                type="text"
-                value={subject}
-                onChange={(e) => setSubject(e.target.value)}
-                placeholder="Enter subject"
-                style={{ marginBottom: "10px", display: "block" }}
-              />
-            </div>
-            <div>
-              <label>Message:</label>
-              <textarea
-                value={message}
-                onChange={(e) => setMessage(e.target.value)}
-                placeholder="Write your message..."
-                style={{ marginBottom: "10px", display: "block" }}
-              />
-            </div>
-            <div>
-              <label>Recipients:</label>
-              <input
-                type="text"
-                value={recipients || users.join(", ")} // Default to all users' emails
-                onChange={(e) => setRecipients(e.target.value)}
-                placeholder="Recipients (default: all)"
-                style={{ marginBottom: "10px", display: "block" }}
-              />
-            </div>
+        {showAlerts && (
+          <div className="alerts-list">
+            <h3>Alerts:</h3>
+            <ul>
+              {alerts.map((alert, index) => (
+                <li key={index}>{alert}</li>
+              ))}
+            </ul>
 
-            <button className="button" onClick={handleAlertSubmit}>
-              Send Alert
-            </button>
+            {/* Alert Submission Section */}
+            <div className="alert-form">
+              <textarea
+                value={alertText}
+                onChange={(e) => setAlertText(e.target.value)}
+                placeholder="Write your alert..."
+                style={{ marginBottom: "10px", display: "block" }}
+              />
+              <button className="button" onClick={handleAlertSubmit}>
+                Submit Alert
+              </button>
+            </div>
           </div>
         )}
       </div>

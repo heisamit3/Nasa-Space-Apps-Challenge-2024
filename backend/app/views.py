@@ -19,8 +19,8 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from .serializers import SignupSerializer
-from .models import User, Profile
-
+from .models import User, Profile, Story, Alert
+from django.shortcuts import get_object_or_404
 
 
 
@@ -69,6 +69,137 @@ def message_view(request):
     return Response({"message": "Welcome to the API!"}, status=status.HTTP_200_OK)
 
 
+from .models import User, Profile  # Import your User and Profile models
+from .serializers import ProfileSerializer  # Import the serializer for your Profile model
+
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+import json
+from .models import Profile
+
+@csrf_exempt  # Temporarily disable CSRF for simplicity (consider security implications)
+def userprofile_view(request):
+    if request.method == 'POST':
+        try:
+            body = json.loads(request.body)  # Load the JSON request body
+            email = body.get('email')  # Get the email from the body
+            print("email : ",email)
+            if not email:
+                return JsonResponse({'error': 'Email parameter is required.'}, status=400)
+
+            profile = Profile.objects.get(user__email=email)
+            #print the profile
+            print("for get profile           ************************")
+            print("New User Created:")
+            print(f"Email: {profile.user.email}")
+            print("Profile Details:")
+            print(f"Full Name: {profile.full_name}")
+            print(f"City: {profile.city}")
+            print(f"Phone Number: {profile.phone_number}")
+            #   # Fetch profile based on email
+            return JsonResponse({
+                'full_name': profile.full_name,
+                'city': profile.city,
+                'phone_number': profile.phone_number,
+                'email': profile.user.email,
+            }, status=200)  # Return user profile data as JSON
+
+        except Profile.DoesNotExist:
+            return JsonResponse({'error': 'Profile not found.'}, status=404)  # Return error if profile not found
+        except json.JSONDecodeError:
+            return JsonResponse({'error': 'Invalid JSON.'}, status=400)  # Return error for invalid JSON
+
+    return JsonResponse({'error': 'Method not allowed.'}, status=405)  # Handle unsupported methods
+    
+@csrf_exempt
+def getstories_view(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        email = data.get('email')
+        
+        # Get the user's profile based on email
+        profile = get_object_or_404(Profile, user__email=email)
+        
+        # Get the city of the user
+        city = profile.city
+        
+        # Fetch all stories from the user's city
+        stories = Story.objects.filter(city=city)
+        
+        # Prepare the response data
+        stories_data = [
+            {
+                'profile_name': story.profile.full_name,
+                'text': story.text,
+                'city': story.city
+            } for story in stories
+        ]
+        
+        return JsonResponse({'stories': stories_data}, status=200)
+    
+# Function to create a story for a user
+@csrf_exempt
+def setstory_view(request):
+    if request.method == 'POST':
+        print("huhu")
+        data = json.loads(request.body)
+        email = data.get('email')
+        text = data.get('text')
+        print("huhu")
+        # Get the profile from the email
+        profile = get_object_or_404(Profile, user__email=email)
+        
+        # Create a new story for the profile
+        story = Story.objects.create(profile=profile, text=text, city=profile.city)
+        
+        return JsonResponse({'message': 'Story created successfully!'}, status=201)
+# Function to get all alerts for a user's city
+@csrf_exempt
+def get_alerts(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        email = data.get('email')
+        
+        # Get the user's profile based on email
+        profile = get_object_or_404(Profile, user__email=email)
+        
+        # Get the city of the user
+        city = profile.city
+        
+        # Fetch all alerts for the user's city, excluding alerts created by the user
+        alerts = Alert.objects.filter(city=city).exclude(sender__user__email=email)
+        
+        # Prepare the response data
+        alerts_data = [
+            {
+                'sender_name': alert.sender.full_name,
+                'text': alert.text,
+                'city': alert.city
+            } for alert in alerts
+        ]
+        
+        return JsonResponse({'alerts': alerts_data}, status=200)
+
+# Function to create an alert and assign it to all profiles in the sender's city
+@csrf_exempt
+def set_alert(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        email = data.get('email')
+        text = data.get('text')
+        
+        # Get the sender's profile based on email
+        sender_profile = get_object_or_404(Profile, user__email=email)
+        
+        # Create a new alert for the sender's city
+        alert = Alert.objects.create(sender=sender_profile, text=text, city=sender_profile.city)
+        
+        # Get all profiles in the sender's city and associate them with the alert
+        profiles_in_city = Profile.objects.filter(city=sender_profile.city)
+        alert.profiles.set(profiles_in_city)
+        
+        return JsonResponse({'message': 'Alert created and assigned to all users in the city!'}, status=201)
+    
 @api_view(['GET'])
 def carbon_data_view(request):
     try:
