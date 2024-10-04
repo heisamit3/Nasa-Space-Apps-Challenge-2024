@@ -4,16 +4,22 @@
     padding: 20px; /* Padding around the form */
     border: 1px solid #ccc; /* Border around the form */
     /* Rounded corners */
-    position: relative;
-    width: 22rem; /* Use rem units for width */
+    /* position: relative; */
+    width: 32rem; /* Use rem units for width */
     padding: 1.25rem; /* Padding in rem */
     border-radius: 1rem; /* Rounded corners */
     text-align: center;
     color: white; /* Text color */
-    background: linear-gradient(135deg, #1A1919, #99d4c6); /* Adjusted gradient for consistency */
-    box-shadow: 0 0.25rem 1.25rem rgba(0, 0, 0, 0.2); /* Shadow effect in rem */
+    
   }
   
+  .checkbox-group {
+    margin: 15px 0; /* Space around checkboxes */
+}
+
+.checkbox-group label {
+    margin-right: 15px; /* Space between checkboxes */
+}
   
   .error-message {
     color: red; /* Error message color */

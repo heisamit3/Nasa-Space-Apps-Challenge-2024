@@ -58,7 +58,7 @@ const CH4MapWithDataPage: React.FC = () => {
   const [isComparing, setIsComparing] = useState<boolean>(false);
   const [compareMode, setCompareMode] = useState<boolean>(false);
   const [searchQuery, setSearchQuery] = useState<string>("");
-
+  const [suggestions, setSuggestions] = useState<string[]>([]);
   // Fetch region name using OpenCage Geocoding API
   const fetchRegionName = async (
     lat: number,
@@ -188,21 +188,57 @@ const CH4MapWithDataPage: React.FC = () => {
     }
   };
 
-  // Handle search functionality
-  const handleSearch = async () => {
-    if (!searchQuery) return;
+  const handleSearch = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const query = e.target.value;
+    setSearchQuery(query);
 
-    setIsLoading(true);
+    // Clear suggestions if the query is empty
+    if (query.trim() === "") {
+      setSuggestions([]);
+      return;
+    }
+
+    if (query.length < 2) {
+      setSuggestions([]); // Only fetch suggestions for more than 1 character
+      return;
+    }
 
     try {
       const response = await fetch(
-        `https://api.opencagedata.com/geocode/v1/json?q=${searchQuery}&key=${OPENCAGE_API_KEY}`
+        `https://api.opencagedata.com/geocode/v1/json?q=${query}&key=${OPENCAGE_API_KEY}&limit=5`
       );
       const data = await response.json();
 
       if (data.results && data.results.length > 0) {
-        const result = data.results[0];
-        const { lat, lng } = result.geometry;
+        // Filter out suggestions that don't match the query substring
+        const locationSuggestions = data.results
+          .map((result: any) => result.formatted)
+          .filter((formatted: string) =>
+            formatted.toLowerCase().includes(query.toLowerCase())
+          ); // Ensure it contains the query substring
+
+        setSuggestions(locationSuggestions); // Set suggestions only if they contain the query substring
+      } else {
+        setSuggestions([]); // Clear suggestions if no valid results are found
+      }
+    } catch (error) {
+      console.error("Error fetching suggestions:", error);
+      setSuggestions([]); // Clear suggestions on error
+    }
+  };
+
+  // Handle suggestion click
+  const handleSuggestionClick = async (suggestion: string) => {
+    setSearchQuery(suggestion);
+    setSuggestions([]); // Clear suggestions after selecting one
+
+    try {
+      const response = await fetch(
+        `https://api.opencagedata.com/geocode/v1/json?q=${suggestion}&key=${OPENCAGE_API_KEY}`
+      );
+      const data = await response.json();
+      if (data.results && data.results.length > 0) {
+        const { lat, lng } = data.results[0].geometry;
 
         setArea({ lat, lng, radius: 50000 });
 
@@ -214,16 +250,47 @@ const CH4MapWithDataPage: React.FC = () => {
           [lng, lat],
         ];
 
-        setCurrentRegion(result.formatted);
-        await fetchEmissionsData(coordinates, result.formatted);
-      } else {
-        alert("No results found for your query.");
+        setCurrentRegion(data.results[0].formatted);
+        await fetchEmissionsData(coordinates, data.results[0].formatted);
+      }
+    } catch (error) {
+      console.error("Error fetching selected location data:", error);
+    }
+  };
+
+  // Handle search button click (trigger a search based on the current input value)
+  const handleSearchClick = async () => {
+    if (searchQuery.trim() === "") return; // Avoid empty search queries
+
+    try {
+      const response = await fetch(
+        `https://api.opencagedata.com/geocode/v1/json?q=${searchQuery}&key=${OPENCAGE_API_KEY}`
+      );
+      const data = await response.json();
+      if (data.results && data.results.length > 0) {
+        const { lat, lng } = data.results[0].geometry;
+
+        setArea({ lat, lng, radius: 50000 });
+
+        const coordinates = [
+          [lng, lat],
+          [lng, lat + 4],
+          [lng - 4, lat + 4],
+          [lng - 4, lat],
+          [lng, lat],
+        ];
+
+        setCurrentRegion(data.results[0].formatted);
+        await fetchEmissionsData(coordinates, data.results[0].formatted);
       }
     } catch (error) {
       console.error("Error fetching search results:", error);
-    } finally {
-      setIsLoading(false);
     }
+  };
+
+  const handleInputFocus = () => {
+    setSearchQuery(""); // Clear the search query
+    setSuggestions([]); // Clear suggestions
   };
 
   // Emission Graph Component
@@ -370,18 +437,27 @@ const CH4MapWithDataPage: React.FC = () => {
         Search or click on the map to view CH₄ emissions data
       </h1>
 
-      {/* Search Bar Section */}
       <div className="search-bar-container">
         <input
           type="text"
-          placeholder="Search for a location..."
+          placeholder="Search for a location"
           value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
+          onChange={handleSearch}
+          onFocus={handleInputFocus}
           className="search-input"
         />
-        <button onClick={handleSearch} className="search-button">
-          <FaSearch /> {/* Search icon */}
+        <button className="search-button" onClick={handleSearchClick}>
+          <FaSearch />
         </button>
+        {suggestions.length > 0 && (
+          <ul className="suggestions-list">
+            {suggestions.map((suggestion, index) => (
+              <li key={index} className="suggestion-item" onClick={() => handleSuggestionClick(suggestion)}>
+                {suggestion}
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
 
       {/* Map Section */}
@@ -423,16 +499,10 @@ const CH4MapWithDataPage: React.FC = () => {
       {/* Display emissions graphs and comparison if available */}
       {emissionsData && (
         <div className="button-group">
-          <button
-            className="compare-button"
-            onClick={() => setIsComparing(true)}
-          >
+          <button className="button" onClick={() => setIsComparing(true)}>
             <FaExchangeAlt /> Compare
           </button>
-          <button
-            className="not-compare-button"
-            onClick={() => setIsComparing(false)}
-          >
+          <button className="button" onClick={() => setIsComparing(false)}>
             <FaTimes /> Not Compare
           </button>
         </div>
