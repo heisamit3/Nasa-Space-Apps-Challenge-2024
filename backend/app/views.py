@@ -15,6 +15,14 @@ from django.conf import settings
 import json
 import pandas as pd
 from django.views.decorators.csrf import csrf_exempt
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+from .serializers import SignupSerializer
+from .models import User, Profile
+
+
+
 
 @api_view(['POST'])
 def login_view(request):
@@ -32,17 +40,25 @@ def login_view(request):
 
 @api_view(['POST'])
 def signup_view(request):
+    print("Request Data:", request.data)  # Print received data
     serializer = SignupSerializer(data=request.data)
+    
     if serializer.is_valid():
         user = serializer.save()
-        token, created = Token.objects.get_or_create(user=user)
-        return Response({
-            'message': 'Signup successful!',
-            'token': token.key,
-            'email': user.email,
-        }, status=status.HTTP_201_CREATED)
-
+        profile = Profile.objects.get(user=user)
+        print("New User Created:")
+        print(f"Username: {user.username}")
+        print(f"Email: {user.email}")
+        print("Profile Details:")
+        print(f"Full Name: {profile.full_name}")
+        print(f"City: {profile.city}")
+        print(f"Phone Number: {profile.phone_number}")
+        print(f"password: {user.password}")
+        return Response({"message": "Signup successful"}, status=status.HTTP_201_CREATED)
+    
+    print("Serializer Errors:", serializer.errors)  # Print validation errors
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 @api_view(['GET', 'POST'])
 def message_view(request):
@@ -539,7 +555,7 @@ def create_micasa_aoi(coordinates):
     }
 
 # Fetch the MiCASA dataset items (granules)
-def fetch_micasa_stac_items(collection_name, start_year=2021, end_year=2024, limit=1):
+def fetch_micasa_stac_items(collection_name, start_year=2016, end_year=2024, limit=1):
     all_items = []
     
     for year in range(start_year, end_year + 1):
@@ -547,11 +563,9 @@ def fetch_micasa_stac_items(collection_name, start_year=2021, end_year=2024, lim
         response = requests.get(f"{STAC_API_URL}/collections/{collection_name}/items?limit={limit}&datetime={datetime_range}")
         response.raise_for_status()  # Check for errors
         items = response.json()["features"]
-        print(f"Fetched items for {year}: {items}")  # Log fetched items for debugging
         all_items.extend(items)
     
     return all_items
-
 
 # Generate statistics for a specific granule
 def generate_micasa_stats(item, geojson, asset_name):
@@ -561,15 +575,13 @@ def generate_micasa_stats(item, geojson, asset_name):
             params={"url": item["assets"][asset_name]["href"]},
             json=geojson,
         ).json()
-        print(f"Generated stats for item: {result}")  # Log the generated statistics
         return {
             **result["properties"],
-            "datetime": item["properties"]["start_datetime"][:10],
+            "datetime": item["properties"]["start_datetime"],
         }
     except Exception as e:
         print(f"Error generating stats: {str(e)}")
         return None
-
 
 # Clean and process the statistics JSON to a Pandas DataFrame
 def clean_micasa_stats(stats_json):
@@ -580,21 +592,30 @@ def clean_micasa_stats(stats_json):
     if 'statistics.b1.' in df.columns[0]:
         df.columns = [col.replace("statistics.b1.", "") for col in df.columns]
     df["date"] = pd.to_datetime(df["datetime"])
-    print(f"Cleaned DataFrame: {df}")  # Log the cleaned DataFrame
     return df
 
 # Main function to compute the statistics
 def compute_micasa_stats(coordinates):
     try:
-        aoi = create_micasa_aoi(coordinates)
-        items = fetch_micasa_stac_items(collection_name)
-        asset_name = "total"
-        stats = [generate_micasa_stats(item, aoi, asset_name) for item in items]
-        df = clean_micasa_stats(stats)
-        print(f"Final DataFrame: {df}")  # Log the final DataFrame before returning
+        # Generate AOI
+        aoi = create_aoi(coordinates)
+
+        # Fetch items from the STAC API
+        items = fetch_micasa_stac_items(micasa_collection_name)
+
+        # Generate statistics for all items
+        asset_name = "rh"
+        stats = []
+        for item in items:
+            stat = generate_stats(item, aoi, asset_name)
+            if stat:
+                stats.append(stat)
+
+        # Clean and process stats
+        df = clean_stats(stats)
         return df
     except Exception as e:
-        print(f"Error in compute_micasa_stats: {str(e)}")
+        print(f"Error in compute_stats: {str(e)}")
         return pd.DataFrame()
 
 # API view to handle the POST request for computing statistics
@@ -603,7 +624,7 @@ def compute_micasa_stats_view(request):
     try:
         data = json.loads(request.body)
         coordinates = data.get("coordinates", [])
-        print(f"Coordinates received: {coordinates}")  # Log the received coordinates
+        print("Received coordinates:", coordinates)
         
         if not coordinates:
             return JsonResponse({"error": "No coordinates provided"}, status=400)
@@ -614,9 +635,8 @@ def compute_micasa_stats_view(request):
             return JsonResponse({"error": "No data found for the given coordinates"}, status=404)
         
         response_data = df.to_dict(orient='records')
-        print(f"Response data: {response_data}")  # Log the response data to inspect the output
         return JsonResponse({"data": response_data}, status=200)
     
     except Exception as e:
-        print(f"Error: {str(e)}")  # Log any errors encountered
         return JsonResponse({"error": str(e)}, status=500)
+

@@ -68,7 +68,7 @@ const NasaData: React.FC = () => {
               <a onClick={() => handleNavigation("/ch4-flux-comparison")}>
                 <FaMapMarkedAlt className="icon" /> Map
               </a>
-              <a onClick={() => handleNavigation("/ch4-map")}>
+              <a onClick={() => handleNavigation("/ch4-map-with-data")}>
                 <FaChartBar className="icon" /> Statistics
               </a>
               <a onClick={() => handleNavigation("/ch4-simul")}>

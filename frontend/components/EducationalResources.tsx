@@ -42,29 +42,30 @@ const EducationalResources: React.FC = () => {
           <FaLeaf /> Greenhouse Gases (GHGs)
         </h2>
         <p className="intro-text">
-          Greenhouse gases (GHGs) trap heat from the Sun, contributing to the
-          warming of our planet. These gases act like a blanket, keeping the
-          Earth's temperature livable, but too much can lead to climate change.
+          Greenhouse gases (GHGs) are gases in the atmosphere that trap heat
+          from the Sun. They contribute to global warming and climate change.
           The primary GHGs include:
         </p>
         <div className="grid-container">
           <div className="grid-item">
             <h3>Carbon Dioxide (CO₂)</h3>
             <p>
-              The most abundant GHG, largely from fossil fuel burning.{" "}
+              CO₂ is a naturally occurring gas but also a byproduct of burning
+              fossil fuels. It is the main gas contributing to climate change.{" "}
               <a
                 href="https://www.epa.gov/ghgemissions/overview-greenhouse-gases"
                 target="_blank"
                 rel="noreferrer"
               >
-                Learn more from EPA
+                Learn more
               </a>
             </p>
           </div>
           <div className="grid-item">
             <h3>Methane (CH₄)</h3>
             <p>
-              A potent GHG from natural gas production and agriculture.{" "}
+              CH₄ is a potent GHG from natural gas and agriculture activities.
+              It traps heat more effectively than CO₂.{" "}
               <a
                 href="https://www.globalmethane.org/"
                 target="_blank"
@@ -77,7 +78,8 @@ const EducationalResources: React.FC = () => {
           <div className="grid-item">
             <h3>Nitrous Oxide (N₂O)</h3>
             <p>
-              Released from fertilizers and combustion processes.{" "}
+              Released from fertilizers and combustion processes, N₂O is a
+              significant GHG.{" "}
               <a
                 href="https://www.ipcc.ch/srccl/chapter/summary-for-policymakers/"
                 target="_blank"
@@ -88,18 +90,6 @@ const EducationalResources: React.FC = () => {
             </p>
           </div>
         </div>
-        <p>
-          GHGs cause the greenhouse effect, leading to global warming and
-          climate change. Explore the role of GHGs in this{" "}
-          <a
-            href="https://climate.nasa.gov/causes/"
-            target="_blank"
-            rel="noreferrer"
-          >
-            NASA article
-          </a>
-          .
-        </p>
       </section>
 
       {/* Section 2: Fossil Fuels */}
@@ -109,24 +99,25 @@ const EducationalResources: React.FC = () => {
         </h2>
         <p>
           Fossil fuels are hydrocarbon deposits that can be burned for heat or
-          power. The three primary types of fossil fuels are:
+          power, such as petroleum, coal, and natural gas. These fuels release
+          CO₂ and other GHGs into the atmosphere, contributing to global
+          warming.
         </p>
-        <ul>
+        <ul className="styled-list">
           <li>
-            <strong>Coal</strong>
+            <strong>Coal:</strong> A major source of energy and emissions.
           </li>
           <li>
-            <strong>Oil</strong>
+            <strong>Oil:</strong> Used for transportation and industry.
           </li>
           <li>
-            <strong>Natural Gas</strong>
+            <strong>Natural Gas:</strong> A cleaner fossil fuel, but still emits
+            CH₄.
           </li>
         </ul>
         <p>
-          These fuels release carbon dioxide and other GHGs into the atmosphere,
-          contributing significantly to global warming. For an in-depth
-          explanation of fossil fuels and their environmental impact, check out
-          this{" "}
+          For more information about fossil fuels and their impact on the
+          environment, check out this{" "}
           <a
             href="https://www.nationalgeographic.org/encyclopedia/fossil-fuels/"
             target="_blank"
@@ -144,33 +135,28 @@ const EducationalResources: React.FC = () => {
           <FaGlobe /> CO₂ and Methane (CH₄)
         </h2>
         <p>
-          <strong>Carbon Dioxide (CO₂):</strong> CO₂ is the primary GHG
-          contributing to climate change. It is released by burning fossil fuels
-          and is responsible for approximately 76% of global emissions. More on
-          CO₂:{" "}
+          <strong>Carbon Dioxide (CO₂):</strong> The main GHG causing climate
+          change, released by burning fossil fuels. Responsible for 76% of
+          global emissions.
           <a
             href="https://www.epa.gov/ghgemissions/overview-greenhouse-gases"
             target="_blank"
             rel="noreferrer"
           >
-            EPA’s CO₂ overview
+            More details
           </a>
-          .
         </p>
         <p>
-          <strong>Methane (CH₄):</strong> CH₄ is about 25 times more effective
-          than CO₂ at trapping heat over a 100-year period, though it is less
-          prevalent in the atmosphere. Human activities, such as livestock
-          farming and oil extraction, significantly contribute to methane
-          emissions.{" "}
+          <strong>Methane (CH₄):</strong> A GHG 25 times more effective than CO₂
+          at trapping heat. Produced by human activities like livestock farming
+          and the oil industry.{" "}
           <a
             href="https://www.globalmethane.org/about/index.aspx"
             target="_blank"
             rel="noreferrer"
           >
-            Explore methane’s role
+            Learn about methane
           </a>
-          .
         </p>
       </section>
 
@@ -180,23 +166,18 @@ const EducationalResources: React.FC = () => {
           <FaTree /> GHG Sources and Sinks
         </h2>
         <p>
-          A <strong>GHG source</strong> is any process that releases greenhouse
-          gases into the atmosphere. For instance, the burning of fossil fuels
-          releases large quantities of CO₂.
+          A <strong>GHG source</strong> is anything that releases GHGs into the
+          atmosphere, such as fossil fuel burning. A <strong>GHG sink</strong>{" "}
+          removes GHGs, such as plants that absorb CO₂ during photosynthesis.
         </p>
         <p>
-          A <strong>GHG sink</strong> is something that absorbs and stores GHGs
-          from the atmosphere, such as forests and oceans. Trees, through
-          photosynthesis, are vital carbon sinks.
-        </p>
-        <p>
-          Learn more about GHG sources and sinks at{" "}
+          Learn more about GHG sources and sinks in this{" "}
           <a
             href="https://www.epa.gov/ghgemissions/sources-greenhouse-gas-emissions"
             target="_blank"
             rel="noreferrer"
           >
-            EPA’s GHG sources and sinks
+            EPA guide
           </a>
           .
         </p>
@@ -208,19 +189,20 @@ const EducationalResources: React.FC = () => {
           <FaChartPie /> Carbon Budget
         </h2>
         <p>
-          The <strong>Global Carbon Budget</strong> tracks the balance between
-          GHG emissions and the planet’s capacity to absorb them. The total
-          carbon budget refers to the maximum amount of CO₂ we can emit while
-          still limiting global warming to 1.5°C or 2°C. To stay within this
-          limit, we must rapidly reduce emissions.{" "}
+          The <strong>global carbon budget</strong> is the balance between GHG
+          emissions and the planet’s ability to absorb them. The{" "}
+          <strong>total carbon budget</strong> refers to the maximum amount of
+          CO₂ we can emit while still limiting global warming to 1.5°C or 2°C.
+        </p>
+        <p>
+          To stay within this budget, we need to reduce emissions rapidly.{" "}
           <a
             href="https://www.globalcarbonproject.org/"
             target="_blank"
             rel="noreferrer"
           >
-            Learn more about global carbon budgeting
+            Learn more about the global carbon budget
           </a>
-          .
         </p>
       </section>
     </div>
