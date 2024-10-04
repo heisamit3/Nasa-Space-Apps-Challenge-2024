@@ -15,14 +15,6 @@ from django.conf import settings
 import json
 import pandas as pd
 from django.views.decorators.csrf import csrf_exempt
-from rest_framework import status
-from rest_framework.response import Response
-from rest_framework.decorators import api_view
-from .serializers import SignupSerializer
-from .models import User, Profile
-
-
-
 
 @api_view(['POST'])
 def login_view(request):
@@ -40,25 +32,17 @@ def login_view(request):
 
 @api_view(['POST'])
 def signup_view(request):
-    print("Request Data:", request.data)  # Print received data
     serializer = SignupSerializer(data=request.data)
-    
     if serializer.is_valid():
         user = serializer.save()
-        profile = Profile.objects.get(user=user)
-        print("New User Created:")
-        print(f"Username: {user.username}")
-        print(f"Email: {user.email}")
-        print("Profile Details:")
-        print(f"Full Name: {profile.full_name}")
-        print(f"City: {profile.city}")
-        print(f"Phone Number: {profile.phone_number}")
-        print(f"password: {user.password}")
-        return Response({"message": "Signup successful"}, status=status.HTTP_201_CREATED)
-    
-    print("Serializer Errors:", serializer.errors)  # Print validation errors
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        token, created = Token.objects.get_or_create(user=user)
+        return Response({
+            'message': 'Signup successful!',
+            'token': token.key,
+            'email': user.email,
+        }, status=status.HTTP_201_CREATED)
 
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET', 'POST'])
 def message_view(request):
@@ -555,7 +539,7 @@ def create_micasa_aoi(coordinates):
     }
 
 # Fetch the MiCASA dataset items (granules)
-def fetch_micasa_stac_items(collection_name, start_year=2016, end_year=2024, limit=1):
+def fetch_micasa_stac_items(collection_name, start_year=2021, end_year=2024, limit=1):
     all_items = []
     
     for year in range(start_year, end_year + 1):
@@ -563,9 +547,11 @@ def fetch_micasa_stac_items(collection_name, start_year=2016, end_year=2024, lim
         response = requests.get(f"{STAC_API_URL}/collections/{collection_name}/items?limit={limit}&datetime={datetime_range}")
         response.raise_for_status()  # Check for errors
         items = response.json()["features"]
+        print(f"Fetched items for {year}: {items}")  # Log fetched items for debugging
         all_items.extend(items)
     
     return all_items
+
 
 # Generate statistics for a specific granule
 def generate_micasa_stats(item, geojson, asset_name):
@@ -575,13 +561,15 @@ def generate_micasa_stats(item, geojson, asset_name):
             params={"url": item["assets"][asset_name]["href"]},
             json=geojson,
         ).json()
+        print(f"Generated stats for item: {result}")  # Log the generated statistics
         return {
             **result["properties"],
-            "datetime": item["properties"]["start_datetime"],
+            "datetime": item["properties"]["start_datetime"][:10],
         }
     except Exception as e:
         print(f"Error generating stats: {str(e)}")
         return None
+
 
 # Clean and process the statistics JSON to a Pandas DataFrame
 def clean_micasa_stats(stats_json):
@@ -592,30 +580,21 @@ def clean_micasa_stats(stats_json):
     if 'statistics.b1.' in df.columns[0]:
         df.columns = [col.replace("statistics.b1.", "") for col in df.columns]
     df["date"] = pd.to_datetime(df["datetime"])
+    print(f"Cleaned DataFrame: {df}")  # Log the cleaned DataFrame
     return df
 
 # Main function to compute the statistics
 def compute_micasa_stats(coordinates):
     try:
-        # Generate AOI
-        aoi = create_aoi(coordinates)
-
-        # Fetch items from the STAC API
-        items = fetch_micasa_stac_items(micasa_collection_name)
-
-        # Generate statistics for all items
+        aoi = create_micasa_aoi(coordinates)
+        items = fetch_micasa_stac_items(collection_name)
         asset_name = "rh"
-        stats = []
-        for item in items:
-            stat = generate_stats(item, aoi, asset_name)
-            if stat:
-                stats.append(stat)
-
-        # Clean and process stats
-        df = clean_stats(stats)
+        stats = [generate_micasa_stats(item, aoi, asset_name) for item in items]
+        df = clean_micasa_stats(stats)
+        print(f"Final DataFrame: {df}")  # Log the final DataFrame before returning
         return df
     except Exception as e:
-        print(f"Error in compute_stats: {str(e)}")
+        print(f"Error in compute_micasa_stats: {str(e)}")
         return pd.DataFrame()
 
 # API view to handle the POST request for computing statistics
@@ -624,7 +603,7 @@ def compute_micasa_stats_view(request):
     try:
         data = json.loads(request.body)
         coordinates = data.get("coordinates", [])
-        print("Received coordinates:", coordinates)
+        print(f"Coordinates received: {coordinates}")  # Log the received coordinates
         
         if not coordinates:
             return JsonResponse({"error": "No coordinates provided"}, status=400)
@@ -635,8 +614,262 @@ def compute_micasa_stats_view(request):
             return JsonResponse({"error": "No data found for the given coordinates"}, status=404)
         
         response_data = df.to_dict(orient='records')
+        print(f"Response data: {response_data}")  # Log the response data to inspect the output
+        return JsonResponse({"data": response_data}, status=200)
+    
+    except Exception as e:
+        print(f"Error: {str(e)}")  # Log any errors encountered
+        return JsonResponse({"error": str(e)}, status=500)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# ************air  sea*****************************
+import requests
+from django.http import JsonResponse
+from rest_framework.decorators import api_view
+
+# STAC and Raster API URLs
+STAC_API_URL = "https://earth.gov/ghgcenter/api/stac"
+RASTER_API_URL = "https://earth.gov/ghgcenter/api/raster"
+
+# Function to get the item count for the air-sea CO2 flux collection
+def airSea_get_item_count(collection_id):
+    count = 0
+    items_url = f"{STAC_API_URL}/collections/{collection_id}/items"
+    while True:
+        response = requests.get(items_url)
+        if not response.ok:
+            print("Error getting items")
+            break
+        stac = response.json()
+        count += int(stac["context"].get("returned", 0))
+        next_links = [link for link in stac["links"] if link["rel"] == "next"]
+        if not next_links:
+            break
+        items_url = next_links[0]["href"]
+    print(f"Total items in collection '{collection_id}': {count}")
+    return count
+
+# Function to get the air-sea CO2 flux tile for the given date and asset
+def airSea_get_co2_flux(item, asset_name, color_map, rescale_values):
+    print(f"Fetching CO2 flux tile for item: {item['id']}, asset: {asset_name}")
+    response = requests.get(
+        f"{RASTER_API_URL}/collections/{item['collection']}/items/{item['id']}/tilejson.json?"
+        f"&assets={asset_name}"
+        f"&color_formula=gamma+r+1.05&colormap_name={color_map}"
+        f"&rescale={rescale_values['min']},{rescale_values['max']}"
+    )
+    print(f"Response from RASTER API for item {item['id']}: {response.status_code}")
+    return response.json()
+
+# air_sea_co2_flux_view.py
+@api_view(["GET"])
+def airSea_data_view_CO2(request):
+    collection_name = "eccodarwin-co2flux-monthgrid-v5"
+    asset_name = "co2"
+    color_map = "magma"
+
+    # Fetch the total number of items in the collection
+    print(f"Fetching item count for collection: {collection_name}")
+    number_of_items = airSea_get_item_count(collection_name)
+    items_response = requests.get(f"{STAC_API_URL}/collections/{collection_name}/items?limit={number_of_items}")
+
+    if not items_response.ok:
+        print(f"Error fetching items from STAC API: {items_response.status_code}")
+        return JsonResponse({"error": "Error fetching items from STAC API"}, status=500)
+
+    items = items_response.json()["features"]
+    print(f"Total items fetched: {len(items)}")
+
+    # Map the items with their start date
+    items_dict = {item["properties"]["start_datetime"][:7]: item for item in items}
+    print(f"Mapped items with start dates: {list(items_dict.keys())}")
+
+    # Set observation dates (YYYY-MM)
+    observation_1 = "2022-12"
+    observation_2 = "2021-04"
+    print(f"Observation dates: {observation_1}, {observation_2}")
+
+    # Fetch the first observation's tile
+    if observation_1 not in items_dict:
+        print(f"Observation {observation_1} not found in collection")
+        return JsonResponse({"error": f"Observation {observation_1} not found in collection"}, status=404)
+
+    # Safely get the min/max values using .get() with default values
+    rescale_values_1 = {
+        "min": items_dict[observation_1]["assets"][asset_name]["raster:bands"][0]["statistics"].get("min", -0.0007),
+        "max": items_dict[observation_1]["assets"][asset_name]["raster:bands"][0]["statistics"].get("max", 0.0007)
+    }
+    print(f"Rescale values for {observation_1}: {rescale_values_1}")
+    tile_1 = airSea_get_co2_flux(items_dict[observation_1], asset_name, color_map, rescale_values_1)
+
+    # Fetch the second observation's tile
+    if observation_2 not in items_dict:
+        print(f"Observation {observation_2} not found in collection")
+        return JsonResponse({"error": f"Observation {observation_2} not found in collection"}, status=404)
+
+    rescale_values_2 = {
+        "min": items_dict[observation_2]["assets"][asset_name]["raster:bands"][0]["statistics"].get("min", -0.0007),
+        "max": items_dict[observation_2]["assets"][asset_name]["raster:bands"][0]["statistics"].get("max", 0.0007)
+    }
+    print(f"Rescale values for {observation_2}: {rescale_values_2}")
+    tile_2 = airSea_get_co2_flux(items_dict[observation_2], asset_name, color_map, rescale_values_2)
+
+    # Return both observations as JSON
+    print("Returning JSON response with observation tiles")
+    return JsonResponse({
+        "observation_1": {
+            "date": observation_1,
+            "tile": tile_1,
+            "rescale": rescale_values_1
+        },
+        "observation_2": {
+            "date": observation_2,
+            "tile": tile_2,
+            "rescale": rescale_values_2
+    }}, status=200)
+
+
+from rest_framework.decorators import api_view
+from django.http import JsonResponse
+
+
+# Constants for Air-Sea CO2 Flux Data
+STAC_API_URL = "https://earth.gov/ghgcenter/api/stac"
+RASTER_API_URL = "https://earth.gov/ghgcenter/api/raster"
+collection_name = "eccodarwin-co2flux-monthgrid-v5"  # Collection for air-sea CO2 flux
+
+# Helper Function to Create an AOI (Area of Interest) Polygon
+def create_air_sea_co2_aoi(coordinates):
+    return {
+        "type": "Feature",
+        "properties": {},
+        "geometry": {
+            "type": "Polygon",
+            "coordinates": [coordinates],
+        },
+    }
+
+# Function to Fetch STAC Items (Data Granules)
+def fetch_air_sea_co2_items(collection_name, start_year=2020, end_year=2022, limit=600):
+    all_items = []
+    
+    for year in range(start_year, end_year + 1):
+        # Define the datetime range for the specific year
+        datetime_range = f"{year}-01-01T00:00:00Z/{year}-12-31T23:59:59Z"
+        
+        # Fetch items from STAC API
+        response = requests.get(f"{STAC_API_URL}/collections/{collection_name}/items?limit={limit}&datetime={datetime_range}")
+        response.raise_for_status()  # Raise an error if the request fails
+        
+        # Parse the JSON response and collect items
+        items = response.json()["features"]
+        all_items.extend(items)
+        print(f"Found {len(items)} items for year {year}")
+    
+    print(f"Total items found: {len(all_items)}")
+    return all_items
+
+# Function to Generate Statistics for a Specific Item (Granule)
+def generate_air_sea_co2_stats(item, geojson, asset_name):
+    try:
+        # Submit the data and polygon to generate statistics
+        result = requests.post(
+            f"{RASTER_API_URL}/cog/statistics",
+            params={"url": item["assets"][asset_name]["href"]},
+            json=geojson,
+        ).json()
+        
+        # Return statistics along with the datetime of the item
+        return {
+            **result["properties"],
+            "datetime": item["properties"]["start_datetime"][:10],
+        }
+    except Exception as e:
+        print(f"Error generating stats: {str(e)}")
+        return None
+
+# Function to Clean and Convert the Statistics into a DataFrame
+def clean_air_sea_co2_stats(stats_json):
+    if not stats_json:
+        return pd.DataFrame()  # Return an empty DataFrame if no statistics are available
+    
+    df = pd.DataFrame(stats_json)
+    
+    # Rename columns to be more user-friendly
+    if 'statistics.b1.' in df.columns[0]:
+        df.columns = [col.replace("statistics.b1.", "") for col in df.columns]
+    
+    # Convert datetime to a proper date format
+    df["date"] = pd.to_datetime(df["datetime"])
+    
+    return df
+
+# Main Function to Compute Statistics for All Items in a Collection
+def compute_air_sea_co2_stats(coordinates):
+    try:
+        # Create an AOI polygon based on the coordinates
+        aoi = create_air_sea_co2_aoi(coordinates)
+
+        # Fetch all items (granules) from the STAC collection
+        items = fetch_air_sea_co2_items(collection_name)
+
+        # Iterate over each item and generate statistics
+        asset_name = "co2"  # Asset name for CO2 flux
+        stats = []
+        for item in items:
+            stat = generate_air_sea_co2_stats(item, aoi, asset_name)
+            if stat:
+                stats.append(stat)
+
+        # Clean and return the statistics as a DataFrame
+        df = clean_air_sea_co2_stats(stats)
+        return df
+    except Exception as e:
+        print(f"Error in compute_air_sea_co2_stats: {str(e)}")
+        return pd.DataFrame()
+
+# Django API View to Handle Requests for Air-Sea CO2 Statistics
+@api_view(['POST'])
+def compute_air_sea_co2_stats_view(request):
+    try:
+        # Parse the request body to get coordinates
+        data = json.loads(request.body)
+        coordinates = data.get("coordinates", [])
+        print("Received coordinates:", coordinates)
+        
+        # Return error if no coordinates are provided
+        if not coordinates:
+            return JsonResponse({"error": "No coordinates provided"}, status=400)
+
+        # Compute statistics for the provided AOI coordinates
+        df = compute_air_sea_co2_stats(coordinates)
+        
+        # Check if the DataFrame is empty (no data found)
+        if df.empty:
+            return JsonResponse({"error": "No data found for the given coordinates"}, status=404)
+        
+        # Convert the DataFrame to JSON and return the response
+        response_data = df.to_dict(orient='records')
         return JsonResponse({"data": response_data}, status=200)
     
     except Exception as e:
         return JsonResponse({"error": str(e)}, status=500)
-

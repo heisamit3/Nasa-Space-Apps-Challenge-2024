@@ -10,6 +10,8 @@ import {
   Legend,
   Title,
 } from "chart.js";
+import { FaArrowUp, FaArrowDown, FaEquals } from "react-icons/fa"; // Move this import to the top
+
 import "leaflet/dist/leaflet.css";
 import { FaSpinner, FaSearch, FaExchangeAlt, FaTimes } from "react-icons/fa"; // Import React Icons for UI
 import "../../css/CH4UnifiedPage.css"; // Import unified page styles
@@ -187,7 +189,35 @@ const CH4MapWithDataPage: React.FC = () => {
       setIsLoading(false);
     }
   };
+  // Helper function to calculate the mean of an array of values
+  const calculateMean = (data: DataPoint[] | null): number | null => {
+    if (!data || data.length === 0) return null;
+    const total = data.reduce(
+      (sum, point) => sum + point.statistics.b1.mean,
+      0
+    );
+    return total / data.length;
+  };
+  const calculateMin = (data: DataPoint[] | null): number | null => {
+    if (!data || data.length === 0) return null;
+    return Math.min(...data.map((point) => point.statistics.b1.min));
+  };
 
+  const calculateMax = (data: DataPoint[] | null): number | null => {
+    if (!data || data.length === 0) return null;
+    return Math.max(...data.map((point) => point.statistics.b1.max));
+  };
+
+  const calculateMedian = (data: DataPoint[] | null): number | null => {
+    if (!data || data.length === 0) return null;
+    const sortedMedians = data
+      .map((point) => point.statistics.b1.median)
+      .sort((a, b) => a - b);
+    const mid = Math.floor(sortedMedians.length / 2);
+    return sortedMedians.length % 2 !== 0
+      ? sortedMedians[mid]
+      : (sortedMedians[mid - 1] + sortedMedians[mid]) / 2;
+  };
   // Handle search functionality
   const handleSearch = async () => {
     if (!searchQuery) return;
@@ -362,6 +392,148 @@ const CH4MapWithDataPage: React.FC = () => {
         <Line data={chartData} options={chartOptions} className="chart" />
       </div>
     );
+  }; // Icons for increase, decrease, same
+  // Generate the storytelling message based on comparison
+  // Generate the storytelling message based on comparison
+  const generateStoryMessage = () => {
+    const currentMean = calculateMean(emissionsData);
+    const previousMean = calculateMean(previousEmissionsData);
+    const currentMin = calculateMin(emissionsData);
+    const previousMin = calculateMin(previousEmissionsData);
+    const currentMax = calculateMax(emissionsData);
+    const previousMax = calculateMax(previousEmissionsData);
+    const currentMedian = calculateMedian(emissionsData);
+    const previousMedian = calculateMedian(previousEmissionsData);
+
+    if (
+      currentMean === null ||
+      previousMean === null ||
+      currentMin === null ||
+      previousMin === null ||
+      currentMax === null ||
+      previousMax === null ||
+      currentMedian === null ||
+      previousMedian === null
+    ) {
+      return "Insufficient data for comparison.";
+    }
+
+    const meanDifference = currentMean - previousMean;
+    const minDifference = currentMin - previousMin;
+    const maxDifference = currentMax - previousMax;
+    const medianDifference = currentMedian - previousMedian;
+
+    const differencePercentage = (difference: number, previous: number) => {
+      return previous !== 0
+        ? ((difference / previous) * 100).toFixed(2)
+        : "N/A";
+    };
+
+    const getIcon = (difference: number) => {
+      if (difference > 0) return <FaArrowUp className="increase icon" />;
+      if (difference < 0) return <FaArrowDown className="decrease icon" />;
+      return <FaEquals className="neutral icon" />;
+    };
+
+    const formatDifference = (difference: number) => {
+      return Math.abs(difference).toFixed(2);
+    };
+
+    return (
+      <>
+        <div className="story-item">
+          {getIcon(meanDifference)}
+          <p>
+            <span className="story-highlight">Mean:</span> Current mean CH₄
+            emissions are{" "}
+            <span className="story-highlight">
+              {formatDifference(meanDifference)} ppm
+            </span>
+            , which is a{" "}
+            {meanDifference > 0
+              ? "rise"
+              : meanDifference < 0
+              ? "fall"
+              : "no change"}
+            of{" "}
+            <span className="story-highlight">
+              {formatDifference(meanDifference)} ppm
+            </span>
+            ({differencePercentage(meanDifference, previousMean)}%) compared to
+            the previous region.
+          </p>
+        </div>
+
+        <div className="story-item">
+          {getIcon(minDifference)}
+          <p>
+            <span className="story-highlight">Minimum:</span> Current minimum
+            CH₄ emissions are{" "}
+            <span className="story-highlight">
+              {formatDifference(minDifference)} ppm
+            </span>
+            , which is a{" "}
+            {minDifference > 0
+              ? "rise"
+              : minDifference < 0
+              ? "fall"
+              : "no change"}
+            of{" "}
+            <span className="story-highlight">
+              {formatDifference(minDifference)} ppm
+            </span>
+            ({differencePercentage(minDifference, previousMin)}%) compared to
+            the previous region.
+          </p>
+        </div>
+
+        <div className="story-item">
+          {getIcon(maxDifference)}
+          <p>
+            <span className="story-highlight">Maximum:</span> Current maximum
+            CH₄ emissions are{" "}
+            <span className="story-highlight">
+              {formatDifference(maxDifference)} ppm
+            </span>
+            , which is a{" "}
+            {maxDifference > 0
+              ? "rise"
+              : maxDifference < 0
+              ? "fall"
+              : "no change"}
+            of{" "}
+            <span className="story-highlight">
+              {formatDifference(maxDifference)} ppm
+            </span>
+            ({differencePercentage(maxDifference, previousMax)}%) compared to
+            the previous region.
+          </p>
+        </div>
+
+        <div className="story-item">
+          {getIcon(medianDifference)}
+          <p>
+            <span className="story-highlight">Median:</span> Current median CH₄
+            emissions are{" "}
+            <span className="story-highlight">
+              {formatDifference(medianDifference)} ppm
+            </span>
+            , which is a{" "}
+            {medianDifference > 0
+              ? "rise"
+              : medianDifference < 0
+              ? "fall"
+              : "no change"}
+            of{" "}
+            <span className="story-highlight">
+              {formatDifference(medianDifference)} ppm
+            </span>
+            ({differencePercentage(medianDifference, previousMedian)}%) compared
+            to the previous region.
+          </p>
+        </div>
+      </>
+    );
   };
 
   return (
@@ -439,32 +611,40 @@ const CH4MapWithDataPage: React.FC = () => {
       )}
 
       {/* Comparison view */}
+      {/* Comparison view */}
       {isComparing && (
-        <div className="graph-comparison-container">
-          <div className="graph-column">
-            <h3 className="text-lg font-semibold">Previous Graph</h3>
-            {previousEmissionsData ? (
-              <CH4EmissionsGraph
-                data={previousEmissionsData}
-                region={previousRegion || "Previous Region"}
-              />
-            ) : (
-              <p>No previous data available.</p>
-            )}
+        <>
+          <div className="graph-comparison-container">
+            <div className="graph-column">
+              <h3 className="text-lg font-semibold">Previous Graph</h3>
+              {previousEmissionsData ? (
+                <CH4EmissionsGraph
+                  data={previousEmissionsData}
+                  region={previousRegion || "Previous Region"}
+                />
+              ) : (
+                <p>No previous data available.</p>
+              )}
+            </div>
+
+            <div className="graph-column">
+              <h3 className="text-lg font-semibold">Current Graph</h3>
+              {emissionsData ? (
+                <CH4EmissionsGraph
+                  data={emissionsData}
+                  region={currentRegion || "Current Region"}
+                />
+              ) : (
+                <p>No current data available.</p>
+              )}
+            </div>
           </div>
 
-          <div className="graph-column">
-            <h3 className="text-lg font-semibold">Current Graph</h3>
-            {emissionsData ? (
-              <CH4EmissionsGraph
-                data={emissionsData}
-                region={currentRegion || "Current Region"}
-              />
-            ) : (
-              <p>No current data available.</p>
-            )}
+          {/* Storytelling message */}
+          <div className="story-message-container">
+            <div className="story-message">{generateStoryMessage()}</div>
           </div>
-        </div>
+        </>
       )}
     </div>
   );

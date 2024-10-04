@@ -1,15 +1,9 @@
 import React from "react";
 import { Line } from "react-chartjs-2";
 import { Chart, registerables } from "chart.js";
-import {
-  FaMapMarkerAlt,
-  FaGlobe,
-  FaBook,
-  FaIndustry,
-  FaGamepad,
-} from "react-icons/fa"; // Import React Icons
+import { FaMapMarkerAlt, FaGlobe, FaBook, FaGamepad } from "react-icons/fa"; // Importing correct icons
 import "leaflet/dist/leaflet.css";
-import "../../css/Dashboard.css";
+import "../../css/Dashboard.css"; // Importing the CSS
 import { useNavigate } from "react-router-dom"; // Import useNavigate for navigation
 
 Chart.register(...registerables);
@@ -116,7 +110,7 @@ const Dashboard: React.FC = () => {
         </div>
         <div className="button" onClick={() => handleButtonClick("/nasa-data")}>
           <FaBook className="icon" />
-          <h3>Nasa Data</h3>
+          <h3>NASA Datasets</h3>
         </div>
       </div>
     </div>

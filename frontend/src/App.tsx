@@ -29,6 +29,7 @@ import CH4MapWithDataPage from "../components/CH4/CH4MapWithDataPage";
 import MethaneFluxGlobe from "../components/CH4/MethaneFluxGlobe";
 import NasaData from "../components/Separate_Pages/NasaData";
 import MiCasaMapWithDataPage from "../components/MiCasa_Carbon_Flux/MiCasaMapWithDataPage";
+import AirSeaCO2FluxComparison from "../components/AirSeaCO2/AirSeaCO2FluxComparison";
 
 const App: React.FC = () => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(() => {
@@ -98,18 +99,23 @@ const App: React.FC = () => {
             <Route path="/contact-us" element={<ContactUs />} />
             <Route path="/account-info" element={<AccountInfo />} />
             <Route
+              path="/air-sea-co2-comparison"
+              element={<AirSeaCO2FluxComparison />}
+            />
+            <Route
               path="/carbon-micasa-comparison"
               element={<MiCASAFluxComparison />}
+            />
+            <Route
+              path="/micasa-map-with-data"
+              element={<MiCasaMapWithDataPage />}
             />
             <Route
               path="/ch4-flux-comparison"
               element={<CH4FluxComparison />}
             />
             <Route path="/ch4-map-with-data" element={<CH4MapWithDataPage />} />
-            <Route
-              path="/micasa-map-with-data"
-              element={<MiCasaMapWithDataPage />}
-            />
+
             <Route path="/methane-flux-globe" element={<MethaneFluxGlobe />} />
             <Route path="/nasa-data" element={<NasaData />} />
           </Routes>
