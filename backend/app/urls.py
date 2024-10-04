@@ -15,4 +15,6 @@ urlpatterns = [
     path('carbon_data_view_micasa/', carbon_data_view_micasa, name='carbon_data_view_micasa'),
     # compute_micasa_stats_view
     path('compute_micasa_stats_view/', compute_micasa_stats_view, name='compute_micasa_stats_view'),
+    path('airsea_data_CO2/',airSea_data_view_CO2,name='airSea_data_view_CO2'),
+    path('compute_air_sea_co2_stats_view/',compute_micasa_stats_view,name='compute_air_sea_co2_stats_view')
 ]

@@ -106,7 +106,7 @@ const MiCasaMapWithDataPage: React.FC = () => {
         setTimeout(async () => {
           try {
             const response = await fetch(
-              "http://127.0.0.1:8000/compute_micasa_stats_view",
+              "http://127.0.0.1:8000/compute_micasa_stats_view/",
               {
                 method: "POST",
                 headers: {
@@ -379,7 +379,7 @@ const MiCasaMapWithDataPage: React.FC = () => {
         },
         title: {
           display: true,
-          text: `CH₄ Emissions Trends for ${region}`,
+          text: `MiCASA Emissions Trends for ${region}`,
           color: "#ff8000",
           font: {
             size: 20,

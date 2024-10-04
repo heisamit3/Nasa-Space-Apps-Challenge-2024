@@ -40,8 +40,8 @@ const MyArea: React.FC = () => {
           368, 370, 375, 378, 381, 384, 387, 390, 393, 396, 400, 404, 408, 412,
           416, 420, 424, 428, 432, 436, 440, 444, 448,
         ],
-        borderColor: "rgba(75, 192, 192, 1)",
-        backgroundColor: "rgba(75, 192, 192, 0.2)",
+        borderColor: "rgba(255, 165, 0, 1)",
+        backgroundColor: "rgba(255, 165, 0, 0.2)",
         fill: true,
         tension: 0.3,
       },
@@ -87,7 +87,6 @@ const MyArea: React.FC = () => {
     setShowStories(!showStories);
   };
 
-  // States for alert form inputs
   const [showAlertForm, setShowAlertForm] = useState<boolean>(false);
   const [email, setEmail] = useState<string>("");
   const [subject, setSubject] = useState<string>("");
@@ -96,7 +95,6 @@ const MyArea: React.FC = () => {
   const [users, setUsers] = useState<string[]>([]);
   const [loadingUsers, setLoadingUsers] = useState<boolean>(true);
 
-  // Fetch users from backend
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -115,7 +113,6 @@ const MyArea: React.FC = () => {
     fetchUsers();
   }, []);
 
-  // Function to handle alert submission
   const handleAlertSubmit = async () => {
     if (!recipients.trim()) {
       alert("Please enter at least one recipient.");
@@ -139,7 +136,6 @@ const MyArea: React.FC = () => {
         console.error("Error sending email alert", error);
         alert("Failed to send email alert. Please try again.");
       }
-      // Reset the form after submission
       setShowAlertForm(false);
       setEmail("");
       setSubject("");
@@ -151,24 +147,25 @@ const MyArea: React.FC = () => {
   };
 
   return (
-    <div>
-      <h1>Welcome to My Area</h1>
+    <div className="enhanced-container">
+      <h1 className="enhanced-header">Welcome to My Enhanced Area</h1>
 
-      {/* Centered Graph Container */}
-      <div className="graph-container">
+      {/* Graph Section */}
+      <div className="enhanced-graph-container">
         <h2>CO2 Levels and Heat Rise (2000 - 2023)</h2>
         <Line data={co2Data} options={{ responsive: true }} />
       </div>
 
-      <div className="stories-section">
-        <div className="stories-container">
-          <button className="button" onClick={toggleStories}>
-            {showStories ? "Hide Stories" : "See Other Stories"}
+      {/* Climate Stories Section */}
+      <div className="enhanced-stories-section">
+        <div className="enhanced-stories-container">
+          <button className="enhanced-button" onClick={toggleStories}>
+            {showStories ? "Hide Stories" : "View Climate Stories"}
           </button>
 
           {showStories && (
-            <div className="existing-stories">
-              <h3>Stories</h3>
+            <div className="enhanced-existing-stories">
+              <h3>Climate Stories</h3>
               <ul>
                 {stories.map((story, index) => (
                   <li key={index}>{story}</li>
@@ -177,47 +174,44 @@ const MyArea: React.FC = () => {
             </div>
           )}
 
-          {/* Button to display the textarea */}
           {!showTextArea && (
             <button
-              className="button"
+              className="enhanced-button"
               onClick={handleShareStory}
               style={{ marginTop: "10px" }}
             >
-              Share Your Story
+              Share Your Climate Story
             </button>
           )}
 
-          {/* Textarea and Submit button */}
           {showTextArea && (
-            <div className="share-story">
+            <div className="enhanced-share-story">
               <textarea
                 value={newStory}
                 onChange={(e) => setNewStory(e.target.value)}
                 style={{ margin: "10px" }}
                 placeholder="Write your story..."
               />
-              <button className="button" onClick={handleSubmitStory}>
-                Submit
+              <button className="enhanced-button" onClick={handleSubmitStory}>
+                Submit Story
               </button>
             </div>
           )}
         </div>
       </div>
 
-      {/* Alert Button */}
-      <div className="alert-section">
+      {/* Climate Alert Section */}
+      <div className="enhanced-alert-section">
         <button
           onClick={() => setShowAlertForm(!showAlertForm)}
-          className="button"
+          className="enhanced-button"
           style={{ margin: "10px" }}
         >
-          {showAlertForm ? "Cancel Alert" : "Send Climate Alert"}
+          {showAlertForm ? "Cancel Climate Alert" : "Send Climate Alert"}
         </button>
 
-        {/* Alert Form (email, subject, message, recipients) */}
         {showAlertForm && (
-          <div className="alert-form">
+          <div className="enhanced-alert-form">
             <div>
               <label>Email:</label>
               <input
@@ -258,7 +252,7 @@ const MyArea: React.FC = () => {
               />
             </div>
 
-            <button className="button" onClick={handleAlertSubmit}>
+            <button className="enhanced-button" onClick={handleAlertSubmit}>
               Send Alert
             </button>
           </div>

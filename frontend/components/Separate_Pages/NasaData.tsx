@@ -24,13 +24,13 @@ const NasaData: React.FC = () => {
         <li className="list-item">
           <div className="dropdown">
             <span className="dropdown-label">
-              Another Dataset <FaChevronDown className="icon" />
+              Air sea CO2 <FaChevronDown className="icon" />
             </span>
             <div className="dropdown-content">
-              <a onClick={() => handleNavigation("/globalTemp/yearly")}>
+              <a onClick={() => handleNavigation("/air-sea-co2-comparison")}>
                 <FaMapMarkedAlt className="icon" /> Map
               </a>
-              <a onClick={() => handleNavigation("/globalTemp/monthly")}>
+              <a onClick={() => handleNavigation("/air-sea-co2-map-with-data")}>
                 <FaChartBar className="icon" /> Statistics
               </a>
               <a onClick={() => handleNavigation("/globalTemp/daily")}>

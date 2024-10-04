@@ -30,6 +30,8 @@ import MethaneFluxGlobe from "../components/CH4/MethaneFluxGlobe";
 import NasaData from "../components/Separate_Pages/NasaData";
 import MiCasaMapWithDataPage from "../components/MiCasa_Carbon_Flux/MiCasaMapWithDataPage";
 import GlobalCH4 from "../components/CH4/GlobalCH4";
+import AirSeaCO2FluxComparison from "../components/AirSeaCO2/AirSeaCO2FluxComparison";
+import AirSeaCO2MapWithDataPage from "../components/AirSeaCO2/AirSeaCO2MapWithDataPage";
 
 const App: React.FC = () => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(() => {
@@ -99,20 +101,26 @@ const App: React.FC = () => {
             <Route path="/contact-us" element={<ContactUs />} />
             <Route path="/account-info" element={<AccountInfo />} />
             <Route
+              path="/air-sea-co2-comparison"
+              element={<AirSeaCO2FluxComparison />}
+            />
+            <Route
               path="/carbon-micasa-comparison"
               element={<MiCASAFluxComparison />}
+            />
+            <Route
+              path="/micasa-map-with-data"
+              element={<MiCasaMapWithDataPage />}
             />
             <Route
               path="/ch4-flux-comparison"
               element={<CH4FluxComparison />}
             />
             <Route path="/ch4-map-with-data" element={<CH4MapWithDataPage />} />
-            <Route
-              path="/micasa-map-with-data"
-              element={<MiCasaMapWithDataPage />}
-            />
+
             <Route path="/methane-flux-globe" element={<MethaneFluxGlobe />} />
             <Route path="/nasa-data" element={<NasaData />} />
+            <Route path="/air-sea-co2-map-with-data" element={<AirSeaCO2MapWithDataPage/>} />
           </Routes>
           <Character currentPath={window.location.pathname} />
           <Footer />
