@@ -260,3 +260,38 @@ body {
     }
   }
   
+ 
+ 
+  
+  .search-bar-container {
+    position: relative; /* To position the suggestions list correctly */
+}
+
+.suggestions-list {
+    position: absolute; /* Change to absolute for dropdown */
+    top: 100%; /* Position below the search input */
+    left: 0; /* Align to the left */
+    width: 100%; /* Full width of the search input */
+    background-color: #202020; /* Dark background for dropdown */
+    border: 2px solid #ff8000; /* Orange border */
+    border-radius: 10px; /* Rounded corners */
+    margin-top: 5px; /* Space between input and dropdown */
+    z-index: 1000; /* Ensure it appears above other elements */
+    list-style: none; /* Remove default list styling */
+    padding: 0; /* Remove padding */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5); /* Add shadow for depth */
+    max-height: 300px; /* Max height for scrolling */
+    overflow-y: auto; /* Enable vertical scrolling */
+    color: aliceblue;
+}
+
+.suggestion-item {
+    padding: 10px 15px; /* Padding for each item */
+    cursor: pointer; /* Pointer cursor on hover */
+    color: white; /* Text color */
+}
+
+.suggestion-item:hover {
+    background-color: #ff8000; /* Change background on hover */
+    color: black; /* Change text color on hover */
+}

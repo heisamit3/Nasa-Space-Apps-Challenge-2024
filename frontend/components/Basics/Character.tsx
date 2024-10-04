@@ -14,6 +14,8 @@ const characterImages = {
 const instructions: Record<string, string> = {
   "/": "Welcome to the Sunclimate Chronicles!", // Custom message
   "/dashboard": "Here you can view your stats and manage your profile.",
+  "/micasa-map-with-data": "This page features an interactive map showcasing CO₂ emissions data from global monitoring stations and satellites. Users can explore and analyze CO₂ concentration levels across different regions, compare emissions between areas, and understand the factors influencing carbon emissions, aiding in identifying regions needing intervention.", 
+  "/ch4-map-with-data": "This page presents an interactive map displaying methane emissions data collected from worldwide monitoring stations and satellites. Users can examine and compare methane concentration levels across various regions, gaining insights into emission trends and sources, which helps identify areas that require attention.",
   // Add more instructions as needed
 };
 

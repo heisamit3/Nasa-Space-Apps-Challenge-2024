@@ -45,7 +45,7 @@ textarea {
     max-width: 500px;
     margin-left: auto;
     margin-right: auto;
-    background-color: #f9f9f9;
+    background: linear-gradient(to right, rgba(22, 19, 1, 0.865), rgba(34, 32, 23, 0.6));
   }
   
   .alert-form div {
